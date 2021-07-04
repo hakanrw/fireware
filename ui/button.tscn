@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ui/button.gd" type="Script" id=1]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://fonts/arialbd.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 25
+font_data = SubResource( 1 )
+
+[node name="Button" type="Panel"]
+self_modulate = Color( 0.803922, 0.803922, 0.803922, 1 )
+margin_right = 270.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 0, 50 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 6.73985
+margin_top = 11.7266
+margin_right = 85.7399
+margin_bottom = 40.7266
+custom_fonts/font = SubResource( 2 )
+text = "Button"
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -1,0 +1,175 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://fonts/font_dynamic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://fonts/font_dynamic_small.tres" type="DynamicFont" id=2]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://fonts/arialbd.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 25
+font_data = SubResource( 1 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HUD" type="MarginContainer" parent="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 0, 70 )
+custom_constants/margin_right = 20
+custom_constants/margin_top = 15
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 15
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HUD"]
+margin_left = 20.0
+margin_top = 15.0
+margin_right = 1004.0
+margin_bottom = 55.0
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HUD/HBoxContainer"]
+margin_right = 200.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="LineEdit" type="Label" parent="VBoxContainer/HUD/HBoxContainer/Panel"]
+margin_left = 10.0
+margin_top = 9.0
+margin_right = 188.0
+margin_bottom = 32.0
+custom_fonts/font = ExtResource( 2 )
+text = "hbk"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="VBoxContainer/HUD/HBoxContainer"]
+margin_left = 204.0
+margin_right = 780.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+
+[node name="LineEdit" type="Label" parent="VBoxContainer/HUD/HBoxContainer/Panel2"]
+margin_left = 10.0
+margin_top = 9.0
+margin_right = 188.0
+margin_bottom = 32.0
+custom_fonts/font = ExtResource( 2 )
+text = "development build v0.3"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel3" type="Panel" parent="VBoxContainer/HUD/HBoxContainer"]
+margin_left = 784.0
+margin_right = 984.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="LineEdit" type="Label" parent="VBoxContainer/HUD/HBoxContainer/Panel3"]
+margin_left = 10.0
+margin_top = 9.0
+margin_right = 188.0
+margin_bottom = 32.0
+custom_fonts/font = ExtResource( 2 )
+text = "de_enka2"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_top = 74.0
+margin_right = 1024.0
+margin_bottom = 496.0
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HDD" type="MarginContainer" parent="VBoxContainer"]
+margin_top = 500.0
+margin_right = 1024.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 0, 100 )
+custom_constants/margin_right = 20
+custom_constants/margin_top = 15
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 15
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HDD"]
+margin_left = 20.0
+margin_top = 15.0
+margin_right = 1004.0
+margin_bottom = 85.0
+
+[node name="Panel" type="Panel" parent="VBoxContainer/HDD/HBoxContainer"]
+margin_right = 200.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HDD/HBoxContainer/Panel"]
+margin_left = 15.5739
+margin_top = 11.3265
+margin_right = 115.574
+margin_bottom = 57.3265
+custom_fonts/font = ExtResource( 1 )
+text = "+ 200"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel3" type="Panel" parent="VBoxContainer/HDD/HBoxContainer"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 204.0
+margin_right = 780.0
+margin_bottom = 70.0
+size_flags_horizontal = 3
+
+[node name="Panel2" type="Panel" parent="VBoxContainer/HDD/HBoxContainer"]
+margin_left = 784.0
+margin_right = 984.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="Label" type="Label" parent="VBoxContainer/HDD/HBoxContainer/Panel2"]
+margin_left = 85.0
+margin_top = 11.0
+margin_right = 144.0
+margin_bottom = 57.0
+custom_fonts/font = ExtResource( 1 )
+text = "50/"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="VBoxContainer/HDD/HBoxContainer/Panel2"]
+margin_left = 140.681
+margin_top = 25.2543
+margin_right = 199.681
+margin_bottom = 71.2543
+custom_fonts/font = SubResource( 2 )
+text = "100"
+__meta__ = {
+"_edit_use_anchors_": false
+}

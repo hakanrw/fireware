@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ui/menu/text_button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ui/menu/input.tscn" type="PackedScene" id=4]
+
+[node name="MultiplayerMenu" type="Panel"]
+margin_right = 560.0
+margin_bottom = 444.0
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_top = 27.0
+margin_right = 500.0
+margin_bottom = 242.0
+custom_constants/separation = 12
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="URLInput" parent="VBoxContainer" instance=ExtResource( 4 )]
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 500.0
+margin_bottom = 45.0
+text = "URL"
+
+[node name="PasswordInput" parent="VBoxContainer" instance=ExtResource( 4 )]
+margin_left = 0.0
+margin_top = 57.0
+margin_right = 500.0
+margin_bottom = 102.0
+text = "Password"
+
+[node name="ConnectButton" parent="VBoxContainer" instance=ExtResource( 1 )]
+margin_top = 114.0
+margin_bottom = 159.0
+button_text = "Connect"
+label_text = "Connecting..."
+duration = 0.0

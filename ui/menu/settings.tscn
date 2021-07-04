@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ui/menu/text_button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ui/menu/settings.gd" type="Script" id=2]
+[ext_resource path="res://ui/menu/input.tscn" type="PackedScene" id=3]
+
+[node name="SettingsMenu" type="Panel"]
+margin_right = 560.0
+margin_bottom = 444.0
+rect_pivot_offset = Vector2( -658.021, 195.727 )
+size_flags_vertical = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_top = 27.0
+margin_right = 500.0
+margin_bottom = 242.0
+custom_constants/separation = 12
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameInput" parent="VBoxContainer" instance=ExtResource( 3 )]
+margin_left = 0.0
+margin_top = 0.0
+margin_right = 500.0
+margin_bottom = 45.0
+text = "Name"
+
+[node name="SaveButton" parent="VBoxContainer" instance=ExtResource( 1 )]
+button_text = "Save"
+label_text = "Saved!"
+duration = 1.0
