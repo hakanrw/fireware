@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://ui/menu/text_button.tscn" type="PackedScene" id=1]
-[ext_resource path="res://ui/menu/input.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ui/general/text_button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ui/general/input.tscn" type="PackedScene" id=4]
 
 [node name="MultiplayerMenu" type="Panel"]
 margin_right = 560.0

@@ -1,0 +1,94 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://fonts/font_dynamic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://ui/general/card.gd" type="Script" id=2]
+[ext_resource path="res://ui/icons/spectator.png" type="Texture" id=3]
+[ext_resource path="res://ui/general/card.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ui/icons/special_units.png" type="Texture" id=5]
+[ext_resource path="res://ui/icons/insurgent.png" type="Texture" id=6]
+
+[node name="TeamSelect" type="Panel"]
+margin_left = 137.0
+margin_top = 11.0
+margin_right = 887.0
+margin_bottom = 411.0
+rect_min_size = Vector2( 750, 400 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 730.0
+margin_bottom = 380.0
+custom_constants/separation = 40
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_right = 710.0
+margin_bottom = 46.0
+custom_fonts/font = ExtResource( 1 )
+text = "Select your team"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 86.0
+margin_right = 710.0
+margin_bottom = 286.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/CenterContainer"]
+margin_left = 125.0
+margin_right = 585.0
+margin_bottom = 200.0
+custom_constants/separation = 20
+
+[node name="SpecialUnit" type="Panel" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
+self_modulate = Color( 0.803922, 0.803922, 0.803922, 1 )
+margin_right = 140.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 140, 200 )
+size_flags_horizontal = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text = "Special Unit"
+texture = ExtResource( 5 )
+
+[node name="Insurgent" type="Panel" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
+self_modulate = Color( 0.803922, 0.803922, 0.803922, 1 )
+margin_left = 160.0
+margin_right = 300.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 140, 200 )
+size_flags_horizontal = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text = "Insurgent"
+texture = ExtResource( 6 )
+
+[node name="Spectator" type="Panel" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
+self_modulate = Color( 0.803922, 0.803922, 0.803922, 1 )
+margin_left = 320.0
+margin_right = 460.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 140, 200 )
+size_flags_horizontal = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text = "Spectator"
+texture = ExtResource( 3 )

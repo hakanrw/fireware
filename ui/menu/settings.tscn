@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://ui/menu/text_button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://ui/general/text_button.tscn" type="PackedScene" id=1]
 [ext_resource path="res://ui/menu/settings.gd" type="Script" id=2]
-[ext_resource path="res://ui/menu/input.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/general/input.tscn" type="PackedScene" id=3]
 
 [node name="SettingsMenu" type="Panel"]
 margin_right = 560.0
