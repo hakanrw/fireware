@@ -2,7 +2,7 @@
 
 [ext_resource path="res://fonts/font_dynamic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/font_dynamic_small.tres" type="DynamicFont" id=2]
-[ext_resource path="res://ui/team_select.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/hud/hud.gd" type="Script" id=4]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://fonts/arialbd.ttf"
@@ -11,9 +11,10 @@ font_path = "res://fonts/arialbd.ttf"
 size = 25
 font_data = SubResource( 1 )
 
-[node name="Control" type="Control"]
+[node name="HUD" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -27,7 +28,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HUD" type="MarginContainer" parent="VBoxContainer"]
+[node name="HTD" type="MarginContainer" parent="VBoxContainer"]
 margin_right = 1024.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 0, 70 )
@@ -39,18 +40,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HUD"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HTD"]
 margin_left = 20.0
 margin_top = 15.0
 margin_right = 1004.0
 margin_bottom = 55.0
 
-[node name="Panel" type="Panel" parent="VBoxContainer/HUD/HBoxContainer"]
+[node name="Panel" type="Panel" parent="VBoxContainer/HTD/HBoxContainer"]
 margin_right = 200.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="LineEdit" type="Label" parent="VBoxContainer/HUD/HBoxContainer/Panel"]
+[node name="LineEdit" type="Label" parent="VBoxContainer/HTD/HBoxContainer/Panel"]
 margin_left = 10.0
 margin_top = 9.0
 margin_right = 188.0
@@ -61,13 +62,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel2" type="Panel" parent="VBoxContainer/HUD/HBoxContainer"]
+[node name="Panel2" type="Panel" parent="VBoxContainer/HTD/HBoxContainer"]
 margin_left = 204.0
 margin_right = 780.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 
-[node name="LineEdit" type="Label" parent="VBoxContainer/HUD/HBoxContainer/Panel2"]
+[node name="LineEdit" type="Label" parent="VBoxContainer/HTD/HBoxContainer/Panel2"]
 margin_left = 10.0
 margin_top = 9.0
 margin_right = 188.0
@@ -78,19 +79,19 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel3" type="Panel" parent="VBoxContainer/HUD/HBoxContainer"]
+[node name="Panel3" type="Panel" parent="VBoxContainer/HTD/HBoxContainer"]
 margin_left = 784.0
 margin_right = 984.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="LineEdit" type="Label" parent="VBoxContainer/HUD/HBoxContainer/Panel3"]
+[node name="LineEdit" type="Label" parent="VBoxContainer/HTD/HBoxContainer/Panel3"]
 margin_left = 10.0
 margin_top = 9.0
 margin_right = 188.0
 margin_bottom = 32.0
 custom_fonts/font = ExtResource( 2 )
-text = "$lname"
+text = "$level"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -106,9 +107,7 @@ size_flags_vertical = 3
 margin_right = 1024.0
 margin_bottom = 422.0
 
-[node name="TeamSelect" parent="VBoxContainer/MarginContainer/HMD" instance=ExtResource( 3 )]
-
-[node name="HDD" type="MarginContainer" parent="VBoxContainer"]
+[node name="HBD" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 500.0
 margin_right = 1024.0
 margin_bottom = 600.0
@@ -121,18 +120,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HDD"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBD"]
 margin_left = 20.0
 margin_top = 15.0
 margin_right = 1004.0
 margin_bottom = 85.0
 
-[node name="HealthPanel" type="Panel" parent="VBoxContainer/HDD/HBoxContainer"]
+[node name="HealthPanel" type="Panel" parent="VBoxContainer/HBD/HBoxContainer"]
 margin_right = 200.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="Health" type="Label" parent="VBoxContainer/HDD/HBoxContainer/HealthPanel"]
+[node name="Health" type="Label" parent="VBoxContainer/HBD/HBoxContainer/HealthPanel"]
 margin_left = 15.5739
 margin_top = 11.3265
 margin_right = 115.574
@@ -143,20 +142,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Margin" type="Panel" parent="VBoxContainer/HDD/HBoxContainer"]
+[node name="Margin" type="Panel" parent="VBoxContainer/HBD/HBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
 margin_left = 204.0
 margin_right = 780.0
 margin_bottom = 70.0
 size_flags_horizontal = 3
 
-[node name="AmmoPanel" type="Panel" parent="VBoxContainer/HDD/HBoxContainer"]
+[node name="AmmoPanel" type="Panel" parent="VBoxContainer/HBD/HBoxContainer"]
 margin_left = 784.0
 margin_right = 984.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="Ammo" type="Label" parent="VBoxContainer/HDD/HBoxContainer/AmmoPanel"]
+[node name="Ammo" type="Label" parent="VBoxContainer/HBD/HBoxContainer/AmmoPanel"]
 margin_left = 85.0
 margin_top = 11.0
 margin_right = 144.0
@@ -167,7 +166,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Magazine" type="Label" parent="VBoxContainer/HDD/HBoxContainer/AmmoPanel"]
+[node name="Magazine" type="Label" parent="VBoxContainer/HBD/HBoxContainer/AmmoPanel"]
 margin_left = 140.681
 margin_top = 25.2543
 margin_right = 199.681

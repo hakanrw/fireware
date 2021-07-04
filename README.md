@@ -10,4 +10,5 @@ fireware is a top-down shooter game built by the game engine Godot.
 # todo
 - ~~_complete the menu prototype_~~ (done)
 - ~~_complete hud prototype_~~ (done)
+- ~~_complete team select prototype_~~ (done)
 - implement basic multiplayer (in progress)

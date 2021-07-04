@@ -1,18 +1,16 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://fonts/font_dynamic.tres" type="DynamicFont" id=1]
-[ext_resource path="res://ui/general/card.gd" type="Script" id=2]
 [ext_resource path="res://ui/icons/spectator.png" type="Texture" id=3]
 [ext_resource path="res://ui/general/card.tscn" type="PackedScene" id=4]
 [ext_resource path="res://ui/icons/special_units.png" type="Texture" id=5]
 [ext_resource path="res://ui/icons/insurgent.png" type="Texture" id=6]
 
 [node name="TeamSelect" type="Panel"]
-margin_left = 137.0
-margin_top = 11.0
-margin_right = 887.0
-margin_bottom = 411.0
 rect_min_size = Vector2( 750, 400 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -52,43 +50,18 @@ margin_right = 585.0
 margin_bottom = 200.0
 custom_constants/separation = 20
 
-[node name="SpecialUnit" type="Panel" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
-self_modulate = Color( 0.803922, 0.803922, 0.803922, 1 )
-margin_right = 140.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 140, 200 )
-size_flags_horizontal = 0
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="SpecialUnit" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
 text = "Special Unit"
 texture = ExtResource( 5 )
 
-[node name="Insurgent" type="Panel" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
-self_modulate = Color( 0.803922, 0.803922, 0.803922, 1 )
+[node name="Insurgent" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
 margin_left = 160.0
 margin_right = 300.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 140, 200 )
-size_flags_horizontal = 0
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 text = "Insurgent"
 texture = ExtResource( 6 )
 
-[node name="Spectator" type="Panel" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
-self_modulate = Color( 0.803922, 0.803922, 0.803922, 1 )
+[node name="Spectator" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
 margin_left = 320.0
 margin_right = 460.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 140, 200 )
-size_flags_horizontal = 0
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 text = "Spectator"
 texture = ExtResource( 3 )
