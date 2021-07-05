@@ -24,6 +24,10 @@ Utils="*res://utils.gd"
 
 settings/fps/force_fps=59
 
+[global]
+
+layer_=false
+
 [input]
 
 ui_left={
@@ -54,6 +58,10 @@ ui_down={
 , Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":83,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[layer_names]
+
+2d_render/layer_2="players"
 
 [physics]
 
