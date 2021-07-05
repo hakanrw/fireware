@@ -9,4 +9,6 @@ onready var ammo_panel = $VBoxContainer/HBD/HBoxContainer/AmmoPanel/Ammo
 onready var mag_manel = $VBoxContainer/HBD/HBoxContainer/AmmoPanel/Magazine
 
 func _ready():
+	if Utils.is_server():
+		visible = false
 	pass

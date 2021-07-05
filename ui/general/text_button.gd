@@ -17,8 +17,8 @@ func _ready():
 		$Timer.wait_time = duration
 
 func _button_clicked():
-	emit_signal("mouse_clicked")
 	$Label.text = label_text
+	emit_signal("mouse_clicked")
 	if duration == 0.0:
 		return
 	$Timer.start()

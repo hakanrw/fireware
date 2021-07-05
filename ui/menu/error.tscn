@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://fonts/font_dynamic_small.tres" type="DynamicFont" id=1]
+
+[node name="ErrorMenu" type="Panel"]
+margin_right = 560.0
+margin_bottom = 444.0
+rect_pivot_offset = Vector2( -658.021, 195.727 )
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ErrorLabel" type="Label" parent="."]
+margin_left = 5.69177
+margin_top = 30.7295
+margin_right = 483.692
+margin_bottom = 281.73
+custom_fonts/font = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

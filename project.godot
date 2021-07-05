@@ -17,6 +17,8 @@ config/icon="res://icon.png"
 [autoload]
 
 Globals="*res://globals.gd"
+NetworkController="*res://network/network_controller.gd"
+Utils="*res://utils.gd"
 
 [debug]
 

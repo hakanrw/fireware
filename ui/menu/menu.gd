@@ -3,9 +3,11 @@ extends Control
 var menus = {
 	"Multiplayer": preload("res://ui/menu/multiplayer.tscn"),
 	"Settings": preload("res://ui/menu/settings.tscn"),	
+	"Error": preload("res://ui/menu/error.tscn"),
 }
 
 onready var pane = get_tree().get_nodes_in_group("pane")[0]
+onready var screen = pane.get_node("MarginContainer/VBoxContainer/Screen")
 
 func _ready():
 	var bottom_container = get_tree().get_nodes_in_group("bottom_container")[0]
