@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://fonts/font_dynamic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://ui/hud/team_select.gd" type="Script" id=2]
 [ext_resource path="res://ui/icons/spectator.png" type="Texture" id=3]
 [ext_resource path="res://ui/general/card.tscn" type="PackedScene" id=4]
 [ext_resource path="res://ui/icons/special_units.png" type="Texture" id=5]
@@ -8,6 +9,7 @@
 
 [node name="TeamSelect" type="Panel"]
 rect_min_size = Vector2( 750, 400 )
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -50,8 +52,8 @@ margin_right = 585.0
 margin_bottom = 200.0
 custom_constants/separation = 20
 
-[node name="SpecialUnit" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
-text = "Special Unit"
+[node name="Security" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]
+text = "Security"
 texture = ExtResource( 5 )
 
 [node name="Insurgent" parent="MarginContainer/VBoxContainer/CenterContainer/HBoxContainer" instance=ExtResource( 4 )]

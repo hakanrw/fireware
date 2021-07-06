@@ -2,7 +2,9 @@ extends Node
 
 const menu = preload("res://ui/menu/menu.tscn")
 const game = preload("res://main.tscn")
- 
+
+enum Team {SECURITY, INSURGENT, SPECTATOR}
+
 func load_menu():
 	if get_node("/root").has_node("Menu"):
 		return
@@ -35,6 +37,12 @@ func get_world_node():
 	
 func get_players_node():
 	return get_node("/root/Game/Players")
-	
+
+func get_hud_node():
+	return get_node("/root/Game/HUD")
+
 func is_server():
 	return "--server" in OS.get_cmdline_args()
+	
+func get_round_controller():
+	return get_node("/root/Game/RoundController")

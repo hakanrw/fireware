@@ -9,6 +9,9 @@ const FLOAT_EPSILON = 0.00001
 static func compare_floats(a, b, epsilon = FLOAT_EPSILON):
 	return abs(a - b) <= epsilon
 
+func _ready():
+	connect("player_died", self, "_on_death")
+	
 func _process(delta):
 	# handle look
 	var mouse_pos = get_global_mouse_position()
@@ -32,3 +35,8 @@ func _physics_process(delta):
 	last_rotation = head.global_rotation
 	last_direction = direction
 	# ._physics_process(delta)
+
+func _on_death():
+	Utils.get_hud_node().hbd.visible = false
+func _on_resurrect():
+	Utils.get_hud_node().hbd.visible = true

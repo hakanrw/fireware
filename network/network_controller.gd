@@ -37,6 +37,7 @@ func _player_disconnected(id):
 
 func _connected_ok():
 	Utils.load_game()
+	Utils.get_hud_node().show_team_select()
 	pass # Only called on clients, not server. Will go unused; not useful here.
 
 func _server_disconnected():
@@ -70,6 +71,9 @@ remote func update_players_props(players_props: Array):
 			if player == null: player = local_create_player(player_props["id"])
 			player.set_props(player_props)
 
+func get_player_nodes() -> Array:
+	return Utils.get_players_node().get_children()
+	
 func get_players_props() -> Array:
 	var players = Utils.get_players_node().get_children()
 	var players_props = Array()
@@ -81,6 +85,9 @@ func get_player_with_id(id: int):
 	if not Utils.get_players_node().has_node(str(id)): return null
 	return Utils.get_players_node().get_node(str(id))
 
+func get_self_player():
+	return get_player_with_id(multiplayer.get_network_unique_id())
+	
 func local_create_player(id):
 	if get_player_with_id(id): return
 	
@@ -92,6 +99,7 @@ func local_create_player(id):
 	player.set_network_master(id)
 	player.name = str(id)
 	Utils.get_players_node().add_child(player)
+	player.set_team(Utils.Team.SPECTATOR)
 	print("initiating player: " + str(id))
 	
 	return player

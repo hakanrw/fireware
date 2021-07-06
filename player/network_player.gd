@@ -8,7 +8,7 @@ puppet func set_direction(direction: Vector2):
 puppet func set_rotation(rotation: float):
 	player.head.global_rotation = rotation
 
-remote func set_name_tag(name_tag: String):
+remotesync func set_name_tag(name_tag: String):
 	if 1 == multiplayer.get_rpc_sender_id():
 		player.name_tag = name_tag
 		return
@@ -30,8 +30,28 @@ remote func set_name_tag(name_tag: String):
 			
 		name_tag = name_tag_after 
 		rpc("set_name_tag", name_tag)
-		rpc_id(1, "set_name_tag", name_tag)
+		
+remote func set_health(hp):
+	if 1 == multiplayer.get_rpc_sender_id():
+		player.health = hp
 
 remote func set_props(props):
 	if 1 == multiplayer.get_rpc_sender_id():
 		player.set_props(props)
+
+remotesync func set_team(team: int):
+	if 1 == multiplayer.get_rpc_sender_id():
+		player.team = team
+		return
+		
+	if NetworkController.is_server():
+		if team < 0 or team > 2: return
+		if player.team == team: return
+		
+		player.next_team = team
+		player.health = 0
+		
+		if not Utils.get_round_controller().game_running():
+			Utils.get_round_controller().place_player(player)
+		else:
+			rpc("set_health", 0)

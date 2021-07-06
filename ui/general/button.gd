@@ -1,6 +1,6 @@
 tool
 extends Panel
-signal mouse_clicked()
+signal mouse_clicked
 
 onready var original_color = self_modulate
 export var text = "Button"
