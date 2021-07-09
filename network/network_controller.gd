@@ -23,7 +23,10 @@ func connect_to_server(url, port):
 	
 func _player_connected(id):
 	if is_server():
+		var round_controller = Utils.get_round_controller()
 		rpc_id(id, "update_players_props", get_players_props())
+		round_controller.rpc_id(id, "update_leaderboard", round_controller.leaderboard)
+		round_controller.rpc_id(id, "update_timer", round_controller._max_round_time, round_controller.timer.time_left)
 		rpc("create_player", id)
 	print("player joined with id: " + str(id))
 	# Called on both clients and server when a peer connects.
@@ -90,6 +93,7 @@ func get_self_player():
 	
 func local_create_player(id):
 	if get_player_with_id(id): return
+	Utils.get_round_controller().rpc("update_leaderboard", {id: 0})
 	
 	var player = player_prefab.instance()
 	if id == multiplayer.get_network_unique_id():

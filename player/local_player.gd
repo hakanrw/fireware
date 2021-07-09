@@ -11,6 +11,8 @@ static func compare_floats(a, b, epsilon = FLOAT_EPSILON):
 
 func _ready():
 	connect("player_died", self, "_on_death")
+	connect("player_resurrected", self, "_on_resurrect")
+	
 	
 func _process(delta):
 	# handle look

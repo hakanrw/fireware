@@ -51,7 +51,11 @@ remotesync func set_team(team: int):
 		player.next_team = team
 		player.health = 0
 		
-		if not Utils.get_round_controller().game_running():
-			Utils.get_round_controller().place_player(player)
+		var round_controller = Utils.get_round_controller()
+		if not round_controller.game_running():
+			if round_controller._last_player_count == 1:
+				round_controller.start_new_round()
+			else: 
+				round_controller.place_player(player, true)
 		else:
 			rpc("set_health", 0)

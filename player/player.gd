@@ -50,7 +50,8 @@ func full_look_at(vec2d):
 			hand.look_at(vec2d)
 		
 func move(direction, delta):
-	if health > 0:
+	var round_controller = Utils.get_round_controller()
+	if health > 0 and round_controller.move_enabled:
 		move_and_collide(speed * delta * direction.normalized())
 
 func get_props():

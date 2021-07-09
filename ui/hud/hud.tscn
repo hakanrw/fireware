@@ -11,15 +11,18 @@ font_path = "res://fonts/arialbd.ttf"
 size = 25
 font_data = SubResource( 1 )
 
-[node name="HUD" type="Control"]
+[node name="HUD" type="CanvasLayer"]
+layer = 2
+script = ExtResource( 4 )
+
+[node name="Control" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -28,7 +31,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HTD" type="MarginContainer" parent="VBoxContainer"]
+[node name="HTD" type="MarginContainer" parent="Control/VBoxContainer"]
 margin_right = 1024.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 0, 70 )
@@ -40,18 +43,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HTD"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer/HTD"]
 margin_left = 20.0
 margin_top = 15.0
 margin_right = 1004.0
 margin_bottom = 55.0
 
-[node name="Panel" type="Panel" parent="VBoxContainer/HTD/HBoxContainer"]
+[node name="Panel" type="Panel" parent="Control/VBoxContainer/HTD/HBoxContainer"]
 margin_right = 200.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="LineEdit" type="Label" parent="VBoxContainer/HTD/HBoxContainer/Panel"]
+[node name="LineEdit" type="Label" parent="Control/VBoxContainer/HTD/HBoxContainer/Panel"]
 margin_left = 10.0
 margin_top = 9.0
 margin_right = 188.0
@@ -62,13 +65,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel2" type="Panel" parent="VBoxContainer/HTD/HBoxContainer"]
+[node name="Panel2" type="Panel" parent="Control/VBoxContainer/HTD/HBoxContainer"]
 margin_left = 204.0
 margin_right = 780.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 
-[node name="LineEdit" type="Label" parent="VBoxContainer/HTD/HBoxContainer/Panel2"]
+[node name="LineEdit" type="Label" parent="Control/VBoxContainer/HTD/HBoxContainer/Panel2"]
 margin_left = 10.0
 margin_top = 9.0
 margin_right = 188.0
@@ -79,13 +82,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel3" type="Panel" parent="VBoxContainer/HTD/HBoxContainer"]
+[node name="Panel3" type="Panel" parent="Control/VBoxContainer/HTD/HBoxContainer"]
 margin_left = 784.0
 margin_right = 984.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="LineEdit" type="Label" parent="VBoxContainer/HTD/HBoxContainer/Panel3"]
+[node name="LineEdit" type="Label" parent="Control/VBoxContainer/HTD/HBoxContainer/Panel3"]
 margin_left = 10.0
 margin_top = 9.0
 margin_right = 188.0
@@ -96,18 +99,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/VBoxContainer"]
 margin_top = 74.0
 margin_right = 1024.0
 margin_bottom = 496.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HMD" type="CenterContainer" parent="VBoxContainer/MarginContainer"]
+[node name="HMD" type="CenterContainer" parent="Control/VBoxContainer/MarginContainer"]
 margin_right = 1024.0
 margin_bottom = 422.0
 
-[node name="HBD" type="MarginContainer" parent="VBoxContainer"]
+[node name="HBD" type="MarginContainer" parent="Control/VBoxContainer"]
 margin_top = 500.0
 margin_right = 1024.0
 margin_bottom = 600.0
@@ -120,18 +123,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBD"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer/HBD"]
 margin_left = 20.0
 margin_top = 15.0
 margin_right = 1004.0
 margin_bottom = 85.0
 
-[node name="HealthPanel" type="Panel" parent="VBoxContainer/HBD/HBoxContainer"]
+[node name="HealthPanel" type="Panel" parent="Control/VBoxContainer/HBD/HBoxContainer"]
 margin_right = 200.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="Health" type="Label" parent="VBoxContainer/HBD/HBoxContainer/HealthPanel"]
+[node name="Health" type="Label" parent="Control/VBoxContainer/HBD/HBoxContainer/HealthPanel"]
 margin_left = 15.5739
 margin_top = 11.3265
 margin_right = 115.574
@@ -142,20 +145,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Margin" type="Panel" parent="VBoxContainer/HBD/HBoxContainer"]
+[node name="Margin" type="Panel" parent="Control/VBoxContainer/HBD/HBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
 margin_left = 204.0
 margin_right = 780.0
 margin_bottom = 70.0
 size_flags_horizontal = 3
 
-[node name="AmmoPanel" type="Panel" parent="VBoxContainer/HBD/HBoxContainer"]
+[node name="AmmoPanel" type="Panel" parent="Control/VBoxContainer/HBD/HBoxContainer"]
 margin_left = 784.0
 margin_right = 984.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="Ammo" type="Label" parent="VBoxContainer/HBD/HBoxContainer/AmmoPanel"]
+[node name="Ammo" type="Label" parent="Control/VBoxContainer/HBD/HBoxContainer/AmmoPanel"]
 margin_left = 85.0
 margin_top = 11.0
 margin_right = 144.0
@@ -166,7 +169,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Magazine" type="Label" parent="VBoxContainer/HBD/HBoxContainer/AmmoPanel"]
+[node name="Magazine" type="Label" parent="Control/VBoxContainer/HBD/HBoxContainer/AmmoPanel"]
 margin_left = 140.681
 margin_top = 25.2543
 margin_right = 199.681

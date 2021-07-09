@@ -13,3 +13,6 @@
 
 [node name="RoundController" type="Node" parent="."]
 script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="RoundController"]
+wait_time = 120.0
