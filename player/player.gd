@@ -6,9 +6,17 @@ signal player_resurrected
 onready var head = $Head
 onready var hand = $Head/Hand
 
-var speed = 200
+var current_weapon = -1 setget set_weapon
+var weapons = {
+	Utils.WeaponType.PRIMARY: -1,
+	Utils.WeaponType.SECONDARY: -1,
+	Utils.WeaponType.MISC: [],
+}
+
+var speed = Utils.player_speed
 var direction = Vector2(0, 0)
-var health = 100 setget set_health
+var health = Utils.max_health setget set_health
+var money = 0
 
 var name_tag = "Player" setget set_name_tag
 
@@ -19,6 +27,14 @@ func set_team(_team: int):
 	team = _team
 	if _team == Utils.Team.SPECTATOR:
 		set_health(0)
+
+func set_weapon(weapon: int):
+	for n in hand.get_children():
+		hand.remove_child(n)
+	current_weapon = weapon
+	
+	# optimize this
+	hand.add_child(load("res://weapons/" + str(weapon) + ".tscn").instance())
 	
 func set_health(hp: int):
 	hp = max(hp, 0)
@@ -63,6 +79,7 @@ func get_props():
 		"name_tag": name_tag,
 		"team": team,
 		"health": health,
+		"weapon": current_weapon,
 		"id": int(name),
 	}
 
@@ -74,4 +91,4 @@ func set_props(props):
 	if "name_tag" in props :     set_name_tag(props["name_tag"])
 	if "team" in props     :             set_team(props["team"])
 	if "health" in props   :         set_health(props["health"])
-	
+	if "weapon" in props   :         set_weapon(props["weapon"])

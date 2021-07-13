@@ -4,6 +4,7 @@ const menu = preload("res://ui/menu/menu.tscn")
 const game = preload("res://main.tscn")
 
 enum Team {SECURITY, INSURGENT, SPECTATOR}
+enum WeaponType {PRIMARY, SECONDARY, MISC}
 
 func load_menu():
 	if get_node("/root").has_node("Menu"):
@@ -46,3 +47,11 @@ func is_server():
 	
 func get_round_controller():
 	return get_node("/root/Game/RoundController")
+	
+
+var max_round_time = 120
+var shopping_time = 15
+var max_health = 100
+var start_money = 1500
+var default_team = Team.SPECTATOR
+var player_speed = 200

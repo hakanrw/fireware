@@ -65,6 +65,7 @@ remotesync func remove_player(id):
 	if 1 != get_tree().get_rpc_sender_id():
 		return
 	Utils.get_players_node().get_node(str(id)).queue_free()
+	Utils.get_round_controller().rpc("update_leaderboard", {id: "rm"})	
 	print("removing player: " + str(id))
 
 remote func update_players_props(players_props: Array):

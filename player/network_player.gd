@@ -51,11 +51,32 @@ remotesync func set_team(team: int):
 		player.next_team = team
 		player.health = 0
 		
+		reset_player()
+		
 		var round_controller = Utils.get_round_controller()
 		if not round_controller.game_running():
-			if round_controller._last_player_count == 1:
+			if NetworkController.get_player_nodes().size() == 1 and round_controller._hold_flag == false:
 				round_controller.start_new_round()
 			else: 
 				round_controller.place_player(player, true)
 		else:
 			rpc("set_health", 0)
+
+remotesync func set_money(money: int):
+	if 1 == multiplayer.get_rpc_sender_id():
+		player.money = money
+
+remotesync func reset_weaponry():
+	player.weapons = {
+		Utils.WeaponType.PRIMARY: -1,
+		Utils.WeaponType.SECONDARY: -1,
+		Utils.WeaponType.MISC: [],
+	}
+	
+func reset_player():
+	# note: this code will be called only on server
+	rpc_id(1, "set_money", Utils.start_money)	
+	rpc_id(int(player.name), "set_money", Utils.start_money)
+	rpc_id(1, "reset_weaponry")
+	rpc_id(int(player.name), "reset_weaponry")
+	player.current_weapon = 30 # this is updated on all clients on round start

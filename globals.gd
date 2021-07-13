@@ -9,4 +9,3 @@ func set_player_name(new_name):
 
 func get_full_ver_name():
 	return version + " developemnt build" if is_dev_build else ""
-
