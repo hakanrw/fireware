@@ -1,0 +1,102 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://fonts/font_dynamic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://ui/general/button_centered.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/general/card.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/hud/shop.gd" type="Script" id=4]
+
+[node name="Shop" type="Panel"]
+rect_min_size = Vector2( 750, 400 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 730.0
+margin_bottom = 431.0
+custom_constants/separation = 15
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_right = 710.0
+margin_bottom = 46.0
+custom_fonts/font = ExtResource( 1 )
+text = "Shop"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_top = 61.0
+margin_right = 710.0
+margin_bottom = 411.0
+size_flags_vertical = 3
+
+[node name="Categories" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_right = 160.0
+margin_bottom = 350.0
+rect_min_size = Vector2( 160, 0 )
+custom_constants/separation = 8
+
+[node name="Rifle" parent="MarginContainer/VBoxContainer/HBoxContainer/Categories" instance=ExtResource( 2 )]
+margin_right = 140.0
+text = "Rifle"
+
+[node name="Sidearm" parent="MarginContainer/VBoxContainer/HBoxContainer/Categories" instance=ExtResource( 2 )]
+margin_top = 53.0
+margin_right = 140.0
+margin_bottom = 98.0
+text = "Sidearm"
+
+[node name="Heavy" parent="MarginContainer/VBoxContainer/HBoxContainer/Categories" instance=ExtResource( 2 )]
+margin_top = 106.0
+margin_right = 140.0
+margin_bottom = 151.0
+text = "Heavy"
+
+[node name="SMG" parent="MarginContainer/VBoxContainer/HBoxContainer/Categories" instance=ExtResource( 2 )]
+margin_top = 159.0
+margin_right = 140.0
+margin_bottom = 204.0
+text = "SMG"
+
+[node name="Misc" parent="MarginContainer/VBoxContainer/HBoxContainer/Categories" instance=ExtResource( 2 )]
+margin_top = 212.0
+margin_right = 140.0
+margin_bottom = 257.0
+text = "Misc"
+
+[node name="Detailed" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+margin_left = 164.0
+margin_right = 710.0
+margin_bottom = 350.0
+size_flags_horizontal = 3
+custom_constants/margin_bottom = 150
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/Detailed"]
+margin_right = 546.0
+margin_bottom = 200.0
+custom_constants/separation = 9
+
+[node name="Card" parent="MarginContainer/VBoxContainer/HBoxContainer/Detailed/HBoxContainer" instance=ExtResource( 3 )]
+
+[node name="Card2" parent="MarginContainer/VBoxContainer/HBoxContainer/Detailed/HBoxContainer" instance=ExtResource( 3 )]
+margin_left = 149.0
+margin_right = 289.0
+
+[node name="Card3" parent="MarginContainer/VBoxContainer/HBoxContainer/Detailed/HBoxContainer" instance=ExtResource( 3 )]
+margin_left = 298.0
+margin_right = 438.0
