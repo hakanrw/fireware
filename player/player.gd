@@ -33,6 +33,8 @@ func set_weapon(weapon: int):
 		hand.remove_child(n)
 	current_weapon = weapon
 	
+	if weapon == -1: return
+	
 	# optimize this
 	hand.add_child(load("res://weapons/" + str(weapon) + ".tscn").instance())
 	
