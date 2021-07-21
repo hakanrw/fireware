@@ -11,4 +11,4 @@ func _ready():
 
 func select_team(team: int):
 	NetworkController.get_self_player().network_player.rpc_id(1, "set_team", team)
-	queue_free()
+	Utils.get_hud_node().clear_page()

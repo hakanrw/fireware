@@ -1,6 +1,9 @@
 extends CanvasLayer
 
-const team_select = preload("res://ui/hud/team_select.tscn")
+const pages = {
+	"team_select": preload("res://ui/hud/team_select.tscn"),
+	"shop": preload("res://ui/hud/shop.tscn"),
+}
 
 onready var htd = $Control/VBoxContainer/HTD
 onready var hmd = $Control/VBoxContainer/MarginContainer/HMD
@@ -10,13 +13,32 @@ onready var health_label = $Control/VBoxContainer/HBD/HBoxContainer/HealthPanel/
 onready var ammo_panel = $Control/VBoxContainer/HBD/HBoxContainer/AmmoPanel/Ammo
 onready var mag_manel = $Control/VBoxContainer/HBD/HBoxContainer/AmmoPanel/Magazine
 
+var current_page = ""
+
 func _ready():
 	if Utils.is_server():
 		$Control.visible = false
 	pass
 
 func show_team_select():
+	show_page("team_select")
+	
+func show_shop():
+	show_page("shop")
+	
+func clear_page():
+	show_page("")
+	
+func show_page(page: String):
+	if current_page == page: return
+	current_page = page
+	_clear_hud()
+	if page == "": return
+
+	hmd.add_child(pages[page].instance())
+
+	
+func _clear_hud():
 	for n in hmd.get_children():
-		hmd.remove_child(n)
-		
-	hmd.add_child(team_select.instance())
+		n.queue_free()
+	

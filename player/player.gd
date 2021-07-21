@@ -92,3 +92,9 @@ func set_props(props):
 	if "team" in props     :             set_team(props["team"])
 	if "health" in props   :         set_health(props["health"])
 	if "weapon" in props   :         set_weapon(props["weapon"])
+
+func player_can_shop():
+	return player_in_shop_area() and Utils.get_round_controller().is_shop_enabled()
+
+func player_in_shop_area():
+	return true	

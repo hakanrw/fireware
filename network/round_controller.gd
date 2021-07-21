@@ -73,7 +73,6 @@ func end_round(winner: int):
 func start_new_round():
 	# called on server
 	rpc_id(1, "update_timer", _max_round_time, _max_round_time)
-	print(timer.time_left)
 	print("starts new round")
 	
 	if _reset_flag:
@@ -88,8 +87,11 @@ func players_in_both_teams() -> bool:
 	var players = get_players_props_by_teams()
 	return players[0].size() > 0 and players[1].size() > 0
 
-func is_move_enabled():
-	return not _max_round_time - timer.time_left <= 5
+func is_move_enabled() -> bool:
+	return not _max_round_time - timer.time_left < 5
+	
+func is_shop_enabled() -> bool:
+	return _max_round_time - timer.time_left < Utils.shopping_time
 	
 func game_running() -> bool:
 	return players_in_both_teams()

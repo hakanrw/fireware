@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://fonts/font_dynamic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://ui/general/button_centered.tscn" type="PackedScene" id=2]
-[ext_resource path="res://ui/general/card.tscn" type="PackedScene" id=3]
 [ext_resource path="res://ui/hud/shop.gd" type="Script" id=4]
 
 [node name="Shop" type="Panel"]
@@ -27,7 +26,7 @@ __meta__ = {
 margin_left = 20.0
 margin_top = 20.0
 margin_right = 730.0
-margin_bottom = 431.0
+margin_bottom = 380.0
 custom_constants/separation = 15
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
@@ -42,12 +41,12 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 61.0
 margin_right = 710.0
-margin_bottom = 411.0
+margin_bottom = 360.0
 size_flags_vertical = 3
 
 [node name="Categories" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 margin_right = 160.0
-margin_bottom = 350.0
+margin_bottom = 299.0
 rect_min_size = Vector2( 160, 0 )
 custom_constants/separation = 8
 
@@ -61,17 +60,17 @@ margin_right = 140.0
 margin_bottom = 98.0
 text = "Sidearm"
 
-[node name="Heavy" parent="MarginContainer/VBoxContainer/HBoxContainer/Categories" instance=ExtResource( 2 )]
+[node name="SMG" parent="MarginContainer/VBoxContainer/HBoxContainer/Categories" instance=ExtResource( 2 )]
 margin_top = 106.0
 margin_right = 140.0
 margin_bottom = 151.0
-text = "Heavy"
+text = "SMG"
 
-[node name="SMG" parent="MarginContainer/VBoxContainer/HBoxContainer/Categories" instance=ExtResource( 2 )]
+[node name="Heavy" parent="MarginContainer/VBoxContainer/HBoxContainer/Categories" instance=ExtResource( 2 )]
 margin_top = 159.0
 margin_right = 140.0
 margin_bottom = 204.0
-text = "SMG"
+text = "Heavy"
 
 [node name="Misc" parent="MarginContainer/VBoxContainer/HBoxContainer/Categories" instance=ExtResource( 2 )]
 margin_top = 212.0
@@ -79,24 +78,14 @@ margin_right = 140.0
 margin_bottom = 257.0
 text = "Misc"
 
-[node name="Detailed" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 margin_left = 164.0
 margin_right = 710.0
-margin_bottom = 350.0
+margin_bottom = 299.0
 size_flags_horizontal = 3
 custom_constants/margin_bottom = 150
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/Detailed"]
+[node name="WeaponsView" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
 margin_right = 546.0
-margin_bottom = 200.0
+margin_bottom = 149.0
 custom_constants/separation = 9
-
-[node name="Card" parent="MarginContainer/VBoxContainer/HBoxContainer/Detailed/HBoxContainer" instance=ExtResource( 3 )]
-
-[node name="Card2" parent="MarginContainer/VBoxContainer/HBoxContainer/Detailed/HBoxContainer" instance=ExtResource( 3 )]
-margin_left = 149.0
-margin_right = 289.0
-
-[node name="Card3" parent="MarginContainer/VBoxContainer/HBoxContainer/Detailed/HBoxContainer" instance=ExtResource( 3 )]
-margin_left = 298.0
-margin_right = 438.0

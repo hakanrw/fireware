@@ -48,6 +48,9 @@ func is_server():
 func get_round_controller():
 	return get_node("/root/Game/RoundController")
 	
+func get_shop_controller():
+	return get_node("/root/Game/ShopController")
+	
 
 var max_round_time = 120
 var shopping_time = 15
