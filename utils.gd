@@ -11,13 +11,18 @@ func load_menu():
 		return
 	if get_node("/root").has_node("Game"):
 		get_node("/root/Game").queue_free()
-	get_node("/root").add_child(menu.instance())
+		NetworkController.close_connection()
+	
+	var menu_instance = menu.instance()
+	menu_instance.get_node("Init").queue_free()
+	menu_instance.remove_child(menu_instance.get_node("Init"))
+	get_node("/root").add_child(menu_instance)
 	
 func load_game():
 	if get_node("/root").has_node("Game"):
 		return
 	if get_node("/root").has_node("Menu"):
-		get_node("/root/Menu").queue_free()
+		get_node("/root/Menu").queue_free()	
 	get_node("/root").add_child(game.instance())
 
 func is_game_loaded():
@@ -41,10 +46,16 @@ func get_players_node():
 
 func get_hud_node():
 	return get_node("/root/Game/HUD")
+	
+func get_entities_node():
+	return get_node("/root/Game/Entities")
 
 func is_server():
 	return "--server" in OS.get_cmdline_args()
-	
+
+func is_auto_join_enabled():
+	return "--auto-join" in OS.get_cmdline_args()
+
 func get_round_controller():
 	return get_node("/root/Game/RoundController")
 	

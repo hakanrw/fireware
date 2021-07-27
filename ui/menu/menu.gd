@@ -25,7 +25,7 @@ func _change_pane_page(page):
 	pane.get_node("MarginContainer/VBoxContainer/Title").text = page
 	var screen = pane.get_node("MarginContainer/VBoxContainer/Screen")
 	for n in screen.get_children():
-		screen.remove_child(n)
+		n.queue_free()
 	screen.add_child(menus[page].instance())
 	print(page)
 

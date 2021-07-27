@@ -30,13 +30,13 @@ func set_team(_team: int):
 
 func set_weapon(weapon: int):
 	for n in hand.get_children():
-		hand.remove_child(n)
+		n.queue_free()
 	current_weapon = weapon
 	
 	if weapon == -1: return
 	
 	# optimize this
-	hand.add_child(load("res://weapons/" + str(weapon) + ".tscn").instance())
+	hand.add_child(load_weapon_instance(weapon))
 	
 func set_health(hp: int):
 	hp = max(hp, 0)
@@ -55,7 +55,6 @@ func _ready():
 	
 func _physics_process(delta):
 	move(direction, delta)
-
 
 func set_name_tag(tag):
 	$Nametag.text = tag
@@ -99,4 +98,7 @@ func player_can_shop():
 	return player_in_shop_area() and Utils.get_round_controller().is_shop_enabled()
 
 func player_in_shop_area():
-	return true	
+	return true
+
+func load_weapon_instance(weapon: int) -> Node2D:
+	return load("res://weapons/" + str(weapon) + ".tscn").instance()

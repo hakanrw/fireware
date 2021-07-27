@@ -1,4 +1,5 @@
 #!/usr/bin/bash
 
 godot --path . --server &
-godot --path . &
+sleep .2
+godot --path . --auto-join &

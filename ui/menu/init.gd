@@ -7,4 +7,6 @@ func _ready():
 		var peer = NetworkedMultiplayerENet.new()
 		peer.create_server(1337, 16)
 		get_tree().network_peer = peer
-	pass
+		
+	if Utils.is_auto_join_enabled():
+		NetworkController.connect_to_server("localhost", 1337)

@@ -2,6 +2,8 @@ extends Node
 
 const player_prefab = preload("res://player/player.tscn")
 
+var enet_instance: NetworkedMultiplayerENet = null
+
 func is_server():
 	return get_tree().is_network_server()
 	
@@ -19,6 +21,7 @@ func connect_to_server(url, port):
 		return false
 	
 	get_tree().network_peer = peer
+	enet_instance = peer
 	return true
 	
 func _player_connected(id):
@@ -108,3 +111,6 @@ func local_create_player(id):
 	print("initiating player: " + str(id))
 	
 	return player
+	
+func close_connection():
+	if enet_instance: enet_instance.close_connection()

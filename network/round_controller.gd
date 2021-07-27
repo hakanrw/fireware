@@ -1,5 +1,6 @@
 extends Node
 
+signal round_ended(winner)
 signal new_round_started
 signal timer_updated
 
@@ -47,7 +48,6 @@ func reset_game():
 	for player in NetworkController.get_player_nodes():
 		if player.next_team != Utils.Team.SPECTATOR:
 			player.get_node("NetworkedPlayer").reset_player()
-			
 
 func end_round(winner: int):
 	# called on server
@@ -59,13 +59,14 @@ func end_round(winner: int):
 	
 	# update money
 	for player in NetworkController.get_player_nodes():
-		var networked_player = player.get_node("NetworkedPlayer")
-		var money_total = player.money + 1400
-		if player.team == winner:
-			money_total += 1400
-		networked_player.rpc_id(1, "set_money", money_total)
-		networked_player.rpc_id(int(player.name), "set_money", money_total)
-	
+		if player.next_team != Utils.Team.SPECTATOR:
+			var money_total = player.money + 1400
+			if player.team == winner:
+				money_total += 1400
+			var networked_player = player.get_node("NetworkedPlayer")
+			networked_player.rpc_id(1, "set_money", money_total)
+			networked_player.rpc_id(int(player.name), "set_money", money_total)
+		
 	start_new_round()
 	_hold_flag = false
 	pass
@@ -109,6 +110,7 @@ func get_players_props_by_teams() -> Dictionary:
 	return players_dict
 	
 func place_player(player: Node2D, placed_later = false):
+	rpc_id(int(player.name), "new_round_started", _max_round_time, timer.time_left)
 	player.team = player.next_team
 	if player.team == Utils.Team.SPECTATOR:
 		return
@@ -122,19 +124,18 @@ func place_player(player: Node2D, placed_later = false):
 			if int(player.name) == prop["id"]:
 				op = prop
 		NetworkController.rpc("update_players_props", [op])
-		
-	rpc_id(int(player.name), "new_round_started", _max_round_time, timer.time_left)
 	
 remote func new_round_started(max_time, remaining_time):
 	# called on players
 	if 1 == multiplayer.get_rpc_sender_id():
-		update_timer(max_time, remaining_time)
+		rpc_id(multiplayer.get_network_unique_id(), "update_timer", max_time, remaining_time)
 		emit_signal("new_round_started")
 
 remote func round_ended(winner: int):
 	# called on players
 	if 1 == multiplayer.get_rpc_sender_id():
 		print("team " + str(winner) + " won the round")
+		emit_signal("round_ended", winner)
 	
 remotesync func update_timer(max_time, remaining_time):
 	if 1 == multiplayer.get_rpc_sender_id() or multiplayer.get_network_unique_id() == multiplayer.get_rpc_sender_id():

@@ -75,8 +75,9 @@ remotesync func reset_weaponry():
 	
 func reset_player():
 	# note: this code will be called only on server
-	rpc_id(1, "set_money", Utils.start_money)	
+	rpc_id(1, "set_money", Utils.start_money)
 	rpc_id(int(player.name), "set_money", Utils.start_money)
 	rpc_id(1, "reset_weaponry")
 	rpc_id(int(player.name), "reset_weaponry")
 	player.current_weapon = 30 # this is updated on all clients on round start
+
