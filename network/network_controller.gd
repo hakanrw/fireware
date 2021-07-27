@@ -54,6 +54,13 @@ func _connected_fail():
 	Utils.show_error_page("Connection couldn't be established")
 	pass # Could not even connect to server; abort.
 
+remote func update_entities_props(entities_props: Array):
+	if 1 == multiplayer.get_rpc_sender_id():
+		for entity_props in entities_props:
+			var entity = get_player_with_id(player_props["id"])
+			if player == null: player = local_create_player(player_props["id"])
+			player.set_props(player_props)
+			
 remotesync func create_player(id):
 	if 1 != get_tree().get_rpc_sender_id():
 		return

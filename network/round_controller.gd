@@ -80,6 +80,12 @@ func start_new_round():
 	rpc_id(1, "update_timer", _max_round_time, _max_round_time)
 	print("starts new round")
 	
+	if next_level != "":
+		rpc("load_level", next_level)
+		for player in NetworkController.get_player_nodes():
+			player.next_team = Utils.Team.SPECTATOR
+		next_level = ""
+	
 	if _reset_flag:
 		reset_game()
 	
@@ -173,8 +179,13 @@ remotesync func update_leaderboard(dict: Dictionary):
 
 func change_level(level_name: String):
 	next_level = level_name
-	if _hold_flag == false:
-		end_round(2)
+	if not _hold_flag: end_round(2)
 
-remotesync func load_level(level_name):
-	NetworkController.get_player_nodes()
+remotesync func load_level(level_name: String):
+	destroy_entities()
+	Utils.load_level(level_name)
+
+func destroy_entities():
+	for entity in Utils.get_entities_node().get_children():
+		entity.queue_free()
+	
