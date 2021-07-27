@@ -57,10 +57,21 @@ func _connected_fail():
 remote func update_entities_props(entities_props: Array):
 	if 1 == multiplayer.get_rpc_sender_id():
 		for entity_props in entities_props:
-			var entity = get_player_with_id(player_props["id"])
-			if player == null: player = local_create_player(player_props["id"])
-			player.set_props(player_props)
-			
+			var entity = get_entity_with_id(entity_props["id"])
+			if entity == null: entity = Utils.get_entity_controller().local_create_entity(entity_props.name, entity_props.type, entity_props.variant)
+			entity.set_props(entities_props)
+
+func get_entity_nodes() -> Array:
+	return get_tree().get_nodes_in_group("entity")
+
+func get_entity_with_id(id: String) -> Node2D:
+	var entity = null
+	for e in get_entity_nodes():
+		if e.id == id:
+			entity = e
+			break
+	return entity
+
 remotesync func create_player(id):
 	if 1 != get_tree().get_rpc_sender_id():
 		return

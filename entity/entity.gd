@@ -2,6 +2,7 @@ extends RigidBody2D
 signal property_updated(property)
 
 var type = "entity"
+var variant = 0
 
 var properties = {
 	
@@ -30,9 +31,12 @@ func interact():
 
 func get_props():
 	var arr = {
-		"id": String(get_path()).md5_text(),
+		"id": get_id(),
 		"position": global_position,
 		"rotation": global_rotation,
+		"name": name,
+		"type": type,
+		"variant": variant,
 	}
 	
 	for key in properties.keys():
@@ -48,3 +52,6 @@ func set_props(props):
 		if prop != "position" and prop != "rotation":
 			properties[prop] = props[prop]
 		emit_signal("property_updated", prop)
+
+func get_id():
+	return str(get_path()).md5_text()

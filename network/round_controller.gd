@@ -20,7 +20,8 @@ var leaderboard = {
 }
 
 func _ready():
-	pass
+	if Utils.is_server():
+		change_level("de_enka")
 
 func _process(delta):
 	if not Utils.is_server() or _hold_flag:
@@ -184,6 +185,7 @@ func change_level(level_name: String):
 remotesync func load_level(level_name: String):
 	destroy_entities()
 	Utils.load_level(level_name)
+	Utils.get_hud_node().show_team_select()
 
 func destroy_entities():
 	for entity in Utils.get_entities_node().get_children():

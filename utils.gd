@@ -76,7 +76,9 @@ func get_round_controller():
 func get_shop_controller():
 	return get_node("/root/Game/ShopController")
 	
-
+func get_entity_controller():
+	return get_node("/root/Game/EntityController")
+	
 var max_round_time = 120
 var shopping_time = 15
 var max_health = 100
