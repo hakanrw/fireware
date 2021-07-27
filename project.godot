@@ -76,7 +76,10 @@ ui_team_select={
 
 [layer_names]
 
+2d_render/layer_1="walls"
 2d_render/layer_2="players"
+2d_render/layer_3="entities"
+2d_render/layer_4="bullet_rays"
 
 [physics]
 
