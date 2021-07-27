@@ -25,6 +25,14 @@ func load_game():
 		get_node("/root/Menu").queue_free()	
 	get_node("/root").add_child(game.instance())
 
+func load_level(level_name: String):
+	if get_node("/root").has_node("Game"):
+		for n in get_world_node().get_children():
+			n.queue_free()
+		var level = load("res://level/" + level_name + ".tscn").instance()
+		level.name = level_name
+		get_world_node().add_child(level)
+
 func is_game_loaded():
 	return get_node("/root").has_node("Game") 
 	
@@ -35,6 +43,12 @@ func show_error_page(error):
 	menu.screen.get_node("ErrorMenu/ErrorLabel").text = error
 	pass
 
+func get_level_name():
+	return get_level_node().name
+
+func get_level_node():
+	return get_node("/root/Game/World/").get_children()[0]
+	
 func get_game_node():
 	return get_node("/root/Game")
 	

@@ -10,6 +10,7 @@ var _game_running_last = false
 var _last_player_count = 0
 var _reset_flag = false
 var _hold_flag = false
+var next_level = ""
 
 var move_enabled = true setget , is_move_enabled
 
@@ -34,6 +35,9 @@ func _process(delta):
 		_reset_flag = true
 		rpc("update_timer", _max_round_time, 4)
 
+	if game_running() and (which_team_died()[0] == true or which_team_died()[1] == true):
+		if not _hold_flag: end_round(1 if which_team_died()[0] else 0)
+		
 	_game_running_last = game_running()
 	_last_player_count = player_count
 
@@ -97,6 +101,16 @@ func is_shop_enabled() -> bool:
 func game_running() -> bool:
 	return players_in_both_teams()
 
+func which_team_died() -> Array:
+	var players = get_players_props_by_teams()
+	var dead = [true, true]
+	
+	for i in [Utils.Team.SECURITY, Utils.Team.INSURGENT]:
+		for j in players[i]:
+			if j["health"] > 0: dead[i] = false
+			
+	return dead
+	
 func get_players_props_by_teams() -> Dictionary:
 	var players_dict = {
 		Utils.Team.SECURITY : [],
@@ -156,3 +170,11 @@ remotesync func update_leaderboard(dict: Dictionary):
 					leaderboard.erase(key)
 			else:
 				leaderboard[key] = value
+
+func change_level(level_name: String):
+	next_level = level_name
+	if _hold_flag == false:
+		end_round(2)
+
+remotesync func load_level(level_name):
+	NetworkController.get_player_nodes()

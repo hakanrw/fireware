@@ -31,7 +31,7 @@ remotesync func set_name_tag(name_tag: String):
 		name_tag = name_tag_after 
 		rpc("set_name_tag", name_tag)
 		
-remote func set_health(hp):
+remotesync func set_health(hp):
 	if 1 == multiplayer.get_rpc_sender_id():
 		player.health = hp
 
@@ -42,6 +42,7 @@ remote func set_props(props):
 remotesync func set_team(team: int):
 	if 1 == multiplayer.get_rpc_sender_id():
 		player.team = team
+		player.next_team = team
 		return
 		
 	if NetworkController.is_server():
@@ -49,7 +50,7 @@ remotesync func set_team(team: int):
 		if player.team == team: return
 		
 		player.next_team = team
-		player.health = 0
+		rpc("set_health", 0)
 		
 		reset_player()
 		
@@ -59,8 +60,6 @@ remotesync func set_team(team: int):
 				round_controller.start_new_round()
 			else: 
 				round_controller.place_player(player, true)
-		else:
-			rpc("set_health", 0)
 
 remotesync func set_money(money: int):
 	if 1 == multiplayer.get_rpc_sender_id():
