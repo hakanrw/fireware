@@ -80,6 +80,7 @@ func start_new_round():
 	# called on server
 	rpc_id(1, "update_timer", _max_round_time, _max_round_time)
 	print("starts new round")
+	rpc("destroy_entities")
 	
 	if next_level != "":
 		rpc("load_level", next_level)
@@ -183,11 +184,10 @@ func change_level(level_name: String):
 	if not _hold_flag: end_round(2)
 
 remotesync func load_level(level_name: String):
-	destroy_entities()
 	Utils.load_level(level_name)
 	Utils.get_hud_node().show_team_select()
 
-func destroy_entities():
+remotesync func destroy_entities():
 	for entity in Utils.get_entities_node().get_children():
 		entity.queue_free()
 	

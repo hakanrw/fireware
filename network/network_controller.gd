@@ -30,7 +30,10 @@ func _player_connected(id):
 		rpc_id(id, "update_players_props", get_players_props())
 		round_controller.rpc_id(id, "update_leaderboard", round_controller.leaderboard)
 		round_controller.rpc_id(id, "update_timer", round_controller._max_round_time, round_controller.timer.time_left)
+		round_controller.rpc_id(id, "load_level", Utils.get_level_name())
+		rpc_id(id, "update_entities_props", get_entities_props())
 		rpc("create_player", id)
+		
 	print("player joined with id: " + str(id))
 	# Called on both clients and server when a peer connects.
 	pass
@@ -43,7 +46,7 @@ func _player_disconnected(id):
 
 func _connected_ok():
 	Utils.load_game()
-	Utils.get_hud_node().show_team_select()
+	# Utils.get_hud_node().show_team_select()
 	pass # Only called on clients, not server. Will go unused; not useful here.
 
 func _server_disconnected():
@@ -60,6 +63,12 @@ remote func update_entities_props(entities_props: Array):
 			var entity = get_entity_with_id(entity_props["id"])
 			if entity == null: entity = Utils.get_entity_controller().local_create_entity(entity_props.name, entity_props.type, entity_props.variant)
 			entity.set_props(entities_props)
+
+func get_entities_props():
+	var entities_props = []
+	for entity in get_entity_nodes():
+		entities_props.append(entity.get_props())
+	return entities_props
 
 func get_entity_nodes() -> Array:
 	return get_tree().get_nodes_in_group("entity")
