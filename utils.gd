@@ -4,7 +4,7 @@ const menu = preload("res://ui/menu/menu.tscn")
 const game = preload("res://main.tscn")
 
 enum Team {SECURITY, INSURGENT, SPECTATOR}
-enum WeaponType {PRIMARY, SECONDARY, MISC}
+enum WeaponType {PRIMARY, SECONDARY, MISC, WEAR}
 
 func load_menu():
 	if get_node("/root").has_node("Menu"):

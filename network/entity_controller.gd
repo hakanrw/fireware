@@ -2,7 +2,7 @@ extends Node
 
 var counter = 0
 
-remotesync func create_entity(name: String, type: String, variant: int):
+remote func create_entity(name: String, type: String, variant: int):
 	if 1 == multiplayer.get_rpc_sender_id():
 		local_create_entity(name, type, variant)
 
@@ -33,3 +33,4 @@ func server_create_entity(type: String, variant: int):
 	# this needs to be called on servers
 	rpc("create_entity", str(counter), type, variant)
 	counter += 1
+	return create_entity(str(counter - 1), type, variant)

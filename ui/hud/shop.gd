@@ -29,4 +29,9 @@ func clear_page():
 		weapons_view.remove_child(n)
 
 func try_buy(weapon_id: int):
+	var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
+	if item.price > NetworkController.get_self_player().money: return
+	 
 	print("try buy " + str(weapon_id))
+	Utils.get_shop_controller().rpc_id(1, "buy_weapon", weapon_id)
+	Utils.get_hud_node().clear_page()

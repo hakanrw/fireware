@@ -69,9 +69,8 @@ func end_round(winner: int):
 			if player.team == winner:
 				money_total += 1400
 			var networked_player = player.get_node("NetworkedPlayer")
-			networked_player.rpc_id(1, "set_money", money_total)
-			networked_player.rpc_id(int(player.name), "set_money", money_total)
-		
+			networked_player.rpc("set_money", money_total)
+			
 	start_new_round()
 	_hold_flag = false
 	pass
@@ -156,7 +155,7 @@ remote func new_round_started(max_time, remaining_time):
 remotesync func round_ended(winner: int):
 	# called on players and server
 	if 1 == multiplayer.get_rpc_sender_id():
-		leaderboard[winner] += 1
+		if winner != 2: leaderboard[winner] += 1
 		print("team " + str(winner) + " won the round")
 		emit_signal("round_ended", winner)
 	

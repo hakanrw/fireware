@@ -66,17 +66,69 @@ remotesync func set_money(money: int):
 		player.money = money
 
 remotesync func reset_weaponry():
-	player.weapons = {
-		Utils.WeaponType.PRIMARY: -1,
-		Utils.WeaponType.SECONDARY: -1,
-		Utils.WeaponType.MISC: [],
-	}
+	if 1 == multiplayer.get_rpc_sender_id():
+		player.weapons = {
+			Utils.WeaponType.PRIMARY: -1,
+			Utils.WeaponType.SECONDARY: -1,
+			Utils.WeaponType.MISC: [],
+		}
+
+remotesync func throw_weapon(weapon_id: int, safe = false):
+	if 1 == multiplayer.get_rpc_sender_id() and safe:
+		var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
+		player.weapons[item.type] = -1
+		player.current_weapon = -1
+		
+		var wp = Utils.get_entity_controller().server_create_entity("weapon")
+		wp.global_position = player.global_position
+		wp.global_rotation = player.hand.global_rotation
+		return
 	
+	if NetworkController.is_server():
+		if weapon_id == -1 or weapon_id == 30:
+			return
+		if player.weapons[Utils.WeaponType.PRIMARY] != weapon_id \
+			and player.weapons[Utils.WeaponType.SECONDARY] != weapon_id:
+			return
+			
+		var equipped = 30
+		if player.weapons[Utils.WeaponType.PRIMARY] != -1:
+			equipped = player.weapons[Utils.WeaponType.PRIMARY]
+		if player.weapons[Utils.WeaponType.SECONDARY] != -1:
+			equipped = player.weapons[Utils.WeaponType.SECONDARY]
+		
+		rpc("throw_weapon", weapon_id, true)
+		rpc("equip_weapon", equipped)
+
+remotesync func equip_weapon(weapon_id):
+	var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
+	if item == null and weapon_id != -1 and weapon_id != 30: return
+		
+	if 1 == multiplayer.get_rpc_sender_id():
+		if item: player.weapons[item.type] = weapon_id
+		player.current_weapon = weapon_id
+		return
+		
+	if NetworkController.is_server():
+		var grant = false
+		if weapon_id == 30:
+			grant = true
+		if player.weapons[Utils.WeaponType.PRIMARY] == weapon_id \
+			or player.weapons[Utils.WeaponType.SECONDARY] == weapon_id:
+			grant = true
+		if weapon_id in player.weapons[Utils.WeaponType.MISC]:
+			grant = true
+		if grant == false: return
+		
+		if item and player.weapons[item.type] != -1: 
+			rpc("throw_weapon", player.weapons[item.type], true)
+
 func reset_player():
 	# note: this code will be called only on server
 	rpc_id(1, "set_money", Utils.start_money)
 	rpc_id(int(player.name), "set_money", Utils.start_money)
 	rpc_id(1, "reset_weaponry")
 	rpc_id(int(player.name), "reset_weaponry")
+	
 	player.current_weapon = 30 # this is updated on all clients on round start
 
