@@ -33,7 +33,7 @@ func _process(delta):
 			_request_team_select()
 	
 	if Input.is_action_just_pressed("ui_menu"):
-		Utils.load_menu()
+		NetworkController.close_connection()
 	
 func _physics_process(delta):
 	# handle walk

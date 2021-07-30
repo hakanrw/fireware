@@ -153,9 +153,10 @@ remote func new_round_started(max_time, remaining_time):
 		rpc_id(multiplayer.get_network_unique_id(), "update_timer", max_time, remaining_time)
 		emit_signal("new_round_started")
 
-remote func round_ended(winner: int):
-	# called on players
+remotesync func round_ended(winner: int):
+	# called on players and server
 	if 1 == multiplayer.get_rpc_sender_id():
+		leaderboard[winner] += 1
 		print("team " + str(winner) + " won the round")
 		emit_signal("round_ended", winner)
 	

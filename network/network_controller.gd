@@ -2,8 +2,6 @@ extends Node
 
 const player_prefab = preload("res://player/player.tscn")
 
-var enet_instance: NetworkedMultiplayerENet = null
-
 func is_server():
 	return get_tree().is_network_server()
 	
@@ -14,6 +12,11 @@ func _ready():
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
 
+func close_connection():
+	get_tree().network_peer.close_connection()
+	get_tree().network_peer = null
+	Utils.load_menu()
+	
 func connect_to_server(url, port):
 	var peer = NetworkedMultiplayerENet.new()
 	var err = peer.create_client(url, port)
@@ -21,7 +24,6 @@ func connect_to_server(url, port):
 		return false
 	
 	get_tree().network_peer = peer
-	enet_instance = peer
 	return true
 	
 func _player_connected(id):
@@ -95,7 +97,7 @@ remotesync func remove_player(id):
 	if 1 != get_tree().get_rpc_sender_id():
 		return
 	Utils.get_players_node().get_node(str(id)).queue_free()
-	Utils.get_round_controller().rpc("update_leaderboard", {id: "rm"})	
+	Utils.get_round_controller().rpc("update_leaderboard", {id: "rm"})
 	print("removing player: " + str(id))
 
 remote func update_players_props(players_props: Array):
@@ -138,6 +140,3 @@ func local_create_player(id):
 	print("initiating player: " + str(id))
 	
 	return player
-	
-func close_connection():
-	if enet_instance: enet_instance.close_connection()
