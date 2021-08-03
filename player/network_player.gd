@@ -56,10 +56,11 @@ remotesync func set_team(team: int):
 		
 		var round_controller = Utils.get_round_controller()
 		if not round_controller.game_running():
-			if NetworkController.get_player_nodes().size() == 1 and round_controller._hold_flag == false:
-				round_controller.start_new_round()
-			else: 
-				round_controller.place_player(player, true)
+			# if NetworkController.get_player_nodes().size() == 1 and round_controller._hold_flag == false:
+			# 	round_controller.start_new_round()
+			# else: 
+			#	round_controller.place_player(player, true)
+			round_controller.place_player(player, true)
 
 remotesync func set_money(money: int):
 	if 1 == multiplayer.get_rpc_sender_id():
@@ -79,9 +80,10 @@ remotesync func throw_weapon(weapon_id: int, safe = false):
 		player.weapons[item.type] = -1
 		player.current_weapon = -1
 		
-		var wp = Utils.get_entity_controller().server_create_entity("weapon")
-		wp.global_position = player.global_position
-		wp.global_rotation = player.hand.global_rotation
+		if NetworkController.is_server():
+			var wp = Utils.get_entity_controller().server_create_entity("weapon", weapon_id)
+			wp.global_position = player.global_position
+			wp.global_rotation = player.hand.global_rotation
 		return
 	
 	if NetworkController.is_server():
@@ -99,12 +101,16 @@ remotesync func throw_weapon(weapon_id: int, safe = false):
 		
 		rpc("throw_weapon", weapon_id, true)
 		rpc("equip_weapon", equipped)
+		
 
-remotesync func equip_weapon(weapon_id):
+remotesync func equip_weapon(weapon_id: int, safe = false):
 	var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
 	if item == null and weapon_id != -1 and weapon_id != 30: return
 		
-	if 1 == multiplayer.get_rpc_sender_id():
+	if 1 == multiplayer.get_rpc_sender_id() and safe:
+		if NetworkController.is_server() and item and player.weapons[item.type] != -1: 
+			rpc("throw_weapon", player.weapons[item.type], true)
+		
 		if item: player.weapons[item.type] = weapon_id
 		player.current_weapon = weapon_id
 		return
@@ -120,8 +126,8 @@ remotesync func equip_weapon(weapon_id):
 			grant = true
 		if grant == false: return
 		
-		if item and player.weapons[item.type] != -1: 
-			rpc("throw_weapon", player.weapons[item.type], true)
+		rpc("equip_weapon", weapon_id, true)
+			
 
 func reset_player():
 	# note: this code will be called only on server

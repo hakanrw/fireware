@@ -1,8 +1,8 @@
 extends RigidBody2D
 signal property_updated(property)
 
-var type = "entity"
-var variant = 0
+var type: String = "entity"
+var variant: int = 0
 
 var properties = {
 	

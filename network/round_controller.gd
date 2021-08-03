@@ -83,8 +83,10 @@ func start_new_round():
 	
 	if next_level != "":
 		rpc("load_level", next_level)
+		reset_game()
 		for player in NetworkController.get_player_nodes():
 			player.next_team = Utils.Team.SPECTATOR
+		_game_running_last = false # this line is needed to prevent re-reset on level change
 		next_level = ""
 	
 	if _reset_flag:

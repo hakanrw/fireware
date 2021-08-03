@@ -20,12 +20,12 @@ func local_create_entity(name: String, type: String, variant: int):
 		script = load("res://entity/entity.gd")
 	
 	if type == "weapon":
-		scene.add_child(load("res://weapon/" + str(variant) + ".tscn").instance())
+		scene.add_child(load("res://weapons/" + str(variant) + ".tscn").instance())
 		
+	scene.set_script(script)
 	scene.name = name
 	scene.type = type
 	scene.variant = variant
-	scene.set_script(script)
 	Utils.get_entities_node().add_child(scene)
 	return scene
 
@@ -33,4 +33,4 @@ func server_create_entity(type: String, variant: int):
 	# this needs to be called on servers
 	rpc("create_entity", str(counter), type, variant)
 	counter += 1
-	return create_entity(str(counter - 1), type, variant)
+	return local_create_entity(str(counter - 1), type, variant)
