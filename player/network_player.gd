@@ -74,11 +74,11 @@ remotesync func reset_weaponry():
 			Utils.WeaponType.MISC: [],
 		}
 
-remotesync func throw_weapon(weapon_id: int, safe = false):
+remotesync func throw_weapon(weapon_id: int, safe = false, reset_currwp = true):
 	if 1 == multiplayer.get_rpc_sender_id() and safe:
 		var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
 		player.weapons[item.type] = -1
-		player.current_weapon = -1
+		if reset_currwp: player.current_weapon = -1
 		
 		if NetworkController.is_server():
 			var wp = Utils.get_entity_controller().server_create_entity("weapon", weapon_id)
@@ -109,7 +109,7 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 		
 	if 1 == multiplayer.get_rpc_sender_id() and safe:
 		if NetworkController.is_server() and item and player.weapons[item.type] != -1: 
-			rpc("throw_weapon", player.weapons[item.type], true)
+			rpc("throw_weapon", player.weapons[item.type], true, false)
 		
 		if item: player.weapons[item.type] = weapon_id
 		player.current_weapon = weapon_id
