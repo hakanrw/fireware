@@ -25,3 +25,4 @@ fireware is a top-down shooter game built by the game engine Godot.
 - optimize rotation RPC
 - implement weapons
 - overhaul weapon inventory mechanism
+- fix weapon throw bug

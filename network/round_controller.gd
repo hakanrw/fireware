@@ -21,8 +21,10 @@ var leaderboard = {
 
 func _ready():
 	if Utils.is_server():
-		change_level("de_enka")
-
+		# change_level("de_enka")
+		next_level = "de_enka"
+		start_new_round()
+		
 func _process(delta):
 	if not Utils.is_server() or _hold_flag:
 		return
@@ -186,6 +188,7 @@ func change_level(level_name: String):
 	if not _hold_flag: end_round(2)
 
 remotesync func load_level(level_name: String):
+	Utils.get_hud_node().alert("loading level")
 	Utils.load_level(level_name)
 	Utils.get_hud_node().show_team_select()
 

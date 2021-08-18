@@ -14,21 +14,7 @@ remotesync func set_name_tag(name_tag: String):
 		return
 		
 	if NetworkController.is_server():
-		name_tag = name_tag.strip_edges(true, true)
-		name_tag = name_tag.substr(0, 15)
-		
-		var player_nodes: Array = Utils.get_players_node().children
-		var names = Array()
-		for player_node in player_nodes:
-			names.append(player_node.name_tag)
-		
-		var idx = 0
-		var name_tag_after = name_tag
-		while name_tag_after in names:
-			idx += 1
-			name_tag_after = name_tag + str(idx)
-			
-		name_tag = name_tag_after 
+		name_tag = NetworkController.prepare_name_tag(name_tag)
 		rpc("set_name_tag", name_tag)
 		
 remotesync func set_health(hp):
