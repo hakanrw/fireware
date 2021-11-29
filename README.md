@@ -14,6 +14,8 @@ fireware is a top-down shooter game built by the game engine Godot.
 <img src="https://user-images.githubusercontent.com/57678928/126489304-965837bd-b594-4ac8-87a2-a520ced72562.png" width="500"><br/>
 <img src="https://user-images.githubusercontent.com/57678928/126489368-cd3a1e4a-106a-4829-8008-3ce4a831b437.png" width="500"><br/>
 
+# testing
+run `test.sh` to get the server and client running. you will need godot installed.
 
 # todo
 - ~~_complete the menu prototype_~~ (done)
