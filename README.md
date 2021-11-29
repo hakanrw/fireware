@@ -1,6 +1,6 @@
 # fireware
 
-fireware is a top-down shooter game built by the game engine Godot.
+fireware is a top-down shooter game built with Godot.
 
 # user interface
 **NOTE:** this is a prototype and not in its finished state<br/>
