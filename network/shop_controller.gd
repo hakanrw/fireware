@@ -14,8 +14,8 @@ class Item:
 		
 var shop = [
 	# rifle
-	Item.new(0 , "7.62 guerilla", 2050, Utils.WeaponType.PRIMARY),
-	Item.new(1 , "cv47", 2700, Utils.WeaponType.PRIMARY),
+	Item.new(0 , "7.62 guerilla", 205, Utils.WeaponType.PRIMARY),
+	Item.new(1 , "cv47", 270, Utils.WeaponType.PRIMARY),
 	Item.new(2 , "maverick m4a1", 3100, Utils.WeaponType.PRIMARY),
 	# sidearm
 	Item.new(5 , "7/24 sidearm", 200, Utils.WeaponType.SECONDARY),

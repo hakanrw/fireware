@@ -10,9 +10,6 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -51,9 +48,6 @@ margin_right = 222.0
 margin_bottom = 95.0
 custom_fonts/font = ExtResource( 3 )
 text = "Fireware"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VersionLabel" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/Top"]
 margin_left = 26.0
@@ -90,9 +84,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/Bottom/MarginContainer" groups=[
-"bottom_container",
-]]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/Bottom/MarginContainer" groups=["bottom_container"]]
 margin_left = 15.0
 margin_top = 15.0
 margin_right = 285.0
@@ -132,9 +124,7 @@ margin_bottom = 550.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Pane" type="Panel" parent="MarginContainer/HBoxContainer/MarginContainer/CenterContainer" groups=[
-"pane",
-]]
+[node name="Pane" type="Panel" parent="MarginContainer/HBoxContainer/MarginContainer/CenterContainer" groups=["pane"]]
 visible = false
 margin_right = 610.0
 margin_bottom = 550.0

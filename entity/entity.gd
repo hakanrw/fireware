@@ -18,7 +18,7 @@ remote func update_position(position: Vector2):
 
 remote func update_rotation(rotation: float):
 	if 1 == multiplayer.get_rpc_sender_id():
-		self.rotation = global_rotation
+		self.global_rotation = rotation
 		emit_signal("property_updated", "rotation")
 
 remotesync func update_property(property, value):
@@ -46,7 +46,7 @@ func get_props():
 	
 func set_props(props):
 	if "position" in props: global_position = props["position"]
-	if "rotation" in props: global_position = props["rotation"]
+	if "rotation" in props: global_rotation = props["rotation"]
 	
 	for prop in props.keys():
 		if prop != "position" and prop != "rotation":

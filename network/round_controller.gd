@@ -140,7 +140,11 @@ func place_player(player: Node2D, placed_later = false):
 	if player.team == Utils.Team.SPECTATOR:
 		return
 	player.health = Utils.max_health
-	player.global_position = Vector2(50, 50) # implement this part
+	
+	var spawn_locations = get_spawn_locations()
+	
+	# this is bad
+	player.global_position = spawn_locations[player.team][int(player.name) % spawn_locations[player.team].size()].global_position
 
 	if placed_later:
 		var props = NetworkController.get_players_props()
@@ -149,12 +153,20 @@ func place_player(player: Node2D, placed_later = false):
 			if int(player.name) == prop["id"]:
 				op = prop
 		NetworkController.rpc("update_players_props", [op])
+		
+func get_spawn_locations():
+	var spawn_locations = {
+		Utils.Team.SECURITY: Utils.get_level_node().get_node("Spawn").get_node("Security").get_children(),
+		Utils.Team.INSURGENT: Utils.get_level_node().get_node("Spawn").get_node("Insurgent").get_children()
+	}
+	return spawn_locations
 	
 remote func new_round_started(max_time, remaining_time):
 	# called on players
 	if 1 == multiplayer.get_rpc_sender_id():
 		rpc_id(multiplayer.get_network_unique_id(), "update_timer", max_time, remaining_time)
 		emit_signal("new_round_started")
+		Utils.get_chat_controller().insert_message("new round started")
 
 remotesync func round_ended(winner: int):
 	# called on players and server

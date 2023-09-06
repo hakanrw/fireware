@@ -7,7 +7,7 @@ var password_server = "" # password on server configuration
 
 func is_server():
 	return get_tree().is_network_server()
-	
+
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
@@ -19,7 +19,7 @@ func close_connection():
 	get_tree().network_peer.close_connection()
 	get_tree().network_peer = null
 	Utils.load_menu()
-	
+
 func connect_to_server(url: String, port: int, password: String = ""):
 	var peer = NetworkedMultiplayerENet.new()
 	var err = peer.create_client(url, port)
@@ -92,7 +92,7 @@ remote func update_entities_props(entities_props: Array):
 		for entity_props in entities_props:
 			var entity = get_entity_with_id(entity_props["id"])
 			if entity == null: entity = Utils.get_entity_controller().local_create_entity(entity_props.name, entity_props.type, entity_props.variant)
-			entity.set_props(entities_props)
+			entity.set_props(entity_props)
 
 func get_entities_props():
 	var entities_props = []
@@ -118,7 +118,7 @@ remotesync func create_player(id: int, username: String):
 		yield(get_tree(), "idle_frame")
 	
 	local_create_player(id, username)
-	# print(Utils.get_game_node())
+	# print(Utils.get_max_round_time())
 	# yield(Utils.get_game_node(), "ready")
 	
 remotesync func remove_player(id):
@@ -139,14 +139,14 @@ remote func update_players_props(players_props: Array):
 
 func get_player_nodes() -> Array:
 	return Utils.get_players_node().get_children()
-	
+
 func get_players_props() -> Array:
 	var players = Utils.get_players_node().get_children()
 	var players_props = Array()
 	for player in players:
 		players_props.append(player.get_props())
 	return players_props
-	
+
 func get_player_with_id(id: int):
 	if not Utils.get_players_node().has_node(str(id)): return null
 	return Utils.get_players_node().get_node(str(id))

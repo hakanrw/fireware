@@ -11,7 +11,7 @@ func load_menu():
 		return
 	if get_node("/root").has_node("Game"):
 		get_node("/root/Game").queue_free()
-		NetworkController.close_connection()
+		# NetworkController.close_connection()
 	
 	var menu_instance = menu.instance()
 	menu_instance.get_node("Init").queue_free()

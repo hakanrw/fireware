@@ -2,6 +2,9 @@ extends Node
 
 onready var player = get_node("..")
 
+puppet func quick_correct_position(position: Vector2):
+	player.global_position = position
+
 puppet func set_direction(direction: Vector2):
 	player.direction = direction.normalized()
 
@@ -70,6 +73,9 @@ remotesync func throw_weapon(weapon_id: int, safe = false, reset_currwp = true):
 			var wp = Utils.get_entity_controller().server_create_entity("weapon", weapon_id)
 			wp.global_position = player.global_position
 			wp.global_rotation = player.hand.global_rotation
+			wp.rpc("update_position", wp.global_position)
+			wp.rpc("update_rotation", wp.global_rotation)
+			wp.rpc("throw_towards", player.head.global_rotation)
 		return
 	
 	if NetworkController.is_server():
@@ -96,7 +102,7 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 	if 1 == multiplayer.get_rpc_sender_id() and safe:
 		if NetworkController.is_server() and item and player.weapons[item.type] != -1: 
 			rpc("throw_weapon", player.weapons[item.type], true, false)
-		
+		# check if ^ precedes v on client
 		if item: player.weapons[item.type] = weapon_id
 		player.current_weapon = weapon_id
 		return

@@ -50,6 +50,7 @@ func _physics_process(delta):
 			network_player.rpc_unreliable("set_rotation", head.global_rotation)
 		if last_direction != direction:
 			network_player.rpc("set_direction", direction)
+			network_player.rpc("quick_correct_position", global_position)
 			
 	last_rotation = head.global_rotation
 	last_direction = direction
