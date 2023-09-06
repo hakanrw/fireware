@@ -2,7 +2,6 @@ extends "./player.gd"
 
 onready var last_direction = direction
 onready var last_rotation = head.global_rotation
-onready var network_player = $NetworkedPlayer
 
 const FLOAT_EPSILON = 0.00001
 
@@ -12,8 +11,7 @@ static func compare_floats(a, b, epsilon = FLOAT_EPSILON):
 func _ready():
 	connect("player_died", self, "_on_death")
 	connect("player_resurrected", self, "_on_resurrect")
-	
-	
+
 func _process(delta):
 	# handle look
 	if _is_interactable():
@@ -28,7 +26,7 @@ func _process(delta):
 			Utils.get_hud_node().clear_page()
 		else:
 			_request_shop()
-			
+	
 	if Input.is_action_just_pressed("ui_team_select"): 
 		if _current_hud_menu() == "team_select":
 			Utils.get_hud_node().clear_page()
@@ -37,6 +35,9 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("ui_menu"):
 		NetworkController.close_connection()
+	
+	if Input.is_action_just_pressed("throw_weapon"):
+		_throw_current_weapon()
 	
 func _physics_process(delta):
 	# handle walk
@@ -96,5 +97,8 @@ func _select_next_weapon(reverse: bool = false):
 		idx = idx % 3
 		
 		if idx == 2 or weapons[idx] != -1: break
-		
+
 	network_player.rpc_id(1, "equip_weapon", weapons[idx] if idx != 2 else 30)
+
+func _throw_current_weapon():
+	network_player.rpc_id(1, "throw_weapon", current_weapon)

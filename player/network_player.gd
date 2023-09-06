@@ -63,13 +63,13 @@ remotesync func reset_weaponry():
 			Utils.WeaponType.MISC: [],
 		}
 
-remotesync func throw_weapon(weapon_id: int, safe = false, reset_currwp = true):
+remotesync func throw_weapon(weapon_id: int, safe = false):
 	if 1 == multiplayer.get_rpc_sender_id() and safe:
 		var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
-		if reset_currwp: player.current_weapon = -1
+		player.current_weapon = -1
+		player.weapons[item.type] = -1
 		
 		if NetworkController.is_server():
-			player.weapons[item.type] = -1
 			var wp = Utils.get_entity_controller().server_create_entity("weapon", weapon_id)
 			wp.global_position = player.global_position
 			wp.global_rotation = player.hand.global_rotation
@@ -85,28 +85,29 @@ remotesync func throw_weapon(weapon_id: int, safe = false, reset_currwp = true):
 			and player.weapons[Utils.WeaponType.SECONDARY] != weapon_id:
 			return
 			
+		rpc("throw_weapon", weapon_id, true)
+			
 		var equipped = 30
 		if player.weapons[Utils.WeaponType.PRIMARY] != -1:
 			equipped = player.weapons[Utils.WeaponType.PRIMARY]
 		if player.weapons[Utils.WeaponType.SECONDARY] != -1:
 			equipped = player.weapons[Utils.WeaponType.SECONDARY]
 		
-		rpc("throw_weapon", weapon_id, true)
-		rpc("equip_weapon", equipped, true, true)
+		rpc("equip_weapon", equipped, true)
 		
 
-remotesync func equip_weapon(weapon_id: int, safe = false, equip_current = false):
+remotesync func equip_weapon(weapon_id: int, safe = false):
 	var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
 	if item == null and weapon_id != -1 and weapon_id != 30: return
 		
 	if 1 == multiplayer.get_rpc_sender_id() and safe:
-		if NetworkController.is_server() and item and player.weapons[item.type] != -1 and not equip_current: 
-			rpc("throw_weapon", player.weapons[item.type], true, false)
-		# check if ^ precedes v on client
+#		if NetworkController.is_server() and item and player.weapons[item.type] != -1 and not equip_current: 
+#			rpc("throw_weapon", player.weapons[item.type], true, false)
+#		# check if ^ precedes v on client
 		if item: player.weapons[item.type] = weapon_id
 		player.current_weapon = weapon_id
 		return
-		
+
 	if NetworkController.is_server():
 		var grant = false
 		if weapon_id == 30:
@@ -118,7 +119,7 @@ remotesync func equip_weapon(weapon_id: int, safe = false, equip_current = false
 			grant = true
 		if grant == false: return
 		
-		rpc("equip_weapon", weapon_id, true, true)
+		rpc("equip_weapon", weapon_id, true)
 			
 
 func reset_player():

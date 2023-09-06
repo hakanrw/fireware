@@ -55,6 +55,9 @@ master func buy_weapon(weapon_id: int):
 		NetworkController.rpc_id(multiplayer.get_rpc_sender_id(), "alert", "not enough money")
 		return
 	
+	if player.weapons[item.type] != -1: 
+		player.network_player.rpc("throw_weapon", player.weapons[item.type], true)
+	
 	player.get_node("NetworkedPlayer").rpc("equip_weapon", weapon_id, true)
 	player.get_node("NetworkedPlayer").rpc_id(1, "set_money", player.money - item.price)
 	player.get_node("NetworkedPlayer").rpc_id(int(player.name), "set_money", player.money - item.price)

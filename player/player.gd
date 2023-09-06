@@ -3,6 +3,7 @@ extends KinematicBody2D
 signal player_died
 signal player_resurrected
 
+onready var network_player = $NetworkedPlayer
 onready var head = $Head
 onready var hand = $Head/Hand
 onready var sprite: Sprite = $Head/Sprite

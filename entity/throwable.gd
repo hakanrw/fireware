@@ -17,9 +17,7 @@ func _process(delta):
 
 remotesync func throw_towards(direction: float):
 	if multiplayer.get_rpc_sender_id() == 1:
-		print(direction)
-		print(Vector2(50, 0).rotated(direction))
 		var tween = get_tree().create_tween()
 		tween.bind_node(self)
-		tween.tween_property(self, "global_position", global_position + Vector2(50, 0).rotated(direction), 1) \
+		tween.tween_property(self, "global_position", global_position + Vector2(100, 0).rotated(direction), 1) \
 			.set_trans(Tween.TRANS_SINE)
