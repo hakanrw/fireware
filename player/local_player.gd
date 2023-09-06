@@ -20,6 +20,9 @@ func _process(delta):
 		var mouse_pos = get_global_mouse_position()
 		full_look_at(mouse_pos)
 		
+		if Input.is_action_just_released("ui_page_up") or Input.is_action_just_released("ui_page_down"):
+			_select_next_weapon(Input.is_action_just_pressed("ui_page_down"))
+			
 	if Input.is_action_just_pressed("ui_shop"): 
 		if _current_hud_menu() == "shop":
 			Utils.get_hud_node().clear_page()
@@ -77,3 +80,21 @@ func _is_on_menu():
 
 func _is_interactable():
 	return not _is_on_menu() and health > 0
+
+func _select_next_weapon(reverse: bool = false):
+	var item = Utils.get_shop_controller().get_weapon_with_id(current_weapon)
+	if item == null and current_weapon != 30: return
+	
+	var idx = item.type if item else 2
+	# 0 = primary 1 = secondary 2 = knife
+	
+	while true:
+		if reverse: 
+			idx -= 1 
+		else: 
+			idx += 1
+		idx = idx % 3
+		
+		if idx == 2 or weapons[idx] != -1: break
+		
+	network_player.rpc_id(1, "equip_weapon", weapons[idx] if idx != 2 else 30)

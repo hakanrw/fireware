@@ -15,6 +15,7 @@ shape = SubResource( 1 )
 [node name="Head" type="Node2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="Head"]
+scale = Vector2( 0.45, 0.45 )
 texture = ExtResource( 2 )
 
 [node name="Hand" type="Node2D" parent="Head"]

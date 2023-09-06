@@ -53,3 +53,17 @@ func _clear_hud():
 func alert(message: String):
 	show_page("alert")
 	hmd.get_node("Alert/CenterContainer/Label").text = message
+	
+func show_disappearing_alert(message: String):
+	clear_page()
+	var alert_node = pages["alert"].instance()
+	alert_node.modulate.a = 0.75
+	hmd.add_child(alert_node)
+	hmd.get_node("Alert/CenterContainer/Label").text = message
+	
+	yield(get_tree().create_timer(2), "timeout")
+	var tween = get_tree().create_tween()
+	tween.tween_property(alert_node, "modulate:a", 0, 0.5)
+	tween.tween_callback(alert_node, "queue_free")
+	tween.bind_node(alert_node)
+

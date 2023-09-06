@@ -66,10 +66,10 @@ remotesync func reset_weaponry():
 remotesync func throw_weapon(weapon_id: int, safe = false, reset_currwp = true):
 	if 1 == multiplayer.get_rpc_sender_id() and safe:
 		var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
-		player.weapons[item.type] = -1
 		if reset_currwp: player.current_weapon = -1
 		
 		if NetworkController.is_server():
+			player.weapons[item.type] = -1
 			var wp = Utils.get_entity_controller().server_create_entity("weapon", weapon_id)
 			wp.global_position = player.global_position
 			wp.global_rotation = player.hand.global_rotation
@@ -92,15 +92,15 @@ remotesync func throw_weapon(weapon_id: int, safe = false, reset_currwp = true):
 			equipped = player.weapons[Utils.WeaponType.SECONDARY]
 		
 		rpc("throw_weapon", weapon_id, true)
-		rpc("equip_weapon", equipped)
+		rpc("equip_weapon", equipped, true, true)
 		
 
-remotesync func equip_weapon(weapon_id: int, safe = false):
+remotesync func equip_weapon(weapon_id: int, safe = false, equip_current = false):
 	var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
 	if item == null and weapon_id != -1 and weapon_id != 30: return
 		
 	if 1 == multiplayer.get_rpc_sender_id() and safe:
-		if NetworkController.is_server() and item and player.weapons[item.type] != -1: 
+		if NetworkController.is_server() and item and player.weapons[item.type] != -1 and not equip_current: 
 			rpc("throw_weapon", player.weapons[item.type], true, false)
 		# check if ^ precedes v on client
 		if item: player.weapons[item.type] = weapon_id
@@ -118,7 +118,7 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 			grant = true
 		if grant == false: return
 		
-		rpc("equip_weapon", weapon_id, true)
+		rpc("equip_weapon", weapon_id, true, true)
 			
 
 func reset_player():

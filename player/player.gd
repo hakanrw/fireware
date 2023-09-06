@@ -5,6 +5,7 @@ signal player_resurrected
 
 onready var head = $Head
 onready var hand = $Head/Hand
+onready var sprite: Sprite = $Head/Sprite
 
 var current_weapon = -1 setget set_weapon
 var weapons = {
@@ -27,17 +28,23 @@ func set_team(_team: int):
 	team = _team
 	if _team == Utils.Team.SPECTATOR:
 		set_health(0)
+	set_weapon(current_weapon)
 
 func set_weapon(weapon: int):
-	for n in hand.get_children():
-		n.queue_free()
+#	for n in hand.get_children():
+#		n.queue_free()
 	current_weapon = weapon
 	
-	if weapon == -1: return
+	if weapon == -1: 
+		var texture = load("res://icon.png")
+		sprite.texture = texture
+		return
+	# optimize this	
+	# hand.add_child(load_weapon_instance(weapon))
 	
-	# optimize this
-	hand.add_child(load_weapon_instance(weapon))
-	
+	var texture = load("res://player/tds/" + ("insurgent" if team == Utils.Team.INSURGENT else "security") + "_" + str(weapon) + ".png")
+	sprite.texture = texture
+
 func set_health(hp: int):
 	hp = max(hp, 0)
 	if hp == 0 and health > 0:

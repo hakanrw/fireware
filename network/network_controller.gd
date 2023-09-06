@@ -178,6 +178,13 @@ func kick_player(id: int, message: String):
 	get_tree().network_peer.disconnect_peer(id)
 	pass
 	
+
+remote func alert(message: String):
+	if 1 == multiplayer.get_rpc_sender_id():
+		print("trying to alert")
+		Utils.get_hud_node().show_disappearing_alert(message)
+
+	
 remote func show_kick_message(message: String):
 	if 1 == multiplayer.get_rpc_sender_id():
 		close_connection()
