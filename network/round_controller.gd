@@ -81,7 +81,7 @@ func end_round(winner: int):
 	
 func start_new_round():
 	# called on server
-	rpc_id(1, "update_timer", _max_round_time, _max_round_time)
+	rpc_id(1, "new_round_started", _max_round_time, _max_round_time)
 	print("starts new round")
 	rpc("destroy_entities")
 	
@@ -168,7 +168,7 @@ func get_spawn_locations():
 	}
 	return spawn_locations
 	
-remote func new_round_started(max_time, remaining_time):
+remotesync func new_round_started(max_time, remaining_time):
 	# called on players
 	if 1 == multiplayer.get_rpc_sender_id():
 		rpc_id(multiplayer.get_network_unique_id(), "update_timer", max_time, remaining_time)
