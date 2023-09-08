@@ -5,20 +5,22 @@ class Item:
 	var name: String
 	var price: int
 	var type: int
+	var cooldown: int
 
-	func _init(id: int, name: String, price: int, type: int):
+	func _init(id: int, name: String, price: int, type: int, cooldown: int = 500):
 		self.id = id
 		self.name = name
 		self.price = price
 		self.type = type
+		self.cooldown = cooldown
 		
 var shop = [
 	# rifle
 	## Item.new(0 , "7.62 guerilla", 205, Utils.WeaponType.PRIMARY),
-	Item.new(1 , "cv47", 270, Utils.WeaponType.PRIMARY),
+	Item.new(1 , "cv47", 270, Utils.WeaponType.PRIMARY, 200),
 	## Item.new(2 , "maverick m4a1", 3100, Utils.WeaponType.PRIMARY),
 	# sidearm
-	Item.new(5 , "7/24 sidearm", 400, Utils.WeaponType.SECONDARY),
+	Item.new(5 , "7/24 sidearm", 400, Utils.WeaponType.SECONDARY, 750),
 	## Item.new(6 , "wrestler", 500, Utils.WeaponType.SECONDARY),	
 	# smg
 	## Item.new(10, "fastgun", 1050, Utils.WeaponType.PRIMARY),

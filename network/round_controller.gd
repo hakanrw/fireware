@@ -139,6 +139,7 @@ func place_player(player: Node2D, placed_later = false):
 	player.team = player.next_team
 	if player.team == Utils.Team.SPECTATOR:
 		return
+	
 	player.health = Utils.max_health
 	
 	var spawn_locations = get_spawn_locations()

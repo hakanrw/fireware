@@ -5,6 +5,8 @@ onready var last_rotation = head.global_rotation
 
 const FLOAT_EPSILON = 0.00001
 
+var last_shoot = 0
+
 static func compare_floats(a, b, epsilon = FLOAT_EPSILON):
 	return abs(a - b) <= epsilon
 
@@ -20,6 +22,9 @@ func _process(delta):
 		
 		if Input.is_action_just_released("ui_page_up") or Input.is_action_just_released("ui_page_down"):
 			_select_next_weapon(Input.is_action_just_pressed("ui_page_down"))
+			
+		if Input.is_action_pressed("shoot"):
+			_shoot()
 			
 	if Input.is_action_just_pressed("ui_shop"): 
 		if _current_hud_menu() == "shop":
@@ -99,6 +104,23 @@ func _select_next_weapon(reverse: bool = false):
 		if idx == 2 or weapons[idx] != -1: break
 
 	network_player.rpc_id(1, "equip_weapon", weapons[idx] if idx != 2 else 30)
+	
+func _shoot():
+	var current_time = Time.get_ticks_msec()
+	var elapsed_time =  current_time - last_shoot
+	
+	var item = Utils.get_shop_controller().get_weapon_with_id(current_weapon)
+	
+	if item == null:
+		if current_weapon == 30: 
+			pass # handle knife attack
+		return
+		
+	if elapsed_time < item.cooldown:
+		return
+	
+	print("shot")
+	last_shoot = Time.get_ticks_msec()
 
 func _throw_current_weapon():
 	network_player.rpc_id(1, "throw_weapon", current_weapon)

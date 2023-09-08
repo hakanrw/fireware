@@ -72,7 +72,7 @@ remotesync func throw_weapon(weapon_id: int, safe = false):
 		if NetworkController.is_server():
 			var wp = Utils.get_entity_controller().server_create_entity("weapon", weapon_id)
 			wp.global_position = player.global_position
-			wp.global_rotation = player.hand.global_rotation
+			wp.global_rotation = player.head.global_rotation
 			wp.rpc("update_position", wp.global_position)
 			wp.rpc("update_rotation", wp.global_rotation)
 			wp.rpc("throw_towards", player.head.global_rotation)

@@ -5,8 +5,9 @@ signal player_resurrected
 
 onready var network_player = $NetworkedPlayer
 onready var head = $Head
-onready var hand = $Head/Hand
+# onready var hand = $Head/Hand
 onready var sprite: Sprite = $Head/Sprite
+onready var collision = $Head/Collision
 
 var current_weapon = -1 setget set_weapon
 var weapons = {
@@ -25,6 +26,9 @@ var name_tag = "Player" setget set_name_tag
 var team = Utils.Team.SPECTATOR setget set_team
 var next_team = Utils.Team.SPECTATOR
 
+func _process(delta):
+	$Nametag.margin_top = collision.global_position.y - head.global_position.y + 50
+
 func set_team(_team: int):
 	team = _team
 	if _team == Utils.Team.SPECTATOR:
@@ -39,12 +43,19 @@ func set_weapon(weapon: int):
 	if weapon == -1: 
 		var texture = load("res://icon.png")
 		sprite.texture = texture
+		sprite.position.y = 0
 		return
 	# optimize this	
 	# hand.add_child(load_weapon_instance(weapon))
 	
 	var texture = load("res://player/tds/" + ("insurgent" if team == Utils.Team.INSURGENT else "security") + "_" + str(weapon) + ".png")
 	sprite.texture = texture
+	
+	if weapon == 5:
+		sprite.position.y = -25
+	else:
+		sprite.position.y = -22
+
 
 func set_health(hp: int):
 	hp = max(hp, 0)
@@ -71,8 +82,8 @@ func set_name_tag(tag):
 func full_look_at(vec2d): 
 	if health > 0:
 		head.look_at(vec2d)
-		if vec2d.distance_to(hand.global_position) > 40:
-			hand.look_at(vec2d)
+#		if vec2d.distance_to(hand.global_position) > 40:
+#			hand.look_at(vec2d)
 		
 func move(direction, delta):
 	var round_controller = Utils.get_round_controller()
