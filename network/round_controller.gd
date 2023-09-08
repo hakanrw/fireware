@@ -55,6 +55,8 @@ func reset_game():
 	for player in NetworkController.get_player_nodes():
 		if player.next_team != Utils.Team.SPECTATOR:
 			player.get_node("NetworkedPlayer").reset_player()
+			
+	_reset_flag = false
 
 func end_round(winner: int):
 	# called on server
@@ -139,6 +141,10 @@ func place_player(player: Node2D, placed_later = false):
 	player.team = player.next_team
 	if player.team == Utils.Team.SPECTATOR:
 		return
+		
+	if player.health == 0:
+		player.network_player.rpc_id(1, "reset_weaponry")
+		player.network_player.rpc_id(int(player.name), "reset_weaponry")
 	
 	player.health = Utils.max_health
 	

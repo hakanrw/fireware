@@ -8,6 +8,8 @@ onready var head = $Head
 # onready var hand = $Head/Hand
 onready var sprite: Sprite = $Head/Sprite
 onready var collision = $Head/Collision
+onready var ray = $Head/Ray
+onready var line = $Head/Line
 
 var current_weapon = -1 setget set_weapon
 var weapons = {
@@ -26,8 +28,18 @@ var name_tag = "Player" setget set_name_tag
 var team = Utils.Team.SPECTATOR setget set_team
 var next_team = Utils.Team.SPECTATOR
 
+var last_shoot = 0
+
+func _ready():
+	set_name_tag(name_tag)
+	
+func _physics_process(delta):
+	move(direction, delta)
+	
 func _process(delta):
 	$Nametag.margin_top = collision.global_position.y - head.global_position.y + 50
+	if Time.get_ticks_msec() > last_shoot + 100:
+		line.visible = false
 
 func set_team(_team: int):
 	team = _team
@@ -52,9 +64,9 @@ func set_weapon(weapon: int):
 	sprite.texture = texture
 	
 	if weapon == 5:
-		sprite.position.y = -25
-	else:
 		sprite.position.y = -22
+	else:
+		sprite.position.y = -20
 
 
 func set_health(hp: int):
@@ -68,12 +80,7 @@ func set_health(hp: int):
 		emit_signal("player_resurrected")
 		
 	health = hp
-	
-func _ready():
-	set_name_tag(name_tag)
-	
-func _physics_process(delta):
-	move(direction, delta)
+
 
 func set_name_tag(tag):
 	$Nametag.text = tag

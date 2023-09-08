@@ -5,8 +5,6 @@ onready var last_rotation = head.global_rotation
 
 const FLOAT_EPSILON = 0.00001
 
-var last_shoot = 0
-
 static func compare_floats(a, b, epsilon = FLOAT_EPSILON):
 	return abs(a - b) <= epsilon
 
@@ -25,6 +23,8 @@ func _process(delta):
 			
 		if Input.is_action_pressed("shoot"):
 			_shoot()
+	else:
+		last_shoot = Time.get_ticks_msec()
 			
 	if Input.is_action_just_pressed("ui_shop"): 
 		if _current_hud_menu() == "shop":
@@ -116,11 +116,15 @@ func _shoot():
 			pass # handle knife attack
 		return
 		
-	if elapsed_time < item.cooldown:
+	if elapsed_time < item.props["cooldown"]:
 		return
 	
-	print("shot")
-	last_shoot = Time.get_ticks_msec()
+	var hit_player = -1
+	
+	if ray.is_colliding() and ray.get_collider().name == "Head":
+		hit_player = int(ray.get_collider().get_parent().name)
+		
+	network_player.rpc("shoot", hit_player)
 
 func _throw_current_weapon():
 	network_player.rpc_id(1, "throw_weapon", current_weapon)

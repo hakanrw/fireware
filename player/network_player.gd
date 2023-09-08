@@ -62,6 +62,8 @@ remotesync func reset_weaponry():
 			Utils.WeaponType.SECONDARY: 5, # player has sidearm by default
 			Utils.WeaponType.MISC: [],
 		}
+		
+		player.current_weapon = 5 # this is updated on all clients on round start
 
 remotesync func throw_weapon(weapon_id: int, safe = false):
 	if 1 == multiplayer.get_rpc_sender_id() and safe:
@@ -106,6 +108,7 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 #		# check if ^ precedes v on client
 		if item: player.weapons[item.type] = weapon_id
 		player.current_weapon = weapon_id
+		player.last_shoot = Time.get_ticks_msec()
 		return
 
 	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
@@ -122,12 +125,33 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 		rpc("equip_weapon", weapon_id, true)
 			
 
+remotesync func shoot(hit_player: int):
+	var item = Utils.get_shop_controller().get_weapon_with_id(player.current_weapon)
+	if multiplayer.get_rpc_sender_id() == int(player.name):
+		if player.health == 0 or !Utils.get_round_controller().move_enabled:
+			return
+		var line_vec = player.ray.cast_to
+		
+		if player.ray.is_colliding():
+			line_vec = Vector2(player.ray.global_position.distance_to(player.ray.get_collision_point()), 0)
+		
+		player.line.visible = true
+		player.line.set_point_position(1, line_vec)
+		
+		player.last_shoot = Time.get_ticks_msec()
+		
+		if hit_player != -1:
+			print("hit player " + str(hit_player))
+			
+			if NetworkController.is_server():
+				# maybe add logic that checks if shoot is legitimate?
+				var hit_player_node = NetworkController.get_player_with_id(hit_player)
+				hit_player_node.network_player.rpc("set_health", hit_player_node.health - item.props["damage"])
+
 func reset_player():
 	# note: this code will be called only on server
 	rpc_id(1, "set_money", Utils.start_money)
 	rpc_id(int(player.name), "set_money", Utils.start_money)
 	rpc_id(1, "reset_weaponry")
 	rpc_id(int(player.name), "reset_weaponry")
-	
-	player.current_weapon = 5 # this is updated on all clients on round start
 

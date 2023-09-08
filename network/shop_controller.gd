@@ -5,22 +5,22 @@ class Item:
 	var name: String
 	var price: int
 	var type: int
-	var cooldown: int
+	var props: Dictionary
 
-	func _init(id: int, name: String, price: int, type: int, cooldown: int = 500):
+	func _init(id: int, name: String, price: int, type: int, props: Dictionary = {}):
 		self.id = id
 		self.name = name
 		self.price = price
 		self.type = type
-		self.cooldown = cooldown
+		self.props = props
 		
 var shop = [
 	# rifle
 	## Item.new(0 , "7.62 guerilla", 205, Utils.WeaponType.PRIMARY),
-	Item.new(1 , "cv47", 270, Utils.WeaponType.PRIMARY, 200),
+	Item.new(1 , "cv47", 270, Utils.WeaponType.PRIMARY, {"cooldown": 200, "damage": 25}),
 	## Item.new(2 , "maverick m4a1", 3100, Utils.WeaponType.PRIMARY),
 	# sidearm
-	Item.new(5 , "7/24 sidearm", 400, Utils.WeaponType.SECONDARY, 750),
+	Item.new(5 , "7/24 sidearm", 400, Utils.WeaponType.SECONDARY, {"cooldown": 750, "damage": 25}),
 	## Item.new(6 , "wrestler", 500, Utils.WeaponType.SECONDARY),	
 	# smg
 	## Item.new(10, "fastgun", 1050, Utils.WeaponType.PRIMARY),
