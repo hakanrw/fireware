@@ -59,7 +59,7 @@ remotesync func reset_weaponry():
 	if 1 == multiplayer.get_rpc_sender_id():
 		player.weapons = {
 			Utils.WeaponType.PRIMARY: -1,
-			Utils.WeaponType.SECONDARY: -1,
+			Utils.WeaponType.SECONDARY: 5, # player has sidearm by default
 			Utils.WeaponType.MISC: [],
 		}
 
@@ -78,7 +78,7 @@ remotesync func throw_weapon(weapon_id: int, safe = false):
 			wp.rpc("throw_towards", player.head.global_rotation)
 		return
 	
-	if NetworkController.is_server():
+	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
 		if weapon_id == -1 or weapon_id == 30:
 			return
 		if player.weapons[Utils.WeaponType.PRIMARY] != weapon_id \
@@ -108,7 +108,7 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 		player.current_weapon = weapon_id
 		return
 
-	if NetworkController.is_server():
+	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
 		var grant = false
 		if weapon_id == 30:
 			grant = true
@@ -129,5 +129,5 @@ func reset_player():
 	rpc_id(1, "reset_weaponry")
 	rpc_id(int(player.name), "reset_weaponry")
 	
-	player.current_weapon = 30 # this is updated on all clients on round start
+	player.current_weapon = 5 # this is updated on all clients on round start
 

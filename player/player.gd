@@ -29,7 +29,7 @@ func set_team(_team: int):
 	team = _team
 	if _team == Utils.Team.SPECTATOR:
 		set_health(0)
-	set_weapon(current_weapon)
+	set_weapon(current_weapon) # to update texture
 
 func set_weapon(weapon: int):
 #	for n in hand.get_children():
