@@ -18,6 +18,10 @@ var weapons = {
 	Utils.WeaponType.MISC: [],
 }
 
+var weapon_info = {
+	
+}
+
 var speed = Utils.player_speed
 var direction = Vector2(0, 0)
 var health = Utils.max_health setget set_health

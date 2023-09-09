@@ -36,7 +36,7 @@ func _process(delta):
 		
 	if _game_running_last != game_running():
 		_reset_flag = true
-		rpc("update_timer", _max_round_time, 4)
+		rpc("update_timer", _max_round_time, 1)
 
 	if game_running() and (which_team_died()[0] == true or which_team_died()[1] == true):
 		if not _hold_flag: end_round(1 if which_team_died()[0] else 0)

@@ -23,6 +23,9 @@ func _process(delta):
 			
 		if Input.is_action_pressed("shoot"):
 			_shoot()
+			
+		if Input.is_action_just_released("interact"):
+			network_player.rpc_id(1, "interact")
 	else:
 		last_shoot = Time.get_ticks_msec()
 			
@@ -103,6 +106,7 @@ func _select_next_weapon(reverse: bool = false):
 		
 		if idx == 2 or weapons[idx] != -1: break
 
+	set_weapon(weapons[idx] if idx != 2 else 30)
 	network_player.rpc_id(1, "equip_weapon", weapons[idx] if idx != 2 else 30)
 	
 func _shoot():
@@ -118,6 +122,8 @@ func _shoot():
 		
 	if elapsed_time < item.props["cooldown"]:
 		return
+		
+	if weapon_info[current_weapon].ammo <= 0: return
 	
 	var hit_player = -1
 	

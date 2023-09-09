@@ -3,7 +3,8 @@ extends Node
 onready var player = get_node("..")
 
 puppet func quick_correct_position(position: Vector2):
-	player.global_position = position
+	if Utils.get_round_controller().move_enabled:
+		player.global_position = position
 
 puppet func set_direction(direction: Vector2):
 	player.direction = direction.normalized()
@@ -55,6 +56,10 @@ remotesync func set_money(money: int):
 	if 1 == multiplayer.get_rpc_sender_id():
 		player.money = money
 
+remotesync func set_weapon_info(weapon_id, info):
+	if 1 == multiplayer.get_rpc_sender_id():
+		player.weapon_info[weapon_id] = info
+
 remotesync func reset_weaponry():
 	if 1 == multiplayer.get_rpc_sender_id():
 		player.weapons = {
@@ -62,6 +67,9 @@ remotesync func reset_weaponry():
 			Utils.WeaponType.SECONDARY: 5, # player has sidearm by default
 			Utils.WeaponType.MISC: [],
 		}
+		
+		player.weapon_info = {}
+		player.weapon_info[5] = Utils.get_shop_controller().get_weapon_with_id(5).props
 		
 		player.current_weapon = 5 # this is updated on all clients on round start
 
@@ -72,12 +80,16 @@ remotesync func throw_weapon(weapon_id: int, safe = false):
 		player.weapons[item.type] = -1
 		
 		if NetworkController.is_server():
+			var weapon_props = player.weapon_info[weapon_id]
 			var wp = Utils.get_entity_controller().server_create_entity("weapon", weapon_id)
 			wp.global_position = player.global_position
 			wp.global_rotation = player.head.global_rotation
 			wp.rpc("update_position", wp.global_position)
+			wp.rpc("update_property", "weapon_info", weapon_props)
 			wp.rpc("update_rotation", wp.global_rotation)
 			wp.rpc("throw_towards", player.head.global_rotation)
+			
+		player.weapon_info.erase(weapon_id)	
 		return
 	
 	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
@@ -106,7 +118,13 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 #		if NetworkController.is_server() and item and player.weapons[item.type] != -1 and not equip_current: 
 #			rpc("throw_weapon", player.weapons[item.type], true, false)
 #		# check if ^ precedes v on client
-		if item: player.weapons[item.type] = weapon_id
+		if item: 
+			player.weapons[item.type] = weapon_id
+			if NetworkController.is_server() or get_tree().get_network_unique_id() == int(player.name):
+				if not player.weapon_info.has(weapon_id):
+					# means player bought the weapon
+					player.weapon_info[weapon_id] = item.props
+					
 		player.current_weapon = weapon_id
 		player.last_shoot = Time.get_ticks_msec()
 		return
@@ -140,13 +158,27 @@ remotesync func shoot(hit_player: int):
 		
 		player.last_shoot = Time.get_ticks_msec()
 		
+		if NetworkController.is_server() or get_tree().get_network_unique_id() == int(player.name):
+			player.weapon_info[player.current_weapon]["ammo"] -= 1
+		
 		if hit_player != -1:
-			print("hit player " + str(hit_player))
-			
 			if NetworkController.is_server():
+				if player.weapon_info[player.current_weapon]["ammo"] < 0: 
+					print("no ammo + tried to cheat")
+					return
 				# maybe add logic that checks if shoot is legitimate?
 				var hit_player_node = NetworkController.get_player_with_id(hit_player)
 				hit_player_node.network_player.rpc("set_health", hit_player_node.health - item.props["damage"])
+
+remote func interact():
+	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
+		var areas = player.head.get_overlapping_areas()
+		if areas.size() == 0: return
+		
+		var interaction = areas[0].get_parent()
+		if interaction.has_method("interact"):
+			interaction.interact(player)
+	
 
 func reset_player():
 	# note: this code will be called only on server

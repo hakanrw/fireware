@@ -26,7 +26,8 @@ remotesync func update_property(property, value):
 		properties[property] = value
 		emit_signal("property_updated", property)
 
-func interact():
+func interact(by):
+	print("interact " + get_id())
 	pass
 
 func get_props():

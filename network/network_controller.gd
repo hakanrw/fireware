@@ -106,10 +106,18 @@ func get_entity_nodes() -> Array:
 func get_entity_with_id(id: String) -> Node2D:
 	var entity = null
 	for e in get_entity_nodes():
-		if e.id == id:
+		if e.get_id() == id:
 			entity = e
 			break
 	return entity
+	
+
+remotesync func remove_entity(id):
+	if 1 != get_tree().get_rpc_sender_id():
+		return
+	print("removing entity: " + str(id))
+	var entity = get_entity_with_id(id)
+	entity.queue_free()
 
 remotesync func create_player(id: int, username: String):
 	if 1 != get_tree().get_rpc_sender_id():
