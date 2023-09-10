@@ -13,6 +13,11 @@ radius = 33.7343
 z_index = 2
 collision_layer = 2
 
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2( 0, -1 )
+limit_left = 0
+limit_top = 0
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 

@@ -6,6 +6,8 @@ const game = preload("res://main.tscn")
 enum Team {SECURITY, INSURGENT, SPECTATOR}
 enum WeaponType {PRIMARY, SECONDARY, MISC, WEAR}
 
+var level_bounds = Vector2(1024, 600)
+
 func load_menu():
 	if get_node("/root").has_node("Menu"):
 		return
@@ -32,6 +34,12 @@ func load_level(level_name: String):
 		var level = load("res://levels/" + level_name + ".tscn").instance()
 		level.name = level_name
 		get_world_node().add_child(level)
+		var limit = level.get_node("Limit")
+		if limit == null:
+			level_bounds = Vector2(1024, 600) 
+		else:
+			level_bounds = limit.position
+		
 
 func is_game_loaded():
 	return get_node("/root").has_node("Game") 
@@ -48,6 +56,9 @@ func get_level_name():
 
 func get_level_node():
 	return get_node("/root/Game/World/").get_children()[0]
+	
+func get_level_bounds():
+	return level_bounds
 	
 func get_game_node():
 	return get_node("/root/Game")

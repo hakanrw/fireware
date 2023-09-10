@@ -10,6 +10,7 @@ onready var sprite: Sprite = $Head/Sprite
 onready var collision = $Head/Collision
 onready var ray = $Head/Ray
 onready var line = $Head/Line
+onready var camera = $Camera
 
 var current_weapon = -1 setget set_weapon
 var weapons = {
@@ -100,6 +101,8 @@ func move(direction, delta):
 	var round_controller = Utils.get_round_controller()
 	if health > 0 and round_controller.move_enabled:
 		move_and_collide(speed * delta * direction.normalized())
+		position.x = clamp(position.x, 20, Utils.level_bounds.x - 20)
+		position.y = clamp(position.y, 20, Utils.level_bounds.y - 20)
 
 func get_props():
 	return {

@@ -22,7 +22,7 @@ var leaderboard = {
 func _ready():
 	if Utils.is_server():
 		# change_level("de_enka")
-		next_level = "de_enka"
+		next_level = "fw_base"
 		start_new_round()
 		
 func _process(delta):

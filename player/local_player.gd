@@ -11,9 +11,20 @@ static func compare_floats(a, b, epsilon = FLOAT_EPSILON):
 func _ready():
 	connect("player_died", self, "_on_death")
 	connect("player_resurrected", self, "_on_resurrect")
+	
+var spectating = 0
 
 func _process(delta):
 	# handle look
+	if _is_spectating():
+		camera.current = false
+		_set_spectating()
+	else:
+		camera.current = true
+		camera.limit_right = Utils.level_bounds.x
+		camera.limit_bottom = Utils.level_bounds.y
+		camera.position = ( get_viewport().get_mouse_position() - get_viewport().get_visible_rect().size / 2 ) / 1.5
+	
 	if _is_interactable():
 		var mouse_pos = get_global_mouse_position()
 		full_look_at(mouse_pos)
@@ -89,6 +100,9 @@ func _is_on_menu():
 
 func _is_interactable():
 	return not _is_on_menu() and health > 0
+	
+func _is_spectating():
+	return health <= 0 or team == Utils.Team.SPECTATOR
 
 func _select_next_weapon(reverse: bool = false):
 	var item = Utils.get_shop_controller().get_weapon_with_id(current_weapon)
@@ -134,3 +148,18 @@ func _shoot():
 
 func _throw_current_weapon():
 	network_player.rpc_id(1, "throw_weapon", current_weapon)
+	
+func _set_spectating():
+	if spectating == 0:
+		var found = _set_spectating_next()
+		if not found: return
+	
+	var specting_node = NetworkController.get_player_with_id(spectating)
+	specting_node.camera.current = true
+
+func _set_spectating_next():
+	for player in NetworkController.get_player_nodes():
+		if player.health > 0:
+			spectating = int(player.name)
+			return true
+	return false
