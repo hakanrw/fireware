@@ -1,12 +1,10 @@
 [gd_scene format=2]
 
 [node name="Message" type="Panel"]
+modulate = Color( 1, 1, 1, 0.784314 )
 margin_right = 400.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 0, 35 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="."]
 anchor_right = 1.0
@@ -15,6 +13,3 @@ margin_left = 30.0
 margin_right = -30.0
 text = "message"
 valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}

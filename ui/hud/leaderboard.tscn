@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://fonts/font_dynamic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://ui/icons/insurgent.png" type="Texture" id=2]
+[ext_resource path="res://ui/icons/special_units.png" type="Texture" id=3]
+
+[node name="Alert" type="Panel"]
+margin_right = 400.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 400, 200 )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+margin_left = 50.0
+margin_top = 11.0
+margin_right = 350.0
+margin_bottom = 189.0
+rect_min_size = Vector2( 300, 150 )
+
+[node name="Security" type="VBoxContainer" parent="CenterContainer/HBoxContainer"]
+margin_right = 128.0
+margin_bottom = 178.0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/HBoxContainer/Security"]
+margin_right = 128.0
+margin_bottom = 128.0
+texture = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Security"]
+margin_top = 132.0
+margin_right = 128.0
+margin_bottom = 178.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+align = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/HBoxContainer"]
+margin_left = 132.0
+margin_right = 168.0
+margin_bottom = 178.0
+size_flags_horizontal = 3
+
+[node name="Insurgent" type="VBoxContainer" parent="CenterContainer/HBoxContainer"]
+margin_left = 172.0
+margin_right = 300.0
+margin_bottom = 178.0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="CenterContainer/HBoxContainer/Insurgent"]
+margin_right = 128.0
+margin_bottom = 128.0
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/Insurgent"]
+margin_top = 132.0
+margin_right = 128.0
+margin_bottom = 178.0
+custom_fonts/font = ExtResource( 1 )
+text = "0"
+align = 1

@@ -25,6 +25,8 @@ func _ready():
 		next_level = "fw_base"
 		start_new_round()
 		
+	connect("round_ended", Utils.get_hud_node(), "show_disappearing_winner")
+		
 func _process(delta):
 	if not Utils.is_server() or _hold_flag:
 		return

@@ -2,6 +2,9 @@ extends KinematicBody2D
 
 signal player_died
 signal player_resurrected
+signal player_weapon_changed(weapon)
+signal player_health_changed(health)
+signal player_ammo_changed
 
 onready var network_player = $NetworkedPlayer
 onready var head = $Head
@@ -72,6 +75,8 @@ func set_weapon(weapon: int):
 		sprite.position.y = -22
 	else:
 		sprite.position.y = -20
+		
+	emit_signal("player_weapon_changed", weapon)
 
 
 func set_health(hp: int):
@@ -85,6 +90,7 @@ func set_health(hp: int):
 		emit_signal("player_resurrected")
 		
 	health = hp
+	emit_signal("player_health_changed", hp)
 
 
 func set_name_tag(tag):

@@ -27,9 +27,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="HTD" type="MarginContainer" parent="Control/VBoxContainer"]
 margin_right = 1024.0
@@ -135,15 +132,20 @@ margin_bottom = 70.0
 rect_min_size = Vector2( 200, 0 )
 
 [node name="Health" type="Label" parent="Control/VBoxContainer/HBD/HBoxContainer/HealthPanel"]
-margin_left = 15.5739
+margin_left = 47.5739
 margin_top = 11.3265
-margin_right = 115.574
+margin_right = 147.574
 margin_bottom = 57.3265
 custom_fonts/font = ExtResource( 1 )
-text = "+ 200"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+text = "200"
+
+[node name="Plus" type="Label" parent="Control/VBoxContainer/HBD/HBoxContainer/HealthPanel"]
+margin_left = 15.5739
+margin_top = 11.3265
+margin_right = 38.5739
+margin_bottom = 57.3265
+custom_fonts/font = ExtResource( 1 )
+text = "+"
 
 [node name="Margin" type="Panel" parent="Control/VBoxContainer/HBD/HBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )
@@ -164,7 +166,18 @@ margin_top = 11.0
 margin_right = 144.0
 margin_bottom = 57.0
 custom_fonts/font = ExtResource( 1 )
-text = "50/"
+text = "50"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Slash" type="Label" parent="Control/VBoxContainer/HBD/HBoxContainer/AmmoPanel"]
+margin_left = 130.0
+margin_top = 11.0
+margin_right = 141.0
+margin_bottom = 57.0
+custom_fonts/font = ExtResource( 1 )
+text = "/"
 __meta__ = {
 "_edit_use_anchors_": false
 }

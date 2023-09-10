@@ -59,6 +59,7 @@ remotesync func set_money(money: int):
 remotesync func set_weapon_info(weapon_id, info):
 	if 1 == multiplayer.get_rpc_sender_id():
 		player.weapon_info[weapon_id] = info
+		player.emit_signal("player_ammo_changed")
 
 remotesync func reset_weaponry():
 	if 1 == multiplayer.get_rpc_sender_id():
@@ -169,6 +170,8 @@ remotesync func shoot(hit_player: int):
 				# maybe add logic that checks if shoot is legitimate?
 				var hit_player_node = NetworkController.get_player_with_id(hit_player)
 				hit_player_node.network_player.rpc("set_health", hit_player_node.health - item.props["damage"])
+		
+		player.emit_signal("player_ammo_changed")
 
 remote func interact():
 	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):

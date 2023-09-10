@@ -11,6 +11,9 @@ static func compare_floats(a, b, epsilon = FLOAT_EPSILON):
 func _ready():
 	connect("player_died", self, "_on_death")
 	connect("player_resurrected", self, "_on_resurrect")
+	connect("player_health_changed", self, "_on_health_change")
+	connect("player_weapon_changed", self, "_on_weapon_change")
+	connect("player_ammo_changed", self, "_on_ammo_change")
 	
 var spectating = 0
 
@@ -84,6 +87,15 @@ func _on_death():
 	
 func _on_resurrect():
 	Utils.get_hud_node().hbd.visible = true
+	
+func _on_weapon_change(weapon_id: int):
+	Utils.get_hud_node().set_ammo_info(weapon_info.get(weapon_id))
+
+func _on_ammo_change():
+	Utils.get_hud_node().set_ammo_info(weapon_info.get(current_weapon))
+
+func _on_health_change(health: int):
+	Utils.get_hud_node().set_health(health)
 
 func _request_shop():
 	if player_can_shop():
@@ -155,6 +167,9 @@ func _set_spectating():
 		if not found: return
 	
 	var specting_node = NetworkController.get_player_with_id(spectating)
+	if specting_node == null or specting_node.health <= 0:
+		spectating = 0
+		return
 	specting_node.camera.current = true
 
 func _set_spectating_next():

@@ -4,6 +4,13 @@ const pages = {
 	"team_select": preload("res://ui/hud/team_select.tscn"),
 	"alert": preload("res://ui/hud/alert.tscn"),
 	"shop": preload("res://ui/hud/shop.tscn"),
+	"winner": preload("res://ui/hud/winner.tscn"),
+}
+
+const images = {
+	"security" : preload("res://ui/icons/special_units.png"),
+	"insurgent": preload("res://ui/icons/insurgent.png"),
+	"spectator": preload("res://ui/icons/spectator.png"),
 }
 
 onready var htd = $Control/VBoxContainer/HTD
@@ -53,11 +60,11 @@ func _clear_hud():
 func alert(message: String):
 	show_page("alert")
 	hmd.get_node("Alert/CenterContainer/Label").text = message
-	
+
 func show_disappearing_alert(message: String):
 	clear_page()
 	var alert_node = pages["alert"].instance()
-	alert_node.modulate.a = 0.75
+	alert_node.modulate.a = 0.8
 	hmd.add_child(alert_node)
 	hmd.get_node("Alert/CenterContainer/Label").text = message
 	
@@ -67,3 +74,44 @@ func show_disappearing_alert(message: String):
 	tween.tween_callback(alert_node, "queue_free")
 	tween.bind_node(alert_node)
 
+func show_disappearing_winner(winner: int):
+	clear_page()
+	var winner_node = pages["winner"].instance()
+	winner_node.modulate.a = 0.8
+	
+	var text = "Draw"
+	var image = images["spectator"]
+	if winner == Utils.Team.SECURITY:
+		text = "Security wins"
+		image = images["security"]
+	if winner == Utils.Team.INSURGENT:
+		text = "Insurgents win"
+		image = images["insurgent"]
+		
+	winner_node.get_node("WinnerPanel/CenterContainer/HBoxContainer/LabelContainer/Label").text = text
+	winner_node.get_node("WinnerPanel/CenterContainer/HBoxContainer/WinnerImage/TextureRect").texture = image
+	winner_node.get_node("ScoresPanel/CenterContainer/HBoxContainer/SecurityScoreContainer/Label").text \
+		= str(Utils.get_round_controller().leaderboard[Utils.Team.SECURITY])
+	winner_node.get_node("ScoresPanel/CenterContainer/HBoxContainer/InsurgentScoreContainer/Label").text \
+		= str(Utils.get_round_controller().leaderboard[Utils.Team.INSURGENT])
+	
+	hmd.add_child(winner_node)
+	
+	yield(get_tree().create_timer(3), "timeout")
+	var tween = get_tree().create_tween()
+	tween.tween_property(winner_node, "modulate:a", 0, 0.5)
+	tween.tween_callback(winner_node, "queue_free")
+	tween.bind_node(winner_node)
+
+func set_health(health: int):
+	health_label.text = str(health)
+	
+func set_ammo_info(weapon_info):
+	if weapon_info == null:
+		ammo_panel.visible = false
+		mag_manel.visible = false
+	else:
+		ammo_panel.visible = true
+		mag_manel.visible = true
+		ammo_panel.text = str(weapon_info["ammo"])
+		mag_manel.text = str(weapon_info["mag"])
