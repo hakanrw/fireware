@@ -40,6 +40,10 @@ func _process(delta):
 			
 		if Input.is_action_just_released("interact"):
 			network_player.rpc_id(1, "interact")
+			
+		if Input.is_action_just_pressed("reload"):
+			_reload()
+		
 	else:
 		last_shoot = Time.get_ticks_msec()
 			
@@ -60,6 +64,7 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("throw_weapon"):
 		_throw_current_weapon()
+		
 	
 func _physics_process(delta):
 	# handle walk
@@ -157,6 +162,9 @@ func _shoot():
 		hit_player = int(ray.get_collider().get_parent().name)
 		
 	network_player.rpc("shoot", hit_player)
+	
+func _reload():
+	network_player.rpc("reload")
 
 func _throw_current_weapon():
 	network_player.rpc_id(1, "throw_weapon", current_weapon)
@@ -171,6 +179,10 @@ func _set_spectating():
 		spectating = 0
 		return
 	specting_node.camera.current = true
+	specting_node.camera.limit_right = Utils.level_bounds.x
+	specting_node.camera.limit_bottom = Utils.level_bounds.y
+	specting_node.camera.position = ( get_viewport().get_mouse_position() - get_viewport().get_visible_rect().size / 2 ) / 1.5
+	
 
 func _set_spectating_next():
 	for player in NetworkController.get_player_nodes():

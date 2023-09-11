@@ -34,7 +34,7 @@ func load_level(level_name: String):
 		var level = load("res://levels/" + level_name + ".tscn").instance()
 		level.name = level_name
 		get_world_node().add_child(level)
-		var limit = level.get_node("Limit")
+		var limit = level.get_node_or_null("Limit")
 		if limit == null:
 			level_bounds = Vector2(1024, 600) 
 		else:

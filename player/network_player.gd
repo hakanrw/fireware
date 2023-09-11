@@ -172,6 +172,29 @@ remotesync func shoot(hit_player: int):
 				hit_player_node.network_player.rpc("set_health", hit_player_node.health - item.props["damage"])
 		
 		player.emit_signal("player_ammo_changed")
+		
+remotesync func reload():
+	var current_time = Time.get_ticks_msec()
+	
+	if multiplayer.get_rpc_sender_id() == int(player.name):
+		
+		if player.last_shoot > current_time or player.current_weapon == 30 or player.current_weapon == -1:
+			return
+			
+		var item = Utils.get_shop_controller().get_weapon_with_id(player.current_weapon)
+		if item == null: return
+		
+		player.last_shoot = current_time + 1000
+		
+		if NetworkController.is_server() or get_tree().get_network_unique_id() == int(player.name):
+			var current_ammo = player.weapon_info[player.current_weapon]["ammo"]
+			var to_load = item.props["ammo"] - current_ammo
+			player.weapon_info[player.current_weapon]["ammo"] = item.props["ammo"]
+			player.weapon_info[player.current_weapon]["mag"] -= to_load
+			player.emit_signal("player_ammo_changed")
+		
+		
+	
 
 remote func interact():
 	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):

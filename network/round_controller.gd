@@ -22,7 +22,7 @@ var leaderboard = {
 func _ready():
 	if Utils.is_server():
 		# change_level("de_enka")
-		next_level = "fw_base"
+		next_level = "fw_forest"
 		start_new_round()
 		
 	connect("round_ended", Utils.get_hud_node(), "show_disappearing_winner")
