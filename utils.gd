@@ -1,5 +1,7 @@
 extends Node
 
+signal level_changed(level)
+
 const menu = preload("res://ui/menu/menu.tscn")
 const game = preload("res://main.tscn")
 
@@ -39,6 +41,7 @@ func load_level(level_name: String):
 			level_bounds = Vector2(1024, 600) 
 		else:
 			level_bounds = limit.position
+		emit_signal("level_changed", level_name)
 		
 
 func is_game_loaded():

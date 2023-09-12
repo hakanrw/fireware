@@ -183,7 +183,6 @@ remotesync func round_ended(winner: int):
 		if winner != 2: leaderboard[winner] += 1
 		print("team " + str(winner) + " won the round")
 		emit_signal("round_ended", winner)
-		Utils.get_chat_controller().insert_message("team " + str(winner) + " won the round")
 	
 remotesync func update_timer(max_time, remaining_time):
 	if 1 == multiplayer.get_rpc_sender_id() or multiplayer.get_network_unique_id() == multiplayer.get_rpc_sender_id():

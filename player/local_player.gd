@@ -15,6 +15,8 @@ func _ready():
 	connect("player_weapon_changed", self, "_on_weapon_change")
 	connect("player_ammo_changed", self, "_on_ammo_change")
 	
+	Utils.get_hud_node().uname.text = name_tag
+	
 var spectating = 0
 
 func _process(delta):
@@ -46,25 +48,26 @@ func _process(delta):
 		
 	else:
 		last_shoot = Time.get_ticks_msec()
-			
-	if Input.is_action_just_pressed("ui_shop"): 
-		if _current_hud_menu() == "shop":
-			Utils.get_hud_node().clear_page()
-		else:
-			_request_shop()
 	
-	if Input.is_action_just_pressed("ui_team_select"): 
-		if _current_hud_menu() == "team_select":
-			Utils.get_hud_node().clear_page()
-		else:
-			_request_team_select()
-	
-	if Input.is_action_just_pressed("ui_menu"):
-		NetworkController.close_connection()
-	
-	if Input.is_action_just_pressed("throw_weapon"):
-		_throw_current_weapon()
+	if Utils.get_chat_controller().focus == false:
+		if Input.is_action_just_pressed("ui_shop"): 
+			if _current_hud_menu() == "shop":
+				Utils.get_hud_node().clear_page()
+			else:
+				_request_shop()
 		
+		if Input.is_action_just_pressed("ui_team_select"): 
+			if _current_hud_menu() == "team_select":
+				Utils.get_hud_node().clear_page()
+			else:
+				_request_team_select()
+		
+		if Input.is_action_just_pressed("ui_menu"):
+			NetworkController.close_connection()
+		
+		if Input.is_action_just_pressed("throw_weapon"):
+			_throw_current_weapon()
+			
 	
 func _physics_process(delta):
 	# handle walk
@@ -116,7 +119,7 @@ func _is_on_menu():
 	return _current_hud_menu() != ""
 
 func _is_interactable():
-	return not _is_on_menu() and health > 0
+	return not _is_on_menu() and health > 0 and Utils.get_chat_controller().focus == false
 	
 func _is_spectating():
 	return health <= 0 or team == Utils.Team.SPECTATOR

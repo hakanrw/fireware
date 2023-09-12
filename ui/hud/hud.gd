@@ -16,6 +16,8 @@ const images = {
 onready var htd = $Control/VBoxContainer/HTD
 onready var hmd = $Control/VBoxContainer/MarginContainer/HMD
 onready var hbd = $Control/VBoxContainer/HBD
+onready var uname = $Control/VBoxContainer/HTD/HBoxContainer/Panel/Name
+onready var level = $Control/VBoxContainer/HTD/HBoxContainer/Panel3/Level
 
 onready var health_label = $Control/VBoxContainer/HBD/HBoxContainer/HealthPanel/Health
 onready var ammo_panel = $Control/VBoxContainer/HBD/HBoxContainer/AmmoPanel/Ammo
@@ -27,8 +29,12 @@ var current_page = ""
 
 func _ready():
 	if Utils.is_server():
-		$Control.visible = false
-	pass
+		hbd.hide()
+		uname.text = "server"
+	Utils.connect("level_changed", self, "_on_level_change")
+
+func _on_level_change(level_name):
+	level.text = level_name
 
 func show_team_select():
 	show_page("team_select")
@@ -40,6 +46,8 @@ func clear_page():
 	show_page("")
 	
 func show_page(page: String):
+	if Utils.is_server(): return
+	
 	if current_page == page: return
 	current_page = page
 	_clear_hud()
@@ -58,6 +66,7 @@ func _clear_hud():
 		n.queue_free()
 	
 func alert(message: String):
+	if Utils.is_server(): return
 	show_page("alert")
 	hmd.get_node("Alert/CenterContainer/Label").text = message
 
@@ -94,6 +103,9 @@ func show_disappearing_winner(winner: int):
 		= str(Utils.get_round_controller().leaderboard[Utils.Team.SECURITY])
 	winner_node.get_node("ScoresPanel/CenterContainer/HBoxContainer/InsurgentScoreContainer/Label").text \
 		= str(Utils.get_round_controller().leaderboard[Utils.Team.INSURGENT])
+	
+	Utils.get_chat_controller().insert_message(text.to_lower())
+	
 	
 	hmd.add_child(winner_node)
 	
