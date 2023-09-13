@@ -40,7 +40,7 @@ func insert_message(message_text: String):
 
 func focus():
 	write.visible = true
-	chat_box.rect_position.y = 160
+	chat_box.margin_bottom = -140
 	line_edit.grab_focus()
 	
 	focus = true
@@ -49,7 +49,7 @@ func unfocus():
 	if focus == false: return
 	
 	write.visible = false
-	chat_box.rect_position.y = 200
+	chat_box.margin_bottom = -100
 	line_edit.release_focus()
 		
 	focus = false
