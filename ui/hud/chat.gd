@@ -16,14 +16,18 @@ func _process(delta):
 	if Input.is_action_just_pressed("chat") and Utils.get_chat_controller().focus == false:
 		Utils.get_chat_controller().focus()
 
-remotesync func send_message(message: String):
+remotesync func send_message(message: String, markdown: bool = false):
 	var sender = multiplayer.get_rpc_sender_id()
 	var sender_name = ""
 	if sender == 1:
 		sender_name = "server"
 	else:
 		sender_name = NetworkController.get_player_with_id(sender).name_tag
-	insert_message(sender_name + ": " + message.strip_edges(true, true).substr(0, 50))
+	
+	if sender == 1 and markdown:
+		insert_message(message.strip_edges(true, true).substr(0, 50))
+	else:
+		insert_message(sender_name + ": " + message.strip_edges(true, true).substr(0, 50))
 	
 func insert_message(message_text: String):
 	var message = message_template.instance()
@@ -60,5 +64,9 @@ func _on_text_submit(text):
 		return
 	
 	line_edit.text = ""
-	rpc("send_message", text)
+	
+	if text.begins_with("/"):
+		Utils.get_command_controller().rpc_id(1, "execute_command_message", text.substr(1))
+	else:
+		rpc("send_message", text)
 	unfocus()

@@ -205,6 +205,10 @@ remotesync func update_leaderboard(dict: Dictionary):
 				leaderboard[key] = value
 
 func change_level(level_name: String):
+	if not ResourceLoader.exists("res://levels/" + level_name + ".tscn"):
+		printerr("level " + level_name + " doesn't exist")
+		return
+	
 	next_level = level_name
 	if not _hold_flag: end_round(2)
 

@@ -158,6 +158,12 @@ func get_players_props() -> Array:
 func get_player_with_id(id: int):
 	if not Utils.get_players_node().has_node(str(id)): return null
 	return Utils.get_players_node().get_node(str(id))
+	
+func get_player_with_name(name: String):
+	var players = get_players_props()
+	for player in players:
+		if player["name_tag"] == name:
+			return get_player_with_id(player["id"])
 
 func get_self_player():
 	return get_player_with_id(multiplayer.get_network_unique_id())
