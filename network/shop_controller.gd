@@ -69,7 +69,9 @@ master func buy_weapon(weapon_id: int):
 	
 	if player.weapons[item.type] != -1: 
 		player.network_player.rpc("throw_weapon", player.weapons[item.type], true)
+		
+	var new_money = player.money - item.price
 	
 	player.get_node("NetworkedPlayer").rpc("equip_weapon", weapon_id, true)
-	player.get_node("NetworkedPlayer").rpc_id(1, "set_money", player.money - item.price)
-	player.get_node("NetworkedPlayer").rpc_id(int(player.name), "set_money", player.money - item.price)
+	player.get_node("NetworkedPlayer").rpc_id(1, "set_money", new_money)
+	player.get_node("NetworkedPlayer").rpc_id(int(player.name), "set_money", new_money)

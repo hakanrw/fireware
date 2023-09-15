@@ -29,12 +29,21 @@ onready var chat_pane = get_node("../Chat")
 
 var current_page = ""
 
+var t_delta = 0
+
 func _ready():
 	if Utils.is_server():
 		hbd.hide()
 		uname.text = "server"
 	Utils.connect("level_changed", self, "_on_level_change")
+	
+func _process(delta):
+	t_delta += delta
 
+	if t_delta > 0.2:
+		set_time(Utils.get_round_controller().timer.time_left)
+		t_delta = 0
+	
 func _on_level_change(level_name):
 	level.text = level_name
 
@@ -131,3 +140,6 @@ func set_ammo_info(weapon_info):
 		mag_manel.visible = true
 		ammo_panel.text = str(weapon_info["ammo"])
 		mag_manel.text = str(weapon_info["mag"])
+
+func set_time(seconds_remaining: int):
+	time_label.text = str(int(seconds_remaining) / 60) + ":" + str(int(seconds_remaining) % 60)
