@@ -1,6 +1,6 @@
 extends Panel
 
-const card = preload("res://ui/general/card.tscn")
+const card = preload("res://ui/general/shop_card.tscn")
 
 onready var categories = $MarginContainer/VBoxContainer/HBoxContainer/Categories
 onready var weapons_view = $MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/WeaponsView
@@ -19,8 +19,11 @@ func change_page(page: int):
 	var weapons = shop_controller.get_weapons_of_category(page)
 	
 	for weapon in weapons:
+		var texture = load("res://weapons/sprites/" + str(weapon.id) + ".png")
 		var card_instance = card.instance()
 		card_instance.set_text(weapon.name)
+		card_instance.set_texture(texture)
+		card_instance.set_price(weapon.price)
 		card_instance.connect("mouse_clicked", self, "try_buy", [weapon.id])
 		weapons_view.add_child(card_instance)
 

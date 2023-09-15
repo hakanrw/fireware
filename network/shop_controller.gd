@@ -72,6 +72,10 @@ master func buy_weapon(weapon_id: int):
 		
 	var new_money = player.money - item.price
 	
-	player.get_node("NetworkedPlayer").rpc("equip_weapon", weapon_id, true)
 	player.get_node("NetworkedPlayer").rpc_id(1, "set_money", new_money)
 	player.get_node("NetworkedPlayer").rpc_id(int(player.name), "set_money", new_money)
+
+	if item.type == Utils.WeaponType.PRIMARY or item.type == Utils.WeaponType.SECONDARY:
+		player.get_node("NetworkedPlayer").rpc("equip_weapon", weapon_id, true)
+	else:
+		pass
