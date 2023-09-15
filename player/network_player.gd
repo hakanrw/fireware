@@ -187,9 +187,10 @@ remotesync func reload():
 		player.last_shoot = current_time + 1000
 		
 		if NetworkController.is_server() or get_tree().get_network_unique_id() == int(player.name):
+			var mag = player.weapon_info[player.current_weapon]["mag"]
 			var current_ammo = player.weapon_info[player.current_weapon]["ammo"]
-			var to_load = item.props["ammo"] - current_ammo
-			player.weapon_info[player.current_weapon]["ammo"] = item.props["ammo"]
+			var to_load = min(item.props["ammo"] - current_ammo, mag)
+			player.weapon_info[player.current_weapon]["ammo"] = current_ammo + to_load
 			player.weapon_info[player.current_weapon]["mag"] -= to_load
 			player.emit_signal("player_ammo_changed")
 		
