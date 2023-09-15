@@ -20,6 +20,8 @@ onready var uname = $Control/VBoxContainer/HTD/HBoxContainer/Panel/Name
 onready var level = $Control/VBoxContainer/HTD/HBoxContainer/Panel3/Level
 
 onready var health_label = $Control/VBoxContainer/HBD/HBoxContainer/HealthPanel/Health
+onready var money_label = $Control/VBoxContainer/HBD/HBoxContainer/VBoxContainer/MoneyPanel/Money
+onready var time_label = $Control/VBoxContainer/HBD/HBoxContainer/VBoxContainer/TimePanel/Time
 onready var ammo_panel = $Control/VBoxContainer/HBD/HBoxContainer/AmmoPanel/Ammo
 onready var mag_manel = $Control/VBoxContainer/HBD/HBoxContainer/AmmoPanel/Magazine
 
@@ -59,7 +61,6 @@ func show_page(page: String):
 			chat_pane.get_node("Control").visible = false
 		
 	hmd.add_child(pages[page].instance())
-
 	
 func _clear_hud():
 	for n in hmd.get_children():
@@ -117,6 +118,9 @@ func show_disappearing_winner(winner: int):
 
 func set_health(health: int):
 	health_label.text = str(health)
+	
+func set_money(money: int):
+	money_label.text = str(money)
 	
 func set_ammo_info(weapon_info):
 	if weapon_info == null:

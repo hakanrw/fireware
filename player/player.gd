@@ -5,6 +5,7 @@ signal player_resurrected
 signal player_weapon_changed(weapon)
 signal player_health_changed(health)
 signal player_ammo_changed
+signal player_money_changed(money)
 
 onready var network_player = $NetworkedPlayer
 onready var head = $Head
@@ -29,7 +30,7 @@ var weapon_info = {
 var speed = Utils.player_speed
 var direction = Vector2(0, 0)
 var health = Utils.max_health setget set_health
-var money = 0
+var money = 0 setget set_money
 
 var name_tag = "Player" setget set_name_tag
 
@@ -78,6 +79,9 @@ func set_weapon(weapon: int):
 		
 	emit_signal("player_weapon_changed", weapon)
 
+func set_money(m: int):
+	money = m
+	emit_signal("player_money_changed", money)
 
 func set_health(hp: int):
 	hp = max(hp, 0)

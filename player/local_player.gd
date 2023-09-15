@@ -14,6 +14,7 @@ func _ready():
 	connect("player_health_changed", self, "_on_health_change")
 	connect("player_weapon_changed", self, "_on_weapon_change")
 	connect("player_ammo_changed", self, "_on_ammo_change")
+	connect("player_money_changed", self, "_on_money_change")
 	
 	Utils.get_hud_node().uname.text = name_tag
 	
@@ -104,6 +105,9 @@ func _on_ammo_change():
 
 func _on_health_change(health: int):
 	Utils.get_hud_node().set_health(health)
+
+func _on_money_change(money: int):
+	Utils.get_hud_node().set_money(money)
 
 func _request_shop():
 	if player_can_shop():
