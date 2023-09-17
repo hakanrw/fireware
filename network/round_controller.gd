@@ -182,6 +182,7 @@ remotesync func round_ended(winner: int):
 	if 1 == multiplayer.get_rpc_sender_id():
 		if winner != 2: leaderboard[winner] += 1
 		print("team " + str(winner) + " won the round")
+		AudioEffects.play_win()
 		emit_signal("round_ended", winner)
 	
 remotesync func update_timer(max_time, remaining_time):
