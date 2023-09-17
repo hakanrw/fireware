@@ -51,11 +51,10 @@ func _player_connected(id: int):
 			kick_player(id, "authentication fail")
 		
 func _player_disconnected(id: int):
+	print("player disconnected with id: " + str(id))
+	
 	if is_server() and get_player_with_id(id):
 		rpc("remove_player", id)
-		# send goodbye message
-	print("player disconnected with id: " + str(id))
-	pass
 
 remote func authenticate_player(username: String, password: String):
 	if is_server():
@@ -135,10 +134,12 @@ remotesync func remove_player(id):
 	if 1 != get_tree().get_rpc_sender_id():
 		return
 	print("removing player: " + str(id))
+	
 	var player = Utils.get_players_node().get_node(str(id))
 	Utils.get_chat_controller().insert_message(player.name_tag + " left the game")
-	player.queue_free()
-	Utils.get_round_controller().rpc("update_leaderboard", {id: "rm"})
+	player.queue_free() # this causes error for some reason
+	if is_server():
+		Utils.get_round_controller().rpc("update_leaderboard", {id: "rm"})
 
 remote func update_players_props(players_props: Array):
 	if 1 == multiplayer.get_rpc_sender_id():
@@ -190,17 +191,19 @@ func local_create_player(id: int, username: String):
 	return player
 
 func kick_player(id: int, message: String):
+	if not (id in multiplayer.get_network_connected_peers()): 
+		# player already left
+		return
+		
+	print("kicking player " + str(id))
 	rpc_id(id, "show_kick_message", message)
 	get_tree().network_peer.disconnect_peer(id)
-	pass
-	
 
 remote func alert(message: String):
 	if 1 == multiplayer.get_rpc_sender_id():
 		print("trying to alert")
 		Utils.get_hud_node().show_disappearing_alert(message)
 
-	
 remote func show_kick_message(message: String):
 	if 1 == multiplayer.get_rpc_sender_id():
 		close_connection()
