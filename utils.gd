@@ -26,7 +26,7 @@ func load_game():
 	if get_node("/root").has_node("Game"):
 		return
 	if get_node("/root").has_node("Menu"):
-		get_node("/root/Menu").queue_free()	
+		get_node("/root/Menu").queue_free()
 	get_node("/root").add_child(game.instance())
 
 func load_level(level_name: String):

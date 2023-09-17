@@ -28,6 +28,7 @@ func _mouse_hover(out: bool):
 	
 func _mouse_clicked():
 	emit_signal("mouse_clicked")
+	AudioEffects.play_button_click()
 	pass
 	
 func _input(event):

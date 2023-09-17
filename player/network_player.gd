@@ -173,6 +173,9 @@ remotesync func shoot(hit_player: int):
 		
 		player.emit_signal("player_ammo_changed")
 		
+		player.shoot_player.play()
+		
+
 remotesync func reload():
 	var current_time = Time.get_ticks_msec()
 	
@@ -194,7 +197,7 @@ remotesync func reload():
 			player.weapon_info[player.current_weapon]["mag"] -= to_load
 			player.emit_signal("player_ammo_changed")
 		
-		
+		player.reload_player.play()
 	
 
 remote func interact():

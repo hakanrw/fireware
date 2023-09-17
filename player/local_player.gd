@@ -23,9 +23,11 @@ var spectating = 0
 func _process(delta):
 	# handle look
 	if _is_spectating():
+		listener.current = false
 		camera.current = false
 		_set_spectating()
 	else:
+		listener.current = true
 		camera.current = true
 		camera.limit_right = Utils.level_bounds.x
 		camera.limit_bottom = Utils.level_bounds.y
@@ -171,6 +173,8 @@ func _shoot():
 	network_player.rpc("shoot", hit_player)
 	
 func _reload():
+	if current_weapon == 30 or current_weapon == -1: return
+	if weapon_info[current_weapon].mag <= 0: return
 	network_player.rpc("reload")
 
 func _throw_current_weapon():
@@ -185,6 +189,7 @@ func _set_spectating():
 	if specting_node == null or specting_node.health <= 0:
 		spectating = 0
 		return
+	specting_node.listener.current = true
 	specting_node.camera.current = true
 	specting_node.camera.limit_right = Utils.level_bounds.x
 	specting_node.camera.limit_bottom = Utils.level_bounds.y

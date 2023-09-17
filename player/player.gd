@@ -15,6 +15,9 @@ onready var collision = $Head/Collision
 onready var ray = $Head/Ray
 onready var line = $Head/Line
 onready var camera = $Camera
+onready var listener = $Listener
+onready var shoot_player = $ShootPlayer
+onready var reload_player = $ReloadPlayer
 
 var current_weapon = -1 setget set_weapon
 var weapons = {
@@ -76,6 +79,9 @@ func set_weapon(weapon: int):
 		sprite.position.y = -22
 	else:
 		sprite.position.y = -20
+		
+	shoot_player.stream = load("res://weapons/audio/shoot/" + str(weapon) + ".wav")
+	reload_player.stream = load("res://weapons/audio/reload/" + str(weapon) + ".wav")
 		
 	emit_signal("player_weapon_changed", weapon)
 
