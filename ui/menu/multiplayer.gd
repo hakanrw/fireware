@@ -11,10 +11,12 @@ func _ready():
 func _connect_pressed():
 	var con_label = connect_button.get_node("Label")
 	var url = url_input.text.split(":")
+	var password = pass_input.text
+	if url.size() == 1: url.append("1337")
 	if url.size() != 2:
 		con_label.text = "Bad URL."
 		return
 	
-	var res = NetworkController.connect_to_server(url[0], int(url[1]))
+	var res = NetworkController.connect_to_server(url[0], int(url[1]), password)
 	if res == false:
 		con_label.text = "Connection failed."

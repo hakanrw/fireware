@@ -83,6 +83,13 @@ func is_server():
 
 func is_auto_join_enabled():
 	return "--auto-join" in OS.get_cmdline_args()
+	
+func get_password_argument():
+	for arg in OS.get_cmdline_args():
+		if arg.begins_with("--password"):
+			return Array(arg.split("="))[1]
+			
+	return ""
 
 func get_round_controller():
 	return get_node("/root/Game/RoundController")

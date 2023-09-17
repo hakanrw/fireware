@@ -9,6 +9,8 @@ func is_server():
 	return get_tree().is_network_server()
 
 func _ready():
+	password_server = Utils.get_password_argument()
+	
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
 	get_tree().connect("connected_to_server", self, "_connected_ok")
