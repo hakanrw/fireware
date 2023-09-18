@@ -63,6 +63,11 @@ func get_weapons_of_category(category: int) -> Array:
 master func buy_weapon(weapon_id: int):
 	var player = NetworkController.get_player_with_id(multiplayer.get_rpc_sender_id())
 	var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
+	
+	if not player.player_can_shop():
+		NetworkController.rpc_id(multiplayer.get_rpc_sender_id(), "alert", "you cannot shop now")
+		return
+	
 	if item.price > player.money: 
 		NetworkController.rpc_id(multiplayer.get_rpc_sender_id(), "alert", "not enough money")
 		return

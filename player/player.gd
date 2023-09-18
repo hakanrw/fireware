@@ -144,7 +144,7 @@ func set_props(props):
 	if "weapon" in props   :         set_weapon(props["weapon"])
 
 func player_can_shop():
-	return player_in_shop_area() and Utils.get_round_controller().is_shop_enabled()
+	return health > 0 and player_in_shop_area() and Utils.get_round_controller().is_shop_enabled()
 
 func player_in_shop_area():
 	return true
