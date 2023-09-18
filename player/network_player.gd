@@ -172,7 +172,7 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 		rpc("equip_weapon", weapon_id, true)
 			
 
-remotesync func shoot(hit_player: int):
+remotesync func shoot(hit_player: int, mouse_global_pos: Vector2):
 	var item = Utils.get_shop_controller().get_weapon_with_id(player.current_weapon)
 	
 	if multiplayer.get_rpc_sender_id() == 1:
@@ -184,7 +184,7 @@ remotesync func shoot(hit_player: int):
 				launchee.global_rotation = player.head.global_rotation
 				launchee.rpc("update_position", launchee.global_position)
 				launchee.rpc("update_rotation", launchee.global_rotation)
-				launchee.rpc("launch_towards", player.head.global_rotation)
+				launchee.rpc("launch_towards", mouse_global_pos)
 			if hit_player != -1:
 				# maybe add logic that checks if shoot is legitimate?
 				var hit_player_node = NetworkController.get_player_with_id(hit_player)
@@ -230,7 +230,7 @@ remotesync func shoot(hit_player: int):
 			return
 			
 			
-		rpc("shoot", hit_player)
+		rpc("shoot", hit_player, mouse_global_pos)
 		
 
 remotesync func reload():

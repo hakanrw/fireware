@@ -203,7 +203,7 @@ func _shoot():
 		hit_player = int(ray.get_collider().get_parent().name)
 	
 	shoot()
-	network_player.rpc_id(1, "shoot", hit_player)
+	network_player.rpc_id(1, "shoot", hit_player, get_global_mouse_position())
 	
 func _reload():
 	if current_weapon == 30 or current_weapon == -1: return
