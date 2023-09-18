@@ -38,10 +38,10 @@ var shop = [
 	##Item.new(15, "sawn off", 1100, Utils.WeaponType.PRIMARY),
 	Item.new(16, ".51 blaster", 3000, Utils.WeaponType.PRIMARY, {"cooldown": 750, "damage": 50, "ammo": 2, "mag": 6}),	
 	# misc
-	Item.new(20, "kevlar vest", 650, Utils.WeaponType.WEAR),
-	Item.new(21, "x grenade", 300, Utils.WeaponType.MISC),
-	Item.new(22, "shockbang", 200, Utils.WeaponType.MISC),
-	Item.new(23, "smokebang", 300, Utils.WeaponType.MISC),
+	# Item.new(20, "kevlar vest", 650, Utils.WeaponType.WEAR),
+	Item.new(21, "x grenade", 300, Utils.WeaponType.MISC, {"cooldown": 500}),
+	# Item.new(22, "shockbang", 200, Utils.WeaponType.MISC),
+	Item.new(23, "smokebang", 300, Utils.WeaponType.MISC, {"cooldown": 500}),
 
 ]
 
@@ -71,16 +71,21 @@ master func buy_weapon(weapon_id: int):
 	if item.price > player.money: 
 		NetworkController.rpc_id(multiplayer.get_rpc_sender_id(), "alert", "not enough money")
 		return
+		
+	if item.type == Utils.WeaponType.MISC and item.id in player.weapons[Utils.WeaponType.MISC]:
+		NetworkController.rpc_id(multiplayer.get_rpc_sender_id(), "alert", "you have this throwable")
+		return
 	
-	if player.weapons[item.type] != -1: 
+	if (item.type == Utils.WeaponType.PRIMARY or item.type == Utils.WeaponType.SECONDARY) and player.weapons[item.type] != -1: 
 		player.network_player.rpc("throw_weapon", player.weapons[item.type], true)
+		
 		
 	var new_money = player.money - item.price
 	
 	player.get_node("NetworkedPlayer").rpc_id(1, "set_money", new_money)
 	player.get_node("NetworkedPlayer").rpc_id(int(player.name), "set_money", new_money)
 
-	if item.type == Utils.WeaponType.PRIMARY or item.type == Utils.WeaponType.SECONDARY:
+	if item.type == Utils.WeaponType.PRIMARY or item.type == Utils.WeaponType.SECONDARY or item.type == Utils.WeaponType.MISC:
 		player.get_node("NetworkedPlayer").rpc("equip_weapon", weapon_id, true)
 	else:
 		pass

@@ -13,11 +13,13 @@ onready var head = $Head
 onready var sprite: Sprite = $Head/Sprite
 onready var collision = $Head/Collision
 onready var ray = $Head/Ray
+onready var knife_ray = $Head/KnifeRay
 onready var line = $Head/Line
 onready var camera = $Camera
 onready var listener = $Listener
 onready var shoot_player = $ShootPlayer
 onready var reload_player = $ReloadPlayer
+onready var throw_player = $ThrowPlayer
 
 var current_weapon = -1 setget set_weapon
 var weapons = {
@@ -79,9 +81,16 @@ func set_weapon(weapon: int):
 		sprite.position.y = -22
 	else:
 		sprite.position.y = -20
+	
+	if ResourceLoader.exists("res://weapons/audio/shoot/" + str(weapon) + ".wav"):
+		shoot_player.stream = load("res://weapons/audio/shoot/" + str(weapon) + ".wav")
+	else:
+		shoot_player.stream = null
 		
-	shoot_player.stream = load("res://weapons/audio/shoot/" + str(weapon) + ".wav")
-	reload_player.stream = load("res://weapons/audio/reload/" + str(weapon) + ".wav")
+	if ResourceLoader.exists("res://weapons/audio/reload/" + str(weapon) + ".wav"):
+		reload_player.stream = load("res://weapons/audio/reload/" + str(weapon) + ".wav")
+	else:
+		reload_player.stream = null
 		
 	emit_signal("player_weapon_changed", weapon)
 
@@ -108,32 +117,42 @@ func set_name_tag(tag):
 	name_tag = tag
 	
 func shoot():
-	var line_vec = ray.cast_to
-	
-	if ray.is_colliding():
-		line_vec = Vector2(ray.global_position.distance_to(ray.get_collision_point()), 0)
-	
-	line.visible = true
-	line.set_point_position(1, line_vec)
-	
 	shoot_player.play()
+
+	var item = Utils.get_shop_controller().get_weapon_with_id(current_weapon)
+	if item == null:
+		pass
+		
+	elif item.type == Utils.WeaponType.MISC: 
+		if NetworkController.is_server() or get_tree().get_network_unique_id() == int(name):
+			weapons[Utils.WeaponType.MISC].erase(item.id)
+		shoot_player.stop()
+		throw_player.play()
+		set_weapon(30) # set weapon as knife
+		
+	elif item.type == Utils.WeaponType.PRIMARY or item.type == Utils.WeaponType.SECONDARY:
+		var line_vec = ray.cast_to
+		
+		if ray.is_colliding():
+			line_vec = Vector2(ray.global_position.distance_to(ray.get_collision_point()), 0)
+		
+		line.visible = true
+		line.set_point_position(1, line_vec)
+		
+		if current_weapon in weapon_info: 
+			weapon_info[current_weapon]["ammo"] -= 1
 	
 	last_shoot = Time.get_ticks_msec()
-	
-	if current_weapon in weapon_info: 
-		weapon_info[current_weapon]["ammo"] -= 1
 		
 	emit_signal("player_ammo_changed")
 		
 func reload():
-		
 	var item = Utils.get_shop_controller().get_weapon_with_id(current_weapon)
-	if item == null: return
+	if item == null or item.type == Utils.WeaponType.MISC: return
 	
 	reload_player.play()
 	
 	last_shoot = Time.get_ticks_msec() + 1000
-	
 	
 	if current_weapon in weapon_info:
 		var mag = weapon_info[current_weapon]["mag"]

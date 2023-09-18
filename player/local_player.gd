@@ -5,6 +5,8 @@ onready var last_rotation = head.global_rotation
 
 const FLOAT_EPSILON = 0.00001
 
+var misc_idx = 0
+
 static func compare_floats(a, b, epsilon = FLOAT_EPSILON):
 	return abs(a - b) <= epsilon
 
@@ -38,7 +40,7 @@ func _process(delta):
 		full_look_at(mouse_pos)
 		
 		if Input.is_action_just_released("ui_page_up") or Input.is_action_just_released("ui_page_down"):
-			_select_next_weapon(Input.is_action_just_pressed("ui_page_down"))
+			_select_next_weapon(Input.is_action_just_released("ui_page_down"))
 			
 		if Input.is_action_pressed("shoot"):
 			_shoot()
@@ -134,20 +136,40 @@ func _select_next_weapon(reverse: bool = false):
 	var item = Utils.get_shop_controller().get_weapon_with_id(current_weapon)
 	if item == null and current_weapon != 30: return
 	
-	var idx = item.type if item else 2
-	# 0 = primary 1 = secondary 2 = knife
+	var idx = item.type if item else 3
+	# 0 primary 1 secondary 2 misc 3 knife
 	
 	while true:
+		if idx == 2: # we are in misc
+			if misc_idx + 1 < weapons[Utils.WeaponType.MISC].size():
+				misc_idx += 1
+				print(misc_idx)
+				break
+				
 		if reverse: 
 			idx -= 1 
 		else: 
 			idx += 1
-		idx = idx % 3
+			
+		if idx == -1: idx = 3
+		idx = idx % 4 # 0 primary 1 secondary 2 misc 3 knife
 		
-		if idx == 2 or weapons[idx] != -1: break
+		if idx == 2:
+			misc_idx = 0
+			if weapons[Utils.WeaponType.MISC].size() > 0: break
+		elif idx == 3 or weapons[idx] != -1: break
+	
+	var to_equip
+	
+	if idx < 2: 
+		to_equip = weapons[idx] 
+	if idx == 2:
+		to_equip = weapons[Utils.WeaponType.MISC][misc_idx]
+	if idx == 3:
+		to_equip = 30
 
-	set_weapon(weapons[idx] if idx != 2 else 30)
-	network_player.rpc_id(1, "equip_weapon", weapons[idx] if idx != 2 else 30)
+	set_weapon(to_equip)
+	network_player.rpc_id(1, "equip_weapon", to_equip)
 	
 func _shoot():
 	var current_time = Time.get_ticks_msec()
@@ -158,19 +180,26 @@ func _shoot():
 	if health == 0 or not Utils.get_round_controller().move_enabled:
 		return
 		
-	if item == null:
-		if current_weapon == 30: 
-			pass # handle knife attack
-		return
-		
-	if elapsed_time < item.props["cooldown"]:
-		return
-		
-	if weapon_info[current_weapon].ammo <= 0: return
-	
 	var hit_player = -1
 	
-	if ray.is_colliding() and ray.get_collider().name == "Head":
+	if item == null:
+		if current_weapon == 30: 
+			if elapsed_time > 900:
+				if knife_ray.is_colliding() and knife_ray.get_collider().name == "Head":
+					hit_player = int(ray.get_collider().get_parent().name)
+			else: return
+		else: return
+		
+	elif elapsed_time < item.props["cooldown"]:
+		return
+		
+	elif item.type == Utils.WeaponType.MISC:
+		pass
+		
+	elif current_weapon in weapon_info and weapon_info[current_weapon].ammo <= 0: 
+		return
+	
+	elif ray.is_colliding() and ray.get_collider().name == "Head":
 		hit_player = int(ray.get_collider().get_parent().name)
 	
 	shoot()

@@ -100,6 +100,7 @@ remotesync func throw_weapon(weapon_id: int, safe = false):
 		var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
 		# player.current_weapon = 30
 		player.weapons[item.type] = -1
+		player.throw_player.play()
 		
 		if NetworkController.is_server():
 			var weapon_props = player.weapon_info[weapon_id]
@@ -141,12 +142,18 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 #			rpc("throw_weapon", player.weapons[item.type], true, false)
 #		# check if ^ precedes v on client
 		if item: 
-			player.weapons[item.type] = weapon_id
-			if NetworkController.is_server() or get_tree().get_network_unique_id() == int(player.name):
-				if not player.weapon_info.has(weapon_id):
-					# means player bought the weapon
-					player.weapon_info[weapon_id] = item.props
+			if item.type == Utils.WeaponType.PRIMARY or item.type == Utils.WeaponType.SECONDARY:
+				player.weapons[item.type] = weapon_id
 					
+				if NetworkController.is_server() or get_tree().get_network_unique_id() == int(player.name):
+					if not player.weapon_info.has(weapon_id):
+						# means player bought the weapon
+						player.weapon_info[weapon_id] = item.props
+						
+			elif item.type == Utils.WeaponType.MISC:
+				if not player.weapons[item.type].has(weapon_id):
+					player.weapons[item.type].append(weapon_id)
+		
 		player.current_weapon = weapon_id
 		player.last_shoot = Time.get_ticks_msec()
 		return
@@ -169,16 +176,26 @@ remotesync func shoot(hit_player: int):
 	var item = Utils.get_shop_controller().get_weapon_with_id(player.current_weapon)
 	
 	if multiplayer.get_rpc_sender_id() == 1:
-		if not get_tree().get_network_unique_id() == int(player.name):
-			player.shoot() # so that player doesn't shoot twice
 		
-		if hit_player != -1:
-			if NetworkController.is_server():
+		if NetworkController.is_server():
+			if item and item.type == Utils.WeaponType.MISC:
+				var launchee = Utils.get_entity_controller().server_create_entity("grenade", player.current_weapon)
+				launchee.global_position = player.global_position
+				launchee.global_rotation = player.head.global_rotation
+				launchee.rpc("update_position", launchee.global_position)
+				launchee.rpc("update_rotation", launchee.global_rotation)
+				launchee.rpc("launch_towards", player.head.global_rotation)
+			if hit_player != -1:
 				# maybe add logic that checks if shoot is legitimate?
 				var hit_player_node = NetworkController.get_player_with_id(hit_player)
-				hit_player_node.network_player.rpc("set_health", hit_player_node.health - item.props["damage"])
-		
-		return
+				if item:
+					hit_player_node.network_player.rpc("set_health", hit_player_node.health - item.props["damage"])
+				elif player.current_weapon == 30:
+					hit_player_node.network_player.rpc("set_health", hit_player_node.health - 50)
+			
+		if not get_tree().get_network_unique_id() == int(player.name):
+			player.shoot() # so that player doesn't shoot twice
+			
 		
 	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
 		# print("got shoot request")
@@ -186,19 +203,24 @@ remotesync func shoot(hit_player: int):
 		
 		var current_time = Time.get_ticks_msec()
 		var elapsed_time =  current_time - player.last_shoot
-		
-		if item == null:
-			return
-		
+			
 		if player.health == 0 or not Utils.get_round_controller().move_enabled:
 			error_flag = true
 			print("shoot request error: player is not permitted to shoot")
+		
+		elif item == null:
+			if player.current_weapon != 30:
+				error_flag = true
+				print("shoot request error: no such weapon")
+			elif elapsed_time < 750:
+				error_flag = true
+				print("shoot request error: client too fast")
 		
 		elif elapsed_time < item.props["cooldown"] * 0.8:
 			error_flag = true
 			print("shoot request error: client too fast")
 		
-		elif player.weapon_info[player.current_weapon]["ammo"] <= 0:
+		elif item.type != Utils.WeaponType.MISC and player.weapon_info[player.current_weapon]["ammo"] <= 0:
 			error_flag = true
 			print("shoot request error: client has no ammo")
 		
@@ -206,6 +228,7 @@ remotesync func shoot(hit_player: int):
 			# correct client data
 			rpc_id(int(player.name), "set_weapon_info", player.current_weapon, player.weapon_info[player.current_weapon])
 			return
+			
 			
 		rpc("shoot", hit_player)
 		
@@ -223,7 +246,7 @@ remotesync func reload():
 		# print("got reload request")
 		var error_flag = false
 		
-		if item == null:
+		if item == null or item.type == Utils.WeaponType.MISC:
 			return
 			
 		if player.last_shoot > current_time:

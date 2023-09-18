@@ -1,4 +1,4 @@
-extends Node2D
+extends RigidBody2D
 signal property_updated(property)
 
 var type: String = "entity"
