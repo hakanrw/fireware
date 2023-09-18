@@ -136,6 +136,7 @@ remotesync func remove_player(id):
 	print("removing player: " + str(id))
 	
 	var player = Utils.get_players_node().get_node(str(id))
+	player.health = 0
 	Utils.get_chat_controller().insert_message(player.name_tag + " left the game")
 	player.queue_free() # this causes error for some reason
 	if is_server():

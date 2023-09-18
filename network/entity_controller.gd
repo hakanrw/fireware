@@ -7,9 +7,10 @@ remote func create_entity(name: String, type: String, variant: int):
 		local_create_entity(name, type, variant)
 
 func local_create_entity(name: String, type: String, variant: int):
+	
 	var scene: Node2D = null
 	if ResourceLoader.exists("res://entity/" + type + ".tscn"):
-		scene = load("res://entity/" + type + ".tscn").intance()
+		scene = load("res://entity/" + type + ".tscn").instance()
 	else:
 		scene = load("res://entity/entity.tscn").instance()
 	
@@ -19,9 +20,6 @@ func local_create_entity(name: String, type: String, variant: int):
 	else:
 		script = load("res://entity/entity.gd")
 	
-	if type == "weapon":
-		scene.add_child(load("res://weapons/" + str(variant) + ".tscn").instance())
-		
 	scene.set_script(script)
 	scene.name = name
 	scene.type = type

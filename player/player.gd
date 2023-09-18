@@ -32,7 +32,7 @@ var weapon_info = {
 
 var speed = Utils.player_speed
 var direction = Vector2(0, 0)
-var health = Utils.max_health setget set_health
+var health = 0 setget set_health
 var money = 0 setget set_money
 
 var name_tag = "Player" setget set_name_tag
@@ -93,8 +93,8 @@ func set_health(hp: int):
 	hp = max(hp, 0)
 	if hp == 0 and health > 0:
 		visible = false
-		global_position = Vector2(0, 0)
 		emit_signal("player_died")
+		global_position = Vector2(0, 0)
 	if hp > 0 and health == 0:
 		visible = true
 		emit_signal("player_resurrected")

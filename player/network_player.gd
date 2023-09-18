@@ -9,7 +9,19 @@ func _ready():
 func _server_player_died():
 	# create dead body
 	print("creat dead body")
-	pass
+	
+	var dead_body = Utils.get_entity_controller().server_create_entity("dead_player", player.team)
+	dead_body.global_position = player.global_position
+	dead_body.global_rotation = player.head.global_rotation
+	dead_body.rpc("update_position", dead_body.global_position)
+	dead_body.rpc("update_rotation", dead_body.global_rotation)
+	
+	var primary_weapon = player.weapons[Utils.WeaponType.PRIMARY]
+	var secondary_weapon = player.weapons[Utils.WeaponType.SECONDARY]
+	if primary_weapon != -1:
+		rpc("throw_weapon", primary_weapon, true)
+	if secondary_weapon != -1:
+		rpc("throw_weapon", secondary_weapon, true)
 
 puppet func quick_correct_position(position: Vector2):
 	if Utils.get_round_controller().move_enabled:

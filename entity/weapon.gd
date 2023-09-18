@@ -1,5 +1,8 @@
 extends "./throwable.gd"
 
+func _ready():
+	add_child(load("res://weapons/" + str(variant) + ".tscn").instance())
+
 func interact(by):
 	var item = Utils.get_shop_controller().get_weapon_with_id(variant)
 	
