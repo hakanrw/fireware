@@ -106,6 +106,44 @@ func set_health(hp: int):
 func set_name_tag(tag):
 	$Nametag.text = tag
 	name_tag = tag
+	
+func shoot():
+	var line_vec = ray.cast_to
+	
+	if ray.is_colliding():
+		line_vec = Vector2(ray.global_position.distance_to(ray.get_collision_point()), 0)
+	
+	line.visible = true
+	line.set_point_position(1, line_vec)
+	
+	shoot_player.play()
+	
+	last_shoot = Time.get_ticks_msec()
+	
+	if current_weapon in weapon_info: 
+		weapon_info[current_weapon]["ammo"] -= 1
+		
+	emit_signal("player_ammo_changed")
+		
+func reload():
+		
+	var item = Utils.get_shop_controller().get_weapon_with_id(current_weapon)
+	if item == null: return
+	
+	reload_player.play()
+	
+	last_shoot = Time.get_ticks_msec() + 1000
+	
+	
+	if current_weapon in weapon_info:
+		var mag = weapon_info[current_weapon]["mag"]
+		var current_ammo = weapon_info[current_weapon]["ammo"]
+		var to_load = min(item.props["ammo"] - current_ammo, mag)
+		weapon_info[current_weapon]["ammo"] = current_ammo + to_load
+		weapon_info[current_weapon]["mag"] -= to_load
+	
+	emit_signal("player_ammo_changed")
+	
 
 func full_look_at(vec2d): 
 	if health > 0:

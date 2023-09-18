@@ -155,6 +155,9 @@ func _shoot():
 	
 	var item = Utils.get_shop_controller().get_weapon_with_id(current_weapon)
 	
+	if health == 0 or not Utils.get_round_controller().move_enabled:
+		return
+		
 	if item == null:
 		if current_weapon == 30: 
 			pass # handle knife attack
@@ -169,13 +172,16 @@ func _shoot():
 	
 	if ray.is_colliding() and ray.get_collider().name == "Head":
 		hit_player = int(ray.get_collider().get_parent().name)
-		
-	network_player.rpc("shoot", hit_player)
+	
+	shoot()
+	network_player.rpc_id(1, "shoot", hit_player)
 	
 func _reload():
 	if current_weapon == 30 or current_weapon == -1: return
 	if weapon_info[current_weapon].mag <= 0: return
-	network_player.rpc("reload")
+	
+	reload()
+	network_player.rpc_id(1, "reload")
 
 func _throw_current_weapon():
 	network_player.rpc_id(1, "throw_weapon", current_weapon)

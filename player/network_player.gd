@@ -146,59 +146,59 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 
 remotesync func shoot(hit_player: int):
 	var item = Utils.get_shop_controller().get_weapon_with_id(player.current_weapon)
-	if multiplayer.get_rpc_sender_id() == int(player.name):
-		if player.health == 0 or !Utils.get_round_controller().move_enabled:
-			return
-		var line_vec = player.ray.cast_to
-		
-		if player.ray.is_colliding():
-			line_vec = Vector2(player.ray.global_position.distance_to(player.ray.get_collision_point()), 0)
-		
-		player.line.visible = true
-		player.line.set_point_position(1, line_vec)
-		
-		player.last_shoot = Time.get_ticks_msec()
-		
-		if NetworkController.is_server() or get_tree().get_network_unique_id() == int(player.name):
-			player.weapon_info[player.current_weapon]["ammo"] -= 1
+	
+	if multiplayer.get_rpc_sender_id() == 1:
+		if not get_tree().get_network_unique_id() == int(player.name):
+			player.shoot() # so that player doesn't shoot twice
 		
 		if hit_player != -1:
 			if NetworkController.is_server():
-				if player.weapon_info[player.current_weapon]["ammo"] < 0: 
-					print("no ammo + tried to cheat")
-					return
 				# maybe add logic that checks if shoot is legitimate?
 				var hit_player_node = NetworkController.get_player_with_id(hit_player)
 				hit_player_node.network_player.rpc("set_health", hit_player_node.health - item.props["damage"])
 		
-		player.emit_signal("player_ammo_changed")
+		return
 		
-		player.shoot_player.play()
+	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
+		# print("got shoot request")
+		if player.health == 0 or not Utils.get_round_controller().move_enabled:
+			print("shoot request error: player is not permitted to shoot")
+			return
+			
+		var current_time = Time.get_ticks_msec()
+		var elapsed_time =  current_time - player.last_shoot
+		
+		
+		if elapsed_time < item.props["cooldown"] * 0.8:
+			print("shoot request error: client too fast")
+			return
+		
+		if player.weapon_info[player.current_weapon]["ammo"] <= 0:
+			print("shoot request error: client has no ammo")
+			return
+		
+		rpc("shoot", hit_player)
 		
 
 remotesync func reload():
 	var current_time = Time.get_ticks_msec()
 	
-	if multiplayer.get_rpc_sender_id() == int(player.name):
-		
+	if multiplayer.get_rpc_sender_id() == 1:
+		if not get_tree().get_network_unique_id() == int(player.name):
+			player.reload() # so that player doesn't reload twice
+	
+	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
+		# print("got reload request")
 		if player.last_shoot > current_time or player.current_weapon == 30 or player.current_weapon == -1:
+			print("reload request error: client reloading already")
 			return
 			
-		var item = Utils.get_shop_controller().get_weapon_with_id(player.current_weapon)
-		if item == null: return
+		if player.weapon_info[player.current_weapon].mag <= 0: 
+			print("reload request error: client has no ammo")
+			return
+			
+		rpc("reload")
 		
-		player.last_shoot = current_time + 1000
-		
-		if NetworkController.is_server() or get_tree().get_network_unique_id() == int(player.name):
-			var mag = player.weapon_info[player.current_weapon]["mag"]
-			var current_ammo = player.weapon_info[player.current_weapon]["ammo"]
-			var to_load = min(item.props["ammo"] - current_ammo, mag)
-			player.weapon_info[player.current_weapon]["ammo"] = current_ammo + to_load
-			player.weapon_info[player.current_weapon]["mag"] -= to_load
-			player.emit_signal("player_ammo_changed")
-		
-		player.reload_player.play()
-	
 
 remote func interact():
 	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
