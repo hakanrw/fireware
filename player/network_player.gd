@@ -161,22 +161,28 @@ remotesync func shoot(hit_player: int):
 		
 	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
 		# print("got shoot request")
-		if player.health == 0 or not Utils.get_round_controller().move_enabled:
-			print("shoot request error: player is not permitted to shoot")
-			return
-			
+		var error_flag = false
+		
 		var current_time = Time.get_ticks_msec()
 		var elapsed_time =  current_time - player.last_shoot
 		
+		if player.health == 0 or not Utils.get_round_controller().move_enabled:
+			error_flag = true
+			print("shoot request error: player is not permitted to shoot")
 		
-		if elapsed_time < item.props["cooldown"] * 0.8:
+		elif elapsed_time < item.props["cooldown"] * 0.8:
+			error_flag = true
 			print("shoot request error: client too fast")
-			return
 		
-		if player.weapon_info[player.current_weapon]["ammo"] <= 0:
+		elif player.weapon_info[player.current_weapon]["ammo"] <= 0:
+			error_flag = true
 			print("shoot request error: client has no ammo")
-			return
 		
+		if error_flag:
+			# correct client data
+			rpc_id(int(player.name), "set_weapon_info", player.current_weapon, player.weapon_info[player.current_weapon])
+			return
+			
 		rpc("shoot", hit_player)
 		
 
@@ -189,14 +195,21 @@ remotesync func reload():
 	
 	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
 		# print("got reload request")
+		var error_flag = false
+		
 		if player.last_shoot > current_time or player.current_weapon == 30 or player.current_weapon == -1:
+			error_flag = true
 			print("reload request error: client reloading already")
-			return
 			
-		if player.weapon_info[player.current_weapon].mag <= 0: 
+		elif player.weapon_info[player.current_weapon].mag <= 0: 
+			error_flag = true
 			print("reload request error: client has no ammo")
+		
+		if error_flag:
+			# correct client data			
+			rpc_id(int(player.name), "set_weapon_info", player.current_weapon, player.weapon_info[player.current_weapon])
 			return
-			
+		
 		rpc("reload")
 		
 
