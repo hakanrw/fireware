@@ -2,6 +2,15 @@ extends Node
 
 onready var player = get_node("..")
 
+func _ready():
+	if NetworkController.is_server():
+		player.connect("player_died", self, "_server_player_died")
+	
+func _server_player_died():
+	# create dead body
+	print("creat dead body")
+	pass
+
 puppet func quick_correct_position(position: Vector2):
 	if Utils.get_round_controller().move_enabled:
 		player.global_position = position
@@ -77,7 +86,7 @@ remotesync func reset_weaponry():
 remotesync func throw_weapon(weapon_id: int, safe = false):
 	if 1 == multiplayer.get_rpc_sender_id() and safe:
 		var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
-		player.current_weapon = -1
+		# player.current_weapon = 30
 		player.weapons[item.type] = -1
 		
 		if NetworkController.is_server():
@@ -90,7 +99,7 @@ remotesync func throw_weapon(weapon_id: int, safe = false):
 			wp.rpc("update_rotation", wp.global_rotation)
 			wp.rpc("throw_towards", player.head.global_rotation)
 			
-		player.weapon_info.erase(weapon_id)	
+		player.weapon_info.erase(weapon_id)
 		return
 	
 	if NetworkController.is_server() and multiplayer.get_rpc_sender_id() == int(player.name):
@@ -166,6 +175,9 @@ remotesync func shoot(hit_player: int):
 		var current_time = Time.get_ticks_msec()
 		var elapsed_time =  current_time - player.last_shoot
 		
+		if item == null:
+			return
+		
 		if player.health == 0 or not Utils.get_round_controller().move_enabled:
 			error_flag = true
 			print("shoot request error: player is not permitted to shoot")
@@ -187,6 +199,8 @@ remotesync func shoot(hit_player: int):
 		
 
 remotesync func reload():
+	var item = Utils.get_shop_controller().get_weapon_with_id(player.current_weapon)
+	
 	var current_time = Time.get_ticks_msec()
 	
 	if multiplayer.get_rpc_sender_id() == 1:
@@ -197,7 +211,10 @@ remotesync func reload():
 		# print("got reload request")
 		var error_flag = false
 		
-		if player.last_shoot > current_time or player.current_weapon == 30 or player.current_weapon == -1:
+		if item == null:
+			return
+			
+		if player.last_shoot > current_time:
 			error_flag = true
 			print("reload request error: client reloading already")
 			
