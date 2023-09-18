@@ -7,6 +7,10 @@ func _ready():
 		player.connect("player_died", self, "_server_player_died")
 	
 func _server_player_died():
+	
+	if Utils.get_round_controller().starting_round:
+		return
+		
 	# create dead body
 	print("creat dead body")
 	

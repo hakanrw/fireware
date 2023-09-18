@@ -12,6 +12,8 @@ var _reset_flag = false
 var _hold_flag = false
 var next_level = ""
 
+var starting_round = false
+
 var move_enabled = true setget , is_move_enabled
 
 var leaderboard = {
@@ -82,10 +84,12 @@ func end_round(winner: int):
 	pass
 	
 func start_new_round():
+	starting_round = true
 	# called on server
 	rpc_id(1, "new_round_started", _max_round_time, _max_round_time)
 	print("starts new round")
-	rpc("destroy_entities")
+	
+	rpc("destroy_entities")	
 	
 	if next_level != "":
 		rpc("load_level", next_level)
@@ -102,6 +106,7 @@ func start_new_round():
 		place_player(player)
 		
 	NetworkController.rpc("update_players_props", NetworkController.get_players_props())
+	starting_round = false
 
 func players_in_both_teams() -> bool:
 	var players = get_players_props_by_teams()
