@@ -102,16 +102,22 @@ custom_constants/separation = 9
 self_modulate = Color( 0.8, 0.8, 0.8, 1 )
 text = "Multiplayer"
 
-[node name="BSettings" parent="MarginContainer/HBoxContainer/VBoxContainer/Bottom/MarginContainer/VBoxContainer" instance=ExtResource( 4 )]
+[node name="BCreateServer" parent="MarginContainer/HBoxContainer/VBoxContainer/Bottom/MarginContainer/VBoxContainer" instance=ExtResource( 4 )]
 self_modulate = Color( 0.8, 0.8, 0.8, 1 )
 margin_top = 59.0
 margin_bottom = 109.0
+text = "Create Server"
+
+[node name="BSettings" parent="MarginContainer/HBoxContainer/VBoxContainer/Bottom/MarginContainer/VBoxContainer" instance=ExtResource( 4 )]
+self_modulate = Color( 0.8, 0.8, 0.8, 1 )
+margin_top = 118.0
+margin_bottom = 168.0
 text = "Settings"
 
 [node name="BExit" parent="MarginContainer/HBoxContainer/VBoxContainer/Bottom/MarginContainer/VBoxContainer" instance=ExtResource( 4 )]
 self_modulate = Color( 0.8, 0.8, 0.8, 1 )
-margin_top = 118.0
-margin_bottom = 168.0
+margin_top = 177.0
+margin_bottom = 227.0
 text = "Exit"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer"]

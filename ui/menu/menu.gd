@@ -14,6 +14,7 @@ func _ready():
 	bottom_container.get_node("BMultiplayer").connect("mouse_clicked", self, "_change_pane_page", ["Multiplayer"])
 	bottom_container.get_node("BSettings").connect("mouse_clicked", self, "_change_pane_page", ["Settings"])
 	bottom_container.get_node("BExit").connect("mouse_clicked", self, "_exit_pressed")
+	bottom_container.get_node("BCreateServer").connect("mouse_clicked", self, "_create_server")
 	
 	pane.get_node("Button").connect("mouse_clicked", self, "_close_pane")
 
@@ -31,3 +32,8 @@ func _change_pane_page(page):
 
 func _close_pane():
 	pane.visible = false
+	
+func _create_server():
+	print(OS.get_cmdline_args())
+	OS.execute(OS.get_executable_path(), ["--server"], false)
+	pass

@@ -5,6 +5,8 @@ const player_prefab = preload("res://player/player.tscn")
 var password_client = "" # the password that is typed in UI
 var password_server = "" # password on server configuration
 
+var initial_level = "fw_base"
+
 func is_server():
 	return get_tree().is_network_server()
 
@@ -21,6 +23,19 @@ func close_connection():
 	get_tree().network_peer.close_connection()
 	get_tree().network_peer = null
 	Utils.load_menu()
+	
+func setup_server(port: int, max_players: int = 16, password: String = "", level: String = "fw_base"):
+	var peer = NetworkedMultiplayerENet.new()
+	var err = peer.create_server(port, max_players)
+	
+	if err != OK:
+		return false
+		
+	get_tree().network_peer = peer
+	initial_level = level
+	password_server = password
+	Utils.call_deferred("load_game")
+	return true
 
 func connect_to_server(url: String, port: int, password: String = ""):
 	var peer = NetworkedMultiplayerENet.new()
@@ -184,6 +199,7 @@ func local_create_player(id: int, username: String):
 	player.set_network_master(id)
 	player.name = str(id)
 	player.name_tag = username
+	player.visible = false
 	Utils.get_players_node().add_child(player)
 	player.set_team(Utils.Team.SPECTATOR)
 	print("initiating player: " + str(id))

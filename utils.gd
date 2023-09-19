@@ -2,6 +2,7 @@ extends Node
 
 signal level_changed(level)
 
+const server_menu = preload("res://ui/menu/server_menu.tscn")
 const menu = preload("res://ui/menu/menu.tscn")
 const game = preload("res://main.tscn")
 
@@ -10,12 +11,23 @@ enum WeaponType {PRIMARY, SECONDARY, MISC, WEAR}
 
 var level_bounds = Vector2(1024, 600)
 
+func load_server_menu():
+	if get_node("/root").has_node("ServerMenu"):
+		return
+	if get_node("/root").has_node("Game"):
+		get_node("/root/Game").queue_free()
+	if get_node("/root").has_node("Menu"):
+		get_node("/root/Menu").queue_free()
+		
+	get_node("/root").add_child(server_menu.instance())
+
 func load_menu():
 	if get_node("/root").has_node("Menu"):
 		return
 	if get_node("/root").has_node("Game"):
 		get_node("/root/Game").queue_free()
-		# NetworkController.close_connection()
+	if get_node("/root").has_node("ServerMenu"):
+		get_node("/root/ServerMenu").queue_free()
 	
 	var menu_instance = menu.instance()
 	menu_instance.get_node("Init").queue_free()
@@ -27,6 +39,9 @@ func load_game():
 		return
 	if get_node("/root").has_node("Menu"):
 		get_node("/root/Menu").queue_free()
+	if get_node("/root").has_node("ServerMenu"):
+		get_node("/root/ServerMenu").queue_free()
+		
 	get_node("/root").add_child(game.instance())
 
 func load_level(level_name: String):
@@ -78,7 +93,7 @@ func get_hud_node():
 func get_entities_node():
 	return get_node("/root/Game/Entities")
 
-func is_server():
+func is_server_enabled():
 	return "--server" in OS.get_cmdline_args()
 
 func is_auto_join_enabled():

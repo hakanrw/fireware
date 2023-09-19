@@ -32,7 +32,7 @@ var current_page = ""
 var t_delta = 0
 
 func _ready():
-	if Utils.is_server():
+	if NetworkController.is_server():
 		hbd.hide()
 		uname.text = "server"
 	Utils.connect("level_changed", self, "_on_level_change")
@@ -57,7 +57,7 @@ func clear_page():
 	show_page("")
 	
 func show_page(page: String):
-	if Utils.is_server(): return
+	if NetworkController.is_server(): return
 	
 	if current_page == page: return
 	current_page = page
@@ -66,8 +66,7 @@ func show_page(page: String):
 		chat_pane.get_node("Control").visible = true
 		return
 	else:
-		if not Utils.is_server():
-			chat_pane.get_node("Control").visible = false
+		chat_pane.get_node("Control").visible = false
 		
 	hmd.add_child(pages[page].instance())
 	
@@ -76,7 +75,7 @@ func _clear_hud():
 		n.queue_free()
 	
 func alert(message: String):
-	if Utils.is_server(): return
+	if NetworkController.is_server(): return
 	show_page("alert")
 	hmd.get_node("Alert/CenterContainer/Label").text = message
 

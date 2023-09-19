@@ -22,15 +22,15 @@ var leaderboard = {
 }
 
 func _ready():
-	if Utils.is_server():
+	if NetworkController.is_server():
 		# change_level("de_enka")
-		next_level = "fw_forest"
+		next_level = NetworkController.initial_level
 		start_new_round()
 		
 	connect("round_ended", Utils.get_hud_node(), "show_disappearing_winner")
 		
 func _process(delta):
-	if not Utils.is_server() or _hold_flag:
+	if not NetworkController.is_server() or _hold_flag:
 		return
 	
 	var player_count = NetworkController.get_player_nodes().size()

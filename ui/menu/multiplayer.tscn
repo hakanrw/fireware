@@ -25,6 +25,7 @@ margin_top = 0.0
 margin_right = 500.0
 margin_bottom = 45.0
 text = "URL"
+edit_text = "localhost"
 
 [node name="PasswordInput" parent="VBoxContainer" instance=ExtResource( 4 )]
 margin_left = 0.0
@@ -32,6 +33,7 @@ margin_top = 57.0
 margin_right = 500.0
 margin_bottom = 102.0
 text = "Password"
+edit_placeholder = "<no password>"
 
 [node name="ConnectButton" parent="VBoxContainer" instance=ExtResource( 1 )]
 margin_top = 114.0

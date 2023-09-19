@@ -1,0 +1,214 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://ui/menu/server_menu.gd" type="Script" id=1]
+[ext_resource path="res://fonts/font_dynamic_small.tres" type="DynamicFont" id=2]
+[ext_resource path="res://fonts/font_dynamic.tres" type="DynamicFont" id=3]
+[ext_resource path="res://ui/menu/init.gd" type="Script" id=5]
+[ext_resource path="res://ui/menu/background/camo.jpg" type="Texture" id=7]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://fonts/arialbd.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 20
+font_data = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
+font_data = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 14
+font_data = SubResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+font_data = SubResource( 1 )
+
+[node name="ServerMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 7 )
+expand = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.403922 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_right = -1.0
+custom_constants/margin_right = 25
+custom_constants/margin_top = 25
+custom_constants/margin_left = 25
+custom_constants/margin_bottom = 25
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
+margin_left = 25.0
+margin_top = 25.0
+margin_right = 999.0
+margin_bottom = 575.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer"]
+margin_left = 287.0
+margin_top = 60.0
+margin_right = 687.0
+margin_bottom = 490.0
+custom_constants/separation = 10
+
+[node name="Header" type="Panel" parent="MarginContainer/CenterContainer/VBoxContainer"]
+margin_right = 400.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 400, 120 )
+size_flags_horizontal = 0
+
+[node name="Title" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/Header"]
+margin_left = 24.0
+margin_top = 21.0
+margin_right = 222.0
+margin_bottom = 95.0
+custom_fonts/font = ExtResource( 3 )
+text = "Fireware Server"
+
+[node name="VersionLabel" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/Header"]
+margin_left = 26.0
+margin_top = 75.0
+margin_right = 224.0
+margin_bottom = 111.0
+custom_fonts/font = ExtResource( 2 )
+text = "development build"
+
+[node name="Settings" type="Panel" parent="MarginContainer/CenterContainer/VBoxContainer"]
+margin_top = 130.0
+margin_right = 400.0
+margin_bottom = 430.0
+rect_min_size = Vector2( 400, 300 )
+size_flags_horizontal = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/CenterContainer/VBoxContainer/Settings"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 30
+custom_constants/margin_top = 30
+custom_constants/margin_left = 30
+custom_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer"]
+margin_left = 30.0
+margin_top = 30.0
+margin_right = 370.0
+margin_bottom = 280.0
+custom_constants/separation = 20
+
+[node name="LevelBox" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer"]
+margin_right = 340.0
+margin_bottom = 24.0
+
+[node name="Title" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer/LevelBox"]
+margin_right = 100.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+custom_fonts/font = SubResource( 2 )
+text = "Level: "
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer/LevelBox"]
+margin_left = 104.0
+margin_right = 340.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="PortBox" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer"]
+margin_top = 44.0
+margin_right = 340.0
+margin_bottom = 68.0
+
+[node name="Title" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer/PortBox"]
+margin_right = 100.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+custom_fonts/font = SubResource( 2 )
+text = "Port: "
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer/PortBox"]
+margin_left = 104.0
+margin_right = 340.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "1337"
+align = 2
+
+[node name="PassBox" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer"]
+margin_top = 88.0
+margin_right = 340.0
+margin_bottom = 112.0
+
+[node name="Title" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer/PassBox"]
+margin_top = 2.0
+margin_right = 100.0
+margin_bottom = 21.0
+rect_min_size = Vector2( 100, 0 )
+custom_fonts/font = SubResource( 4 )
+text = "Password:"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer/PassBox"]
+margin_left = 104.0
+margin_right = 340.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+align = 2
+placeholder_text = "<no password>"
+
+[node name="MaxPlayersBox" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer"]
+margin_top = 132.0
+margin_right = 340.0
+margin_bottom = 156.0
+
+[node name="Title" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer/MaxPlayersBox"]
+margin_top = 4.0
+margin_right = 100.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 100, 0 )
+custom_fonts/font = SubResource( 5 )
+text = "Max Players:"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer/MaxPlayersBox"]
+margin_left = 104.0
+margin_right = 340.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "16"
+align = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer"]
+margin_top = 176.0
+margin_right = 340.0
+margin_bottom = 196.0
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer/CenterContainer"]
+margin_left = 170.0
+margin_top = 3.0
+margin_right = 170.0
+margin_bottom = 17.0
+
+[node name="ButtonBox" type="HBoxContainer" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer"]
+margin_top = 216.0
+margin_right = 340.0
+margin_bottom = 250.0
+
+[node name="Button" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer/Settings/MarginContainer/VBoxContainer/ButtonBox"]
+margin_right = 340.0
+margin_bottom = 34.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 3 )
+text = "Start Server"
+
+[node name="Init" type="Node" parent="."]
+script = ExtResource( 5 )

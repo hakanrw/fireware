@@ -21,9 +21,6 @@ margin_bottom = 53.0
 rect_min_size = Vector2( 0, 45 )
 custom_constants/separation = 13
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Panel" type="Panel" parent="."]
 self_modulate = Color( 0.8, 0.8, 0.8, 1 )
@@ -39,7 +36,7 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="Panel/CenterContainer"]
-margin_left = 49.0
+margin_left = 50.0
 margin_top = 10.0
 margin_right = 90.0
 margin_bottom = 34.0
