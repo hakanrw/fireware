@@ -134,7 +134,7 @@ remotesync func throw_weapon(weapon_id: int, safe = false):
 		if player.weapons[Utils.WeaponType.SECONDARY] != -1:
 			equipped = player.weapons[Utils.WeaponType.SECONDARY]
 		
-		rpc("equip_weapon", equipped, true)
+		rpc("equip_weapon", equipped, true, true)
 		
 
 remotesync func equip_weapon(weapon_id: int, safe = false, from_inventory = false):
