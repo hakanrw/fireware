@@ -15,6 +15,15 @@
 [node name="Node2D" type="Node2D" parent="Spawn/Insurgent"]
 position = Vector2( 2104, 1471 )
 
+[node name="Node2D2" type="Node2D" parent="Spawn/Insurgent"]
+position = Vector2( 1689, 1170 )
+
+[node name="Node2D3" type="Node2D" parent="Spawn/Insurgent"]
+position = Vector2( 1901, 1323 )
+
+[node name="Node2D4" type="Node2D" parent="Spawn/Insurgent"]
+position = Vector2( 2187, 1094 )
+
 [node name="Security" type="Node" parent="Spawn"]
 
 [node name="Node2D" type="Node2D" parent="Spawn/Security"]
