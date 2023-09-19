@@ -72,8 +72,8 @@ master func buy_weapon(weapon_id: int):
 		NetworkController.rpc_id(multiplayer.get_rpc_sender_id(), "alert", "not enough money")
 		return
 		
-	if item.type == Utils.WeaponType.MISC and item.id in player.weapons[Utils.WeaponType.MISC]:
-		NetworkController.rpc_id(multiplayer.get_rpc_sender_id(), "alert", "you have this throwable")
+	if item.type == Utils.WeaponType.MISC and player.weapons[Utils.WeaponType.MISC].size() >= 4:
+		NetworkController.rpc_id(multiplayer.get_rpc_sender_id(), "alert", "you cannot carry more throwables")
 		return
 	
 	if (item.type == Utils.WeaponType.PRIMARY or item.type == Utils.WeaponType.SECONDARY) and player.weapons[item.type] != -1: 

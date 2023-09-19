@@ -45,13 +45,16 @@ func explode():
 				
 				var distance = player.global_position - ray.global_position
 				
-				ray.cast_to = distance 
+				ray.cast_to = distance
 				ray.force_raycast_update()
+				print(distance)
+				print(ray.global_position)
+				print(player.global_position)
 				
 				var collider = ray.get_collider()
 				var damage = max(200 * (1 - distance.length() / 300), 0) # so that it doesn't heal player
 				
-				if collider == player:
+				if (collider == null and distance.length() < 35) or collider == player:
 					print("with damage: " + str(damage))
 					player.network_player.rpc("set_health", player.health - damage )
 				else:

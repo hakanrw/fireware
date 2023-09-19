@@ -12,7 +12,7 @@ func _server_player_died():
 		return
 		
 	# create dead body
-	print("creat dead body")
+	print("create dead body")
 	
 	var dead_body = Utils.get_entity_controller().server_create_entity("dead_player", player.team)
 	dead_body.global_position = player.global_position
@@ -137,7 +137,7 @@ remotesync func throw_weapon(weapon_id: int, safe = false):
 		rpc("equip_weapon", equipped, true)
 		
 
-remotesync func equip_weapon(weapon_id: int, safe = false):
+remotesync func equip_weapon(weapon_id: int, safe = false, from_inventory = false):
 	var item = Utils.get_shop_controller().get_weapon_with_id(weapon_id)
 	if item == null and weapon_id != -1 and weapon_id != 30: return
 		
@@ -150,12 +150,12 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 				player.weapons[item.type] = weapon_id
 					
 				if NetworkController.is_server() or get_tree().get_network_unique_id() == int(player.name):
-					if not player.weapon_info.has(weapon_id):
+					if not from_inventory:
 						# means player bought the weapon
 						player.weapon_info[weapon_id] = item.props
 						
 			elif item.type == Utils.WeaponType.MISC:
-				if not player.weapons[item.type].has(weapon_id):
+				if not from_inventory:
 					player.weapons[item.type].append(weapon_id)
 		
 		player.current_weapon = weapon_id
@@ -173,7 +173,7 @@ remotesync func equip_weapon(weapon_id: int, safe = false):
 			grant = true
 		if grant == false: return
 		
-		rpc("equip_weapon", weapon_id, true)
+		rpc("equip_weapon", weapon_id, true, true)
 			
 
 remotesync func shoot(hit_player: int, mouse_global_pos: Vector2):
