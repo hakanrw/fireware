@@ -90,6 +90,9 @@ func get_players_node():
 func get_hud_node():
 	return get_node("/root/Game/HUD")
 	
+func get_over_menu_node():
+	return get_node("/root/Game/OverMenu")
+	
 func get_entities_node():
 	return get_node("/root/Game/Entities")
 

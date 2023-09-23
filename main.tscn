@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://network/round_controller.gd" type="Script" id=1]
 [ext_resource path="res://ui/hud/hud.tscn" type="PackedScene" id=2]
@@ -6,12 +6,15 @@
 [ext_resource path="res://network/entity_controller.gd" type="Script" id=4]
 [ext_resource path="res://ui/hud/chat.tscn" type="PackedScene" id=5]
 [ext_resource path="res://network/command_controller.gd" type="Script" id=6]
+[ext_resource path="res://ui/hud/over_menu.tscn" type="PackedScene" id=7]
 
 [node name="Game" type="Node"]
 
 [node name="Chat" parent="." instance=ExtResource( 5 )]
 
 [node name="HUD" parent="." instance=ExtResource( 2 )]
+
+[node name="OverMenu" parent="." instance=ExtResource( 7 )]
 
 [node name="World" type="Node" parent="."]
 

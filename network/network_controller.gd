@@ -69,7 +69,10 @@ func _player_disconnected(id: int):
 	print("player disconnected with id: " + str(id))
 	
 	if is_server() and get_player_with_id(id):
-		rpc("remove_player", id)
+		# we first remove_player on server so that throw_weapon doesn't cause rpc error on client
+		rpc_id(1, "remove_player", id)
+		for peer in multiplayer.get_network_connected_peers():
+			rpc_id(peer, "remove_player", id)
 
 remote func authenticate_player(username: String, password: String):
 	if is_server():
@@ -153,7 +156,7 @@ remotesync func remove_player(id):
 	var player = Utils.get_players_node().get_node(str(id))
 	player.health = 0
 	Utils.get_chat_controller().insert_message(player.name_tag + " left the game")
-	player.queue_free() # this causes error for some reason
+	player.queue_free()
 	if is_server():
 		Utils.get_round_controller().rpc("update_leaderboard", {id: "rm"})
 

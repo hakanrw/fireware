@@ -54,7 +54,7 @@ func _process(delta):
 	else:
 		last_shoot = Time.get_ticks_msec()
 	
-	if Utils.get_chat_controller().focus == false:
+	if Utils.get_chat_controller().focus == false and not _is_on_over_menu():
 		if Input.is_action_just_pressed("ui_shop"): 
 			if _current_hud_menu() == "shop":
 				Utils.get_hud_node().clear_page()
@@ -67,11 +67,13 @@ func _process(delta):
 			else:
 				_request_team_select()
 		
-		if Input.is_action_just_pressed("ui_menu"):
-			NetworkController.close_connection()
-		
 		if Input.is_action_just_pressed("throw_weapon"):
 			_throw_current_weapon()
+	
+	if Input.is_action_just_pressed("ui_menu"):
+		Utils.get_chat_controller().unfocus()
+		var over_menu = Utils.get_over_menu_node()
+		over_menu.visible = not over_menu.visible
 			
 	
 func _physics_process(delta):
@@ -125,9 +127,12 @@ func _current_hud_menu():
 	
 func _is_on_menu():
 	return _current_hud_menu() != ""
+	
+func _is_on_over_menu():
+	return Utils.get_over_menu_node().visible
 
 func _is_interactable():
-	return not _is_on_menu() and health > 0 and Utils.get_chat_controller().focus == false
+	return not _is_on_menu() and not _is_on_over_menu() and health > 0 and Utils.get_chat_controller().focus == false
 	
 func _is_spectating():
 	return health <= 0 or team == Utils.Team.SPECTATOR

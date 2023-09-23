@@ -31,11 +31,12 @@ func _mouse_clicked():
 	AudioEffects.play_button_click()
 	pass
 	
-func _input(event):
+func _gui_input(event):
+	if not (event is InputEventMouseButton and event.is_pressed()): return
+	
 	# Mouse in viewport coordinates.
 	var ms = get_global_mouse_position()
 	var nd = rect_global_position
 	var size = rect_size
 	if ms.x >= nd.x and ms.y >= nd.y and ms.x <= nd.x + size.x and ms.y <= nd.y + size.y:
-		if event is InputEventMouseButton and event.is_pressed():
-			_mouse_clicked()
+		_mouse_clicked()
