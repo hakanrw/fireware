@@ -1,4 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/objects/shadows/shadows_house_0013_Layer-14.png" type="Texture" id=1]
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 49.5079
@@ -19,3 +21,7 @@ shape = SubResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 3 )
 disabled = true
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.16, 0.16 )
+texture = ExtResource( 1 )
