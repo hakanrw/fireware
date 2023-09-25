@@ -23,7 +23,9 @@ func _server_player_died():
 	var primary_weapon = player.weapons[Utils.WeaponType.PRIMARY]
 	var secondary_weapon = player.weapons[Utils.WeaponType.SECONDARY]
 	if primary_weapon != -1:
-		rpc("throw_weapon", primary_weapon, true)
+		player.head.global_rotation += PI / 4      # so that primary and secondary weapon 
+		rpc("throw_weapon", primary_weapon, true)  # are not spawned at the same position
+		player.head.global_rotation -= PI / 4      # 
 	if secondary_weapon != -1:
 		rpc("throw_weapon", secondary_weapon, true)
 
