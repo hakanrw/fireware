@@ -31,7 +31,7 @@ var shop = [
 	## Item.new(2 , "maverick m4a1", 3100, Utils.WeaponType.PRIMARY),
 	# sidearm
 	Item.new(5 , "7/24 sidearm", 400, Utils.WeaponType.SECONDARY, {"cooldown": 500, "damage": 25, "ammo": 8, "mag": 24}),
-	Item.new(6 , "wrestler", 1000, Utils.WeaponType.SECONDARY, {"cooldown": 750, "damage": 35, "ammo": 5, "mag": 15}),
+	Item.new(6 , "wrestler", 900, Utils.WeaponType.SECONDARY, {"cooldown": 750, "damage": 35, "ammo": 5, "mag": 15}),
 	# smg
 	Item.new(10, "fastgun", 1100, Utils.WeaponType.PRIMARY, {"cooldown": 200, "damage": 10, "ammo": 16, "mag": 48}),
 	# heavy
