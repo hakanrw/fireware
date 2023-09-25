@@ -9,8 +9,6 @@ const game = preload("res://main.tscn")
 enum Team {SECURITY, INSURGENT, SPECTATOR}
 enum WeaponType {PRIMARY, SECONDARY, MISC, WEAR}
 
-var level_bounds = Vector2(1024, 600)
-
 func load_server_menu():
 	if get_node("/root").has_node("ServerMenu"):
 		return
@@ -124,9 +122,11 @@ func get_chat_controller():
 func get_command_controller():
 	return get_node("/root/Game/CommandController")
 	
+var level_bounds = Vector2(1024, 600)
+
 var max_round_time = 120
 var shopping_time = 15
 var max_health = 100
-var start_money = 1500
+var start_money = 4500
 var default_team = Team.SPECTATOR
 var player_speed = 200
