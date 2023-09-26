@@ -19,6 +19,7 @@ func _server_player_died():
 	dead_body.global_rotation = player.head.global_rotation
 	dead_body.rpc("update_position", dead_body.global_position)
 	dead_body.rpc("update_rotation", dead_body.global_rotation)
+	print(dead_body.global_position)
 	
 	var primary_weapon = player.weapons[Utils.WeaponType.PRIMARY]
 	var secondary_weapon = player.weapons[Utils.WeaponType.SECONDARY]
@@ -47,10 +48,29 @@ remotesync func set_name_tag(name_tag: String):
 	if NetworkController.is_server():
 		name_tag = NetworkController.prepare_name_tag(name_tag)
 		rpc("set_name_tag", name_tag)
+
+func take_damage(damage):
+	# call only on server
+	
+	var health = player.health
+	var armor = player.armor
+	
+	health -= damage
+	if armor > 0:
+		health += int(floor( min(damage, armor) / 3 ))
+		armor -= damage
+		rpc("set_armor", armor)
 		
+	rpc("set_health", health)
+	
+
 remotesync func set_health(hp):
 	if 1 == multiplayer.get_rpc_sender_id():
 		player.health = hp
+		
+remotesync func set_armor(armor):
+	if 1 == multiplayer.get_rpc_sender_id():
+		player.armor = armor
 
 remote func set_props(props):
 	if 1 == multiplayer.get_rpc_sender_id():
@@ -194,10 +214,9 @@ remotesync func shoot(hit_player: int, mouse_global_pos: Vector2):
 			if hit_player != -1:
 				# maybe add logic that checks if shoot is legitimate?
 				var hit_player_node = NetworkController.get_player_with_id(hit_player)
-				if item:
-					hit_player_node.network_player.rpc("set_health", hit_player_node.health - item.props["damage"])
-				elif player.current_weapon == 30:
-					hit_player_node.network_player.rpc("set_health", hit_player_node.health - 50)
+				var damage = item.props["damage"] if item else 50 if player.current_weapon == 30 else 0
+				
+				hit_player_node.network_player.take_damage(damage)
 			
 		if not get_tree().get_network_unique_id() == int(player.name):
 			player.shoot() # so that player doesn't shoot twice

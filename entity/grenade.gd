@@ -56,7 +56,7 @@ func explode():
 				
 				if (collider == null and distance.length() < 35) or collider == player:
 					print("with damage: " + str(damage))
-					player.network_player.rpc("set_health", player.health - damage )
+					player.network_player.take_damage(damage)
 				else:
 					print(collider.name)
 					print("player behind another")

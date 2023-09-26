@@ -1,15 +1,23 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://fonts/font_dynamic.tres" type="DynamicFont" id=1]
 [ext_resource path="res://fonts/font_dynamic_small.tres" type="DynamicFont" id=2]
+[ext_resource path="res://ui/icons/shield.png" type="Texture" id=3]
 [ext_resource path="res://ui/hud/hud.gd" type="Script" id=4]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://fonts/arialbd.ttf"
 
+[sub_resource type="DynamicFont" id=5]
+size = 30
+font_data = SubResource( 1 )
+
+[sub_resource type="DynamicFontData" id=6]
+font_path = "res://fonts/arialbd.ttf"
+
 [sub_resource type="DynamicFont" id=3]
 size = 20
-font_data = SubResource( 1 )
+font_data = SubResource( 6 )
 
 [sub_resource type="DynamicFontData" id=4]
 font_path = "res://fonts/arialbd.ttf"
@@ -146,6 +154,36 @@ margin_right = 38.5739
 margin_bottom = 57.3265
 custom_fonts/font = ExtResource( 1 )
 text = "+"
+
+[node name="ArmorPanel" type="Panel" parent="Control/VBoxContainer/HBD/HBoxContainer"]
+visible = false
+modulate = Color( 1, 1, 1, 0.784314 )
+margin_left = 182.0
+margin_right = 282.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 100, 0 )
+
+[node name="Armor" type="Label" parent="Control/VBoxContainer/HBD/HBoxContainer/ArmorPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 38.0
+custom_fonts/font = SubResource( 5 )
+text = "200"
+valign = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="Control/VBoxContainer/HBD/HBoxContainer/ArmorPanel"]
+anchor_bottom = 1.0
+margin_right = 37.0
+
+[node name="Shield" type="TextureRect" parent="Control/VBoxContainer/HBD/HBoxContainer/ArmorPanel/CenterContainer"]
+margin_left = 6.0
+margin_top = 22.0
+margin_right = 31.0
+margin_bottom = 47.0
+rect_min_size = Vector2( 25, 25 )
+size_flags_horizontal = 3
+texture = ExtResource( 3 )
+expand = true
 
 [node name="Margin" type="Panel" parent="Control/VBoxContainer/HBD/HBoxContainer"]
 modulate = Color( 1, 1, 1, 0 )

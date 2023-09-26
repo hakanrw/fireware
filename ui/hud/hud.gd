@@ -20,6 +20,8 @@ onready var uname = $Control/VBoxContainer/HTD/HBoxContainer/Panel/Name
 onready var level = $Control/VBoxContainer/HTD/HBoxContainer/Panel3/Level
 
 onready var health_label = $Control/VBoxContainer/HBD/HBoxContainer/HealthPanel/Health
+onready var armor_label = $Control/VBoxContainer/HBD/HBoxContainer/ArmorPanel/Armor
+onready var armor_panel = $Control/VBoxContainer/HBD/HBoxContainer/ArmorPanel
 onready var money_label = $Control/VBoxContainer/HBD/HBoxContainer/VBoxContainer/MoneyPanel/Money
 onready var time_label = $Control/VBoxContainer/HBD/HBoxContainer/VBoxContainer/TimePanel/Time
 onready var ammo_panel = $Control/VBoxContainer/HBD/HBoxContainer/AmmoPanel/Ammo
@@ -126,7 +128,14 @@ func show_disappearing_winner(winner: int):
 
 func set_health(health: int):
 	health_label.text = str(health)
-	
+
+func set_armor(armor: int):
+	armor_label.text = str(armor)
+	if armor > 0:
+		armor_panel.visible = true
+	else:
+		armor_panel.visible = false
+
 func set_money(money: int):
 	money_label.text = str(money)
 	
@@ -141,4 +150,4 @@ func set_ammo_info(weapon_info):
 		mag_manel.text = str(weapon_info["mag"])
 
 func set_time(seconds_remaining: int):
-	time_label.text = str(int(seconds_remaining) / 60) + ":" + str(int(seconds_remaining) % 60)
+	time_label.text = str(int(seconds_remaining) / 60) + ":" + str(int(seconds_remaining) % 60).pad_zeros(2)

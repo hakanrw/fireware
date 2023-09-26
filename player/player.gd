@@ -2,10 +2,11 @@ extends KinematicBody2D
 
 signal player_died
 signal player_resurrected
-signal player_weapon_changed(weapon)
 signal player_health_changed(health)
-signal player_ammo_changed
+signal player_armor_changed(health)
 signal player_money_changed(money)
+signal player_weapon_changed(weapon)
+signal player_ammo_changed
 
 onready var network_player = $NetworkedPlayer
 onready var head = $Head
@@ -35,6 +36,7 @@ var weapon_info = {
 var speed = Utils.player_speed
 var direction = Vector2(0, 0)
 var health = 0 setget set_health
+var armor = 0 setget set_armor
 var money = 0 setget set_money
 
 var name_tag = "Player" setget set_name_tag
@@ -77,7 +79,7 @@ func set_weapon(weapon: int):
 	var texture = load("res://player/tds/" + ("insurgent" if team == Utils.Team.INSURGENT else "security") + "_" + str(weapon) + ".png")
 	sprite.texture = texture
 	
-	if weapon == 5:
+	if weapon == 5 or weapon == 6:
 		sprite.position.y = -22
 	else:
 		sprite.position.y = -20
@@ -102,6 +104,7 @@ func set_health(hp: int):
 	hp = max(hp, 0)
 	if hp == 0 and health > 0:
 		visible = false
+		set_armor(0)
 		emit_signal("player_died")
 		global_position = Vector2(0, 0)
 	if hp > 0 and health == 0:
@@ -111,6 +114,10 @@ func set_health(hp: int):
 	health = hp
 	emit_signal("player_health_changed", hp)
 
+func set_armor(a: int):
+	a = max(a, 0)
+	armor = a
+	emit_signal("player_armor_changed", a)
 
 func set_name_tag(tag):
 	$Nametag.text = tag
@@ -186,19 +193,21 @@ func get_props():
 		"name_tag": name_tag,
 		"team": team,
 		"health": health,
+		"armor": armor,
 		"weapon": current_weapon,
 		"id": int(name),
 	}
 
 func set_props(props):
-	if "direction" in props: direction =      props["direction"]
+	if "direction" in props:           direction = props["direction"]
 	if "rotation" in props : head.global_rotation = props["rotation"]
-	if "position" in props : global_position = props["position"]
-	if "speed" in props    : speed =              props["speed"]
-	if "name_tag" in props :     set_name_tag(props["name_tag"])
-	if "team" in props     :             set_team(props["team"])
-	if "health" in props   :         set_health(props["health"])
-	if "weapon" in props   :         set_weapon(props["weapon"])
+	if "position" in props :      global_position = props["position"]
+	if "speed" in props    :                   speed = props["speed"]
+	if "name_tag" in props :          set_name_tag(props["name_tag"])
+	if "team" in props     :                  set_team(props["team"])
+	if "health" in props   :              set_health(props["health"])
+	if "armor" in props    :                set_armor(props["armor"])
+	if "weapon" in props   :              set_weapon(props["weapon"])
 
 func player_can_shop():
 	return health > 0 and player_in_shop_area() and Utils.get_round_controller().is_shop_enabled()

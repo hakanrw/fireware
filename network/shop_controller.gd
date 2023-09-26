@@ -33,12 +33,12 @@ var shop = [
 	Item.new(5 , "7/24 sidearm", 400, Utils.WeaponType.SECONDARY, {"cooldown": 500, "damage": 25, "ammo": 8, "mag": 24}),
 	Item.new(6 , "wrestler", 900, Utils.WeaponType.SECONDARY, {"cooldown": 750, "damage": 35, "ammo": 5, "mag": 15}),
 	# smg
-	Item.new(10, "fastgun", 1100, Utils.WeaponType.PRIMARY, {"cooldown": 200, "damage": 10, "ammo": 16, "mag": 48}),
+	Item.new(10, "fastgun", 1700, Utils.WeaponType.PRIMARY, {"cooldown": 200, "damage": 15, "ammo": 16, "mag": 48}),
 	# heavy
 	##Item.new(15, "sawn off", 1100, Utils.WeaponType.PRIMARY),
 	Item.new(16, ".51 blaster", 3000, Utils.WeaponType.PRIMARY, {"cooldown": 750, "damage": 50, "ammo": 2, "mag": 6}),	
 	# misc
-	# Item.new(20, "kevlar vest", 650, Utils.WeaponType.WEAR),
+	Item.new(20, "kevlar vest", 650, Utils.WeaponType.WEAR),
 	Item.new(21, "x grenade", 300, Utils.WeaponType.MISC, {"cooldown": 500}),
 	# Item.new(22, "shockbang", 200, Utils.WeaponType.MISC),
 	Item.new(23, "smokebang", 300, Utils.WeaponType.MISC, {"cooldown": 500}),
@@ -87,5 +87,7 @@ master func buy_weapon(weapon_id: int):
 
 	if item.type == Utils.WeaponType.PRIMARY or item.type == Utils.WeaponType.SECONDARY or item.type == Utils.WeaponType.MISC:
 		player.get_node("NetworkedPlayer").rpc("equip_weapon", weapon_id, true)
+	elif item.type == Utils.WeaponType.WEAR:
+		player.get_node("NetworkedPlayer").rpc("set_armor", 100)
 	else:
-		pass
+		printerr("shop case is not handled")
