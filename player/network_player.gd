@@ -306,4 +306,5 @@ func reset_player():
 	rpc_id(int(player.name), "set_money", Utils.start_money)
 	rpc_id(1, "reset_weaponry")
 	rpc_id(int(player.name), "reset_weaponry")
+	player.armor = 0
 
