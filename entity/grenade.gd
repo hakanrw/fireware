@@ -29,6 +29,8 @@ func explode():
 	audio_player.play()
 	smoke.visible = true
 	
+	$Shadow.modulate.a = 1
+	
 	if variant == 21:
 		
 		var tween = get_tree().create_tween()

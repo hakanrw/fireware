@@ -17,6 +17,7 @@ linear_damp = 0.5
 script = ExtResource( 1 )
 
 [node name="Shadow" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
 scale = Vector2( 0.14, 0.14 )
 texture = ExtResource( 4 )
 

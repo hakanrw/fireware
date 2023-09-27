@@ -12,7 +12,8 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource( 2 )
 
-[node name="Sprite2" type="Sprite" parent="."]
+[node name="Shadow" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
 scale = Vector2( 0.3, 0.3 )
 texture = ExtResource( 3 )
 
