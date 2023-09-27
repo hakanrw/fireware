@@ -42,6 +42,10 @@ func _process(delta):
 		
 		if Input.is_action_just_released("ui_page_up") or Input.is_action_just_released("ui_page_down"):
 			_select_next_weapon(Input.is_action_just_released("ui_page_down"))
+		
+		if Input.is_action_pressed("select_primary"): _select_primary_weapon()
+		if Input.is_action_pressed("select_secondary"): _select_secondary_weapon()
+		if Input.is_action_pressed("select_tertiary"): _select_tertiary_weapon()
 			
 		if Input.is_action_pressed("shoot"):
 			_shoot()
@@ -141,6 +145,23 @@ func _is_interactable():
 func _is_spectating():
 	return health <= 0 or team == Utils.Team.SPECTATOR
 
+func _select_primary_weapon():
+	var primary = weapons[Utils.WeaponType.PRIMARY]
+	if primary != -1: 
+		set_weapon(primary)
+		network_player.rpc_id(1, "equip_weapon", primary)
+		
+func _select_secondary_weapon():
+	var secondary = weapons[Utils.WeaponType.SECONDARY]
+	if secondary != -1: 
+		set_weapon(secondary)
+		network_player.rpc_id(1, "equip_weapon", secondary)
+
+func _select_tertiary_weapon():
+	var knife = 30
+	set_weapon(knife)
+	network_player.rpc_id(1, "equip_weapon", knife)
+	
 func _select_next_weapon(reverse: bool = false):
 	var item = Utils.get_shop_controller().get_weapon_with_id(current_weapon)
 	if item == null and current_weapon != 30: return
