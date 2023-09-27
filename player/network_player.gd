@@ -120,6 +120,15 @@ remotesync func reset_weaponry():
 		player.weapon_info[5] = Utils.get_shop_controller().get_weapon_with_id(5).props
 		
 		player.current_weapon = 5 # this is updated on all clients on round start
+		
+remotesync func refill_ammo():
+	if 1 == multiplayer.get_rpc_sender_id():
+		var primary_weapon = player.weapons[Utils.WeaponType.PRIMARY]
+		var secondary_weapon = player.weapons[Utils.WeaponType.SECONDARY]
+		if primary_weapon != -1:
+			player.weapon_info[primary_weapon] = Utils.get_shop_controller().get_weapon_with_id(primary_weapon).props
+		if secondary_weapon != -1:
+			player.weapon_info[secondary_weapon] = Utils.get_shop_controller().get_weapon_with_id(secondary_weapon).props
 
 remotesync func throw_weapon(weapon_id: int, safe = false):
 	if 1 == multiplayer.get_rpc_sender_id() and safe:

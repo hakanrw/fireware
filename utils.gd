@@ -130,3 +130,4 @@ var max_health = 100
 var start_money = 1500
 var default_team = Team.SPECTATOR
 var player_speed = 200
+var refill_ammo_on_start = true

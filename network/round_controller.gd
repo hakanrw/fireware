@@ -152,7 +152,11 @@ func place_player(player: Node2D, placed_later = false):
 	if player.health == 0:
 		player.network_player.rpc_id(1, "reset_weaponry")
 		player.network_player.rpc_id(int(player.name), "reset_weaponry")
-	
+	else:
+		if Utils.refill_ammo_on_start:
+			player.network_player.rpc_id(1, "refill_ammo")
+			player.network_player.rpc_id(int(player.name), "refill_ammo")
+
 	player.health = Utils.max_health
 	
 	var spawn_locations = get_spawn_locations()
